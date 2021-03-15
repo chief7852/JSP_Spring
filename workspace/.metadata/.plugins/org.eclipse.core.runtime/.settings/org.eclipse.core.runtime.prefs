@@ -1,0 +1,6 @@
+content-types/org.eclipse.core.runtime.text/charset=utf-8
+content-types/org.eclipse.jst.jsp.core.jspfragmentsource/charset=utf-8
+content-types/org.eclipse.jst.jsp.core.jspsource/charset=utf-8
+content-types/org.eclipse.jst.jsp.core.tagsource/charset=utf-8
+content-types/org.eclipse.wst.html.core.htmlsource/file-names=imageForm.tmpl,textViewer.tmpl,vedioForm.tmpl
+eclipse.preferences.version=1

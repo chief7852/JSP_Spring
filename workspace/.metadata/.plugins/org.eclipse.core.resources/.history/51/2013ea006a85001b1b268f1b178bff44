@@ -1,0 +1,97 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>구구단</title>
+
+</head>
+<body>
+<%
+	String minstr = request.getParameter("minDan");
+	String maxstr = request.getParameter("maxDan");
+	int min = 2;
+	int max = 9;
+
+	if(minstr !=null && minstr.matches("[2-9]")){
+		min = Integer.parseInt(minstr);
+	}
+	
+	if(maxstr !=null && maxstr.matches("[2-9]")){
+		max = Integer.parseInt(maxstr);
+
+	}
+
+%>
+<form action="">
+	<input type="number" placeholder="최소단" name="minDan" min="2"  max="9">
+	<select name="maxDan" required>
+		<option value> 최대단</option>
+		<%
+			String OPTPTRN = "<option value='%1$d'>%1$d단</option>";
+			StringBuffer options = new StringBuffer();
+			for(int i=2; i <= 9; i++){
+				options.append(
+					String.format(OPTPTRN,i)		
+				);
+			}
+			out.println(options);
+		%>
+	</select>
+	<input type="submit" value="전송" />
+</form>
+<!-- 	2단 부터 9단 까지의 구구단을 table태그를 이용하여 출력 -->
+	<!-- 하나의 row에 하나의 단이 출력되도록. -->
+	<table>
+	
+	<%
+	int rowcnt =1;
+	  for(int i = min; i<=max ;i++)
+	  {
+			  String clz = "normal";
+		  if(rowcnt++ == 3){
+			  clz="red";
+		  }
+		  out.println(String.format("<tr class='%s'><td>%s</td>",clz,i));
+		for(int j =1; j <10; j++)
+		{
+			if(j==4)
+			{
+				clz = "green";	
+			}else 
+				clz ="normal";
+			out.println(gugudanText(i,j,clz));	
+		}
+		out.println("</tr>");
+	  }
+	%>
+		
+	<%!
+		public String gugudanText(int i,int j, String clz)
+	{
+		String dan = String.format("<td class='%s'>%d*%d=%d</td>",clz, i, j,(i*j));
+		return dan;
+	}
+	%>		
+		
+	</table>
+	
+</body>
+<style type="text/css">
+ table{
+ 	border : 2px solid black;
+ 	border-collapse: collapse;
+ }
+ 
+ th,td{
+ 	border: 1px solid gray;
+ }
+ .red{
+ 	background-color: red;
+ }
+ .green{
+ 	background-color: green;
+ }
+</style>
+</html>

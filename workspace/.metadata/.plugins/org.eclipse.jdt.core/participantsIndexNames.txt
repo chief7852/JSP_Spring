@@ -1,0 +1,7 @@
+INDEX VERSION 1.131
+D:\A_TeachingMaterial\6.JspSpring\workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1885718953.index
+\dummy01\src
+D:\A_TeachingMaterial\6.JspSpring\workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3171534824.index
+\webStudy01\src
+D:\A_TeachingMaterial\6.JspSpring\workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3621785917.index
+\webStudy01\src

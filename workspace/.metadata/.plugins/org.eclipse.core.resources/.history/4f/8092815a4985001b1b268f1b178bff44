@@ -1,0 +1,8 @@
+package kr.or.ddit.designpattern.templatemethodpattern;
+
+public class TemplateClass {
+	private void stepOne() {
+		System.out.println("1단계");
+	}
+	abstract void stepTwo();
+}

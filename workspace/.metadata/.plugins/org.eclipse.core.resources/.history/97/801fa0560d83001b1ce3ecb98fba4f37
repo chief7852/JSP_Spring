@@ -1,0 +1,10 @@
+<html>
+	<body>
+		<h4>Text file viewer</h4>
+		<select id='textFile'>
+		 	%options%
+		</select>
+		
+		<iframe id="viewer"></iframe>
+	</body>
+</html>

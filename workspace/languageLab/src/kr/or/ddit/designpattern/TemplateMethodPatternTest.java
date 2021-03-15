@@ -1,0 +1,17 @@
+package kr.or.ddit.designpattern;
+
+import kr.or.ddit.designpattern.templatemethodpattern.TemplateClass;
+
+public class TemplateMethodPatternTest {
+
+	public static void main(String[] args) {
+		TemplateClass instance1 = new DerivedClass1();
+		TemplateClass instance2 = new DerivedClass2();
+		TemplateClass[] array = new TemplageClass[] {instance1,instance2};
+		for(TemplateClass tmplate)
+	}}
+		
+
+	}
+
+}
