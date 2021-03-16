@@ -6,7 +6,7 @@
    $(function(){
       const SRCPTRN = "%A?%N=%V";//const는 상수를 만드는 명령어
       console.log($("#video"));
-      $("#video").on("change",function(event){   /* ★콜백함수 */
+      $("#image").on("change",function(event){   /* ★콜백함수 */
     	  $("#imageArea").empty();
 //         console.log(this.value);
 //         console.log($(this).val());
@@ -22,7 +22,7 @@
          var src = SRCPTRN.replace("%A", action)   //replace는 치환하는 함수
                       .replace("%N", name)
                       .replace("%V", value);
-         var img = $("<video>").attr("src",src);   //동적으로 img태그를 생성해줌     
+         var img = $("<image>").attr("src",src);   //동적으로 img태그를 생성해줌     
          imgs.push(img);
          })
          

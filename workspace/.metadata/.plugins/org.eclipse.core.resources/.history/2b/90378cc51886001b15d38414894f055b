@@ -1,0 +1,47 @@
+package kr.or.ddit.servlet02;
+
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public abstract class AbstractFileServlet extends HttpServlet {
+	
+	protected ServletContext application;	//
+	
+	//init
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		application = config.getServletContext();//초기정보 설정
+	}
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+// 		mime 설정
+		setContentType(resp);
+// 		tmpl 읽기
+		
+// 		데이터 만들기
+		
+// 		tmpl을 데이터로 치환
+		
+// 		응답을 전송(try ~ with resource)
+
+		
+	}
+
+	 protected abstract void setContentType(HttpServletResponse resp);	//imageFormServlet.java
+	 
+	//정규식 매서드!
+	private StringBuffer replaceData(StringBuffer tmplSrc, HttpServletRequest req) {
+		return tmplSrc;
+		
+	}
+
+}

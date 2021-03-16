@@ -1,0 +1,102 @@
+<%@page import="kr.or.ddit.enumpkg.BrowserType"%>
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.LinkedHashMap"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>02/userAgent.jsp</title>
+</head>
+<body>
+<h4>User Agent</h4>
+
+<%
+BrowserType.values();
+String userAgent = request.getHeader("User-Agent");
+
+String name = BrowserType.getBrowserName(userAgent);
+out.print(String.format("<script>alert('당신의 브라우저는 %s 입니다')</script>",name));
+%>
+<%
+String OS = ""; 
+userAgent = userAgent.toUpperCase();
+if(userAgent.indexOf("WIN") >0){
+	OS = "윈도우";
+	return;
+ }else if(userAgent.indexOf("MAC") > 0){
+	 OS = "맥";
+	 return;
+ }else if(userAgent.indexOf("ANDROID") >0){
+	 OS ="안드로이드";
+	 return;
+ }else if(userAgent.indexOf("IPHONE") >0) {
+	 OS = "아이폰";
+ }else {
+	 OS = "모르겠다";
+ }
+	 out.print(String.format("<script>alert('당신의 운영체제는 %s 입니다')</script>",OS));
+%>
+<%-- <%
+/* String browser = "";
+String userAgent = request.getHeader("User-Agent");
+userAgent = userAgent.toUpperCase(); 
+if (userAgent.indexOf("TRIDENT") > 0 || userAgent.indexOf("MSIE") > 0) {
+ browser = "익스플로러";
+} else if (userAgent.indexOf("SAFARI") > 0) {
+ if (userAgent.indexOf("CHROME") > 0) {
+	 if(userAgent.indexOf("EDG") > 0){
+		 browser = "엣지";
+	 }else{
+		 browser = "크롬";
+	 }
+ } else {
+  browser = "기타등등";
+ }
+}
+out.print(userAgent);
+out.print(String.format("<script>alert('당신의 브라우저는 %s입니다')</script>",browser));
+ */
+ /* Map<String, String> browserMap = new LinkedHashMap<>();
+ browserMap.put("TRIDENT","익스플로러");
+ browserMap.put("EDG","엣지");
+ browserMap.put("CHROME","크롬");
+ browserMap.put("SAFARI","기타등등"); */
+ 
+
+ /* String browser = "";
+ String userAgent = request.getHeader("User-Agent");
+ userAgent = userAgent.toUpperCase();
+ String name = browserMap.get("OTHER");
+for(Entry<String,String> entry:browserMap.entrySet()){
+	String keyword =entry.getKey();
+	name = entry.getValue();
+	if(userAgent.contains(keyword)){
+		name = entry.getValue();
+		break;
+	}
+} */
+BrowserType[] types =BrowserType.values();
+String userAgent = request.getHeader("User-Agent");
+userAgent = userAgent.toUpperCase(); 
+BrowserType searched = BrowserType.OTHER;
+for(BrowserType tmp : types){
+	if(userAgent.contains(tmp.name())){
+		searched = tmp;
+		break;
+	}
+}
+String name = searched.getBrowserName();
+out.print(String.format("<script>alert('당신의 브라우저는 %s 입니다')</script>",name));
+%> --%>
+
+<!-- 클라이언트의 브라우저를 확인하고,
+iexplore라면 ""당신의 브라우저는 익스플로러입니다."
+chrome이라면 "당신의 브라우저는 크롬입니다"
+edge라면 "당신의 브라우저는 엣지입니다."
+라는 메세지를 alert 창으로 띄울것 -->
+
+</body>
+</html>
