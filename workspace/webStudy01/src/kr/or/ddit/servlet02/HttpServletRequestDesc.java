@@ -15,22 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * HttpServletRequest : 클라이언트와 요청에 대한 모든 정보를 캡슐화한 객체.
- * 
- * Http의 요청 패키징 방식
- * 1. Request Line : URL, request method, protocol
- * 	1) request method : 행위+방식(수단)
- * 		-* GET(R) : 조회
- * 		-* POST(C) : 신규 등록
- * 		-* PUT/PATCH(U) : 갱신
- * 		-* DELETE(D) : 삭제
- * 		- OPTION : prefilight 요청에 사용
- * 		- HEADER : body가 없는 응답을 요청할때 사용
- * 		- TRACE : 서버 디버깅 요청에 사용(일반적으로 사용하지않음)
- * 2. Request Header : meta data 영역(데이터타입..json이나 xml
- * 			Accept, Content-Type, User-Agent
- * 3. Request Body (only POST) : 서버로 전송할 컨텐츠 
- * 			
+HttpServletRequest : 클라이언트와 요청에 대한 모든 정보를 캡슐화한 객체.
+
+Http의 요청 패키징 방식
+1. Request Line : URL, request method, protocol
+	1) request method : 행위+방식(수단)
+		-* GET(R) : 조회
+		-* POST(C) : 신규 등록
+		-* PUT/PATCH(U) : 갱신
+		-* DELETE(D) : 삭제
+		- OPTION : prefilight 요청에 사용
+		- HEADER : body가 없는 응답을 요청할때 사용
+		- TRACE : 서버 디버깅 요청에 사용(일반적으로 사용하지않음)
+2. Request Header : meta data 영역(데이터타입..json이나 xml
+			Accept, Content-Type, User-Agent
+3. Request Body (only POST) : 서버로 전송할 컨텐츠 
+			
  *
  */
 @WebServlet("/requestDesc.do")

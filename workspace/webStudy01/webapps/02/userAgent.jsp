@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.enumpkg.OSType"%>
 <%@page import="kr.or.ddit.enumpkg.BrowserType"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="java.util.Map"%>
@@ -22,23 +23,8 @@ out.print(String.format("<script>alert('당신의 브라우저는 %s 입니다')
 %>
 <%
 String OS = ""; 
-userAgent = userAgent.toUpperCase();
-if(userAgent.indexOf("WIN") >0){
-	OS = "윈도우";
-	
- }else if(userAgent.indexOf("MAC") > 0&&userAgent.indexOf("IPHONE;") <0){
-	 OS = "맥";
-
- }else if(userAgent.indexOf("ANDROID") >0){
-	 OS ="안드로이드";
-
- }else if(userAgent.indexOf("IPHONE;") >0) {
-	 OS = "아이폰";
-
- }else {
-	 OS = "모르겠다";
- }
-	 out.print(String.format("<script>alert('당신의 운영체제는 %s 입니다')</script>",OS));
+OS = OSType.getOSName(userAgent);
+out.print(String.format("<script>alert('당신의 운영체제는 %s 입니다')</script>",OS));
 %>
 <%-- <%
 /* String browser = "";

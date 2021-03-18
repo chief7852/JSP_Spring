@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageServlet extends HttpServlet{
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{//파라미터가 안넘어가서 서비스 제공 불가능
+			
 			String imageFilename = req.getParameter("image");
 			if(imageFilename==null || imageFilename.isEmpty()) {
 				resp.sendError(HttpServletResponse.SC_BAD_REQUEST);	//400
