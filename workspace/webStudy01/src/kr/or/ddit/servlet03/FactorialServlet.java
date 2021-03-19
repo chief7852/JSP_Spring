@@ -2,6 +2,8 @@ package kr.or.ddit.servlet03;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,32 +17,81 @@ import kr.or.ddit.servlet03.view.JsonView;
 import kr.or.ddit.servlet03.view.XmlView;
 
 @WebServlet("/03/factorial")
-public class FactorialServlet extends HttpServlet{
+public class FactorialServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/factorialForm.jsp");
 		dispatcher.forward(req, resp);
-	}//jsp까지 연결해주면끝
-	
+	}// jsp까지 연결해주면끝
+
+//	Restful URI방식 : 	PUT 수정, DELETE 삭제 POST보내다 GET 가져오는것
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
-		int num = resultSet(req);
+		String single = req.getParameter("single");
 		String accept = req.getHeader("accept");
-	      MimeType mime = MimeType.searchMimeType(accept);
-	      resp.setContentType(mime.getMime());
-	      PrintWriter out = resp.getWriter();
-	      out.print(num);
-	}//jsp에서 다시받아옴 enum샐만들고
-	
-	
-	
-	private int resultSet(HttpServletRequest req) {
-		int num = Integer.parseInt(req.getParameter("single"));
-		int tmp = 1;
-		for(int i=num;i>=1;i--) {
-			tmp = tmp*i;
+		int status = 200;
+		String message = null;
+		String view = null;
+		if (single == null || !single.matches("[0-9]{1,2}")) {
+			status = 400;
+			message ="필수파라미터 누락";
+		} else {
+			long op = Long.parseLong(single);
+			try {
+				long result = factorial(op);
+				MimeType mime=MimeType.searchMimeType(accept);
+				Map<String, Object> target =new HashMap<>();
+				target.put("op",op);
+				target.put("result",result);
+				target.put("expression",String.format("%d!=%d",op,result));
+				if(MimeType.JSON.equals(mime)) {
+					//vo를 안만들었으면 Map만들어주면됨
+					resp.setHeader("Content-Type", "application/json;charset=utf-8");
+					new JsonView().mergeModelAndView(target, resp);
+				}else {
+					req.setAttribute("target", target);
+					view="/WEB-INF/views/factorialForm.jsp";
+				}
+			} catch (IllegalArgumentException e) {
+				status = HttpServletResponse.SC_BAD_REQUEST;
+				message = "음수는 연산 불가";
+			}
 		}
-		return tmp;
+		if(status == HttpServletResponse.SC_OK) {
+			if(view !=null) {
+				req.getRequestDispatcher(view).forward(req,resp);
+			}else {
+				
+			}
+		}else {
+			resp.sendError(status, message);
+		}
+
+	}// jsp에서 다시받아옴 enum샐만들고
+
+	// 재귀호출(recursive calling)
+	private long factorial(long op) {
+		if (op <= 0) {
+			// 예외를 처리한다
+			throw new IllegalArgumentException("양수만 대상으로 연산 수행 가능");
+		}
+
+		if (op == 1) {
+			return 1;
+		} else {
+			return op * factorial(op - 1);
+		}
 	}
+
+//	private int resultSet(HttpServletRequest req) {
+//		String single = req.getParameter("single");
+//		if(single == null||single.matches("[0-9]{1,2}")) {
+//			return;
+//		}
+//		int tmp = 1;
+//		for(int i=num;i>=1;i--) {
+//			tmp = tmp*i;
+//		}
+//		return tmp;
+//	}
 }

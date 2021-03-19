@@ -25,7 +25,11 @@ import javax.servlet.http.HttpServlet;
  						response.setContentType(mime)
  						response.setHeader(name,value) 						
  						response.setDateHeader(name,value(long)) 						
- 						response.setIntHeader(name,value(int)) 						
+ 						response.setIntHeader(name,value(int)) 		
+ 						
+ 			1) 캐시 제어
+ 			2) auto request(polling)
+ 			3) 흐름제어(redirect/forward[include])							
  3. Response Body(message body , content body) : 데이터를 기록하기위해서는 출력 스트림이 필요한데
  												   response.getWriter(), 2진데이터는 getOutputStream()으로 기록
  

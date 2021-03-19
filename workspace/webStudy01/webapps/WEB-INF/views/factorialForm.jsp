@@ -1,15 +1,17 @@
+<%@page import="java.util.Map"%>
 <%@page import="kr.or.ddit.enumpkg.MimeType"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
- <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-$(function(){
+/* $(function(){
 	var functionMap ={
 			json : function(resp){
 				resultArea.text(resp.expression);
@@ -55,27 +57,23 @@ $(function(){
 			$.ajax(options);
 			return false;
 		});
-	});
+	}); */
 </script>
 <body>
-<h4>팩토리얼 연산 처리</h4>
-<!-- 동기처리연산수행
+	<h4>팩토리얼 연산 처리</h4>
+	<!-- 동기처리연산수행
 비동기처리 연산수행(JSON, HTML) 선택할수있도록만들어주기-->
-<select id = "mimeKind">
-	<option value="">dataType 선택</option>
-	<%
-		for(MimeType tmp :MimeType.values())
-		{
-			%>
-			<option value="<%=tmp.name().toLowerCase()%>"><%=tmp.name().toLowerCase() %></option>
-			<%
-		}
-	%>
-</select>
-<form method="post"><!-- view에 있기때문에 /03/factorial이랑 똑같음 -->
-	<input id="num" type="number" name="single" />
-	<input id="calForm" type="submit" value="=" />
-</form>
-<div id ="resultArea"></div>
+
+	<%-- <%
+		Map<String,Object> target = (Map) request.getAttribute("target");
+		
+	%> --%>
+
+	<form method="post">
+		<!-- view에 있기때문에 /03/factorial이랑 똑같음 -->
+		<input value="${target.op }" type="number" name="single" /> <input
+			id="calForm" type="submit" value="=" /> ${target["result"]}
+	</form>
+	<div id="resultArea"></div>
 </body>
 </html>
