@@ -1,0 +1,69 @@
+package kr.or.ddit.servlet05;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/bts")
+public class BTSServlet extends HttpServlet{
+	Map<String,String> BtsMap;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		BtsMap = new LinkedHashMap<String, String>();
+		BtsMap.put("bui","뷔");
+		BtsMap.put("jhop","제이홉");
+		BtsMap.put("jimin","지민");
+		BtsMap.put("jin","진");
+		BtsMap.put("jungkuk","정국");
+		BtsMap.put("rm","랩몬");
+		BtsMap.put("suga","슈가");
+		config.getServletContext().setAttribute("btsmap", BtsMap);
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setCharacterEncoding("utf-8");
+		String view = "/WEB-INF/views/btsForm.jsp";
+		req.getRequestDispatcher(view).forward(req,resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setCharacterEncoding("utf-8");
+		String mname = req.getParameter("memname");
+		int status = validate(mname);
+		if(status != 200) {
+			resp.sendError(status);
+			return;
+		}
+		String view = String.format("/WEB-INF/views/bts/%s.jsp", mname);
+		
+		PrintWriter out = resp.getWriter();
+		out.print(mname);
+		
+		req.getRequestDispatcher(view).forward(req, resp);
+	}
+
+	private int validate(String btsmem) {
+		int status = 200;
+		if(btsmem==null || btsmem.isEmpty()) {
+			status = 400;
+		}else {
+			if(!BtsMap.containsKey(btsmem)) {
+				status = 400;
+			}
+		}
+		return status;
+	}
+}
