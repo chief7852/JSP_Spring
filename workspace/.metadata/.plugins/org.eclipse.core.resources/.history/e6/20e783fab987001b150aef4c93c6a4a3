@@ -1,0 +1,7 @@
+package kr.or.ddit.servlet03;
+
+import javax.servlet.http.HttpServlet;
+
+public class LocaleServlet extends HttpServlet{
+
+}

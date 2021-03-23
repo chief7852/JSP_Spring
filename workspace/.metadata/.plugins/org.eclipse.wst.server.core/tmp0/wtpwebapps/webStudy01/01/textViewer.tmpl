@@ -1,12 +1,22 @@
-
 <html>
-	<body>
-		<h4>Text file viewer</h4>
-		<select id='textFile'>
-		 	%options%	// text파일들만! 전체 옵션 출력
-		</select>
-		
-		<!-- src 속성의 주소값 : ex) textView.do?textFile=filename(path?) -->
-		<iframe id="viewer" src=""></iframe> // 파일하나 선택할때마다 iframe src에 출력
-	</body>
+<body>
+	<h4>Text file viewer</h4>
+	<select id="textFile"> %option%
+		<!-- 요자리에 text파일들 전체를 옵션으로 제공할것 -->
+	</select>
+	<!-- 파일하나 선택할때 iframe에 출력되도록 -->
+
+	<!-- src 속성의 주소값 : ex) textView.do?tFile=filename(path?) -->
+	<iframe id="viewer" src=""></iframe>
+	
+</body>
 </html>
+
+<!-- 서블릿은 최소 두개
+	img 참고할것
+	img에서 text로만 바뀐것
+	주말에 완성하면서 복습하기
+	코드를 왜 이런식으로 짜기 시작했는가?
+	여기서 컨테이너의 역활으
+
+ -->

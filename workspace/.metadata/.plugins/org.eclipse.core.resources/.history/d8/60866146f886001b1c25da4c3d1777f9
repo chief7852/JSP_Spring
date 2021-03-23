@@ -1,0 +1,34 @@
+package kr.or.ddit.vo;
+
+import kr.or.ddit.enumpkg.OperatorEnum;
+
+public class CalculateVO {
+	private double left;
+	private double right;
+	private OperatorEnum oper ;
+	
+	public double getLeft() {
+		return left;
+	}
+	public void setLeft(double left) {
+		this.left = left;
+	}
+	public double getRight() {
+		return right;
+	}
+	public void setRight(double right) {
+		this.right = right;
+	}
+	public OperatorEnum getOper() {
+		return oper;
+	}
+	public void setOper(OperatorEnum oper) {
+		this.oper = oper;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "CalculateVO [left="+left+",right="+right+",oper ="+oper+"]";
+	}
+	
+}

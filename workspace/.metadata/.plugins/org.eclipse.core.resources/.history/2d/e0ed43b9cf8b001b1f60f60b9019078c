@@ -1,0 +1,301 @@
+<%
+
+Calendar cal = Calendar.getInstance();
+
+int nowYear = 0;
+
+int nowMonth = 0;
+
+ 
+
+//Calendar 클래스를 이용한 날짜 구하기
+
+nowYear = cal.get(Calendar.YEAR);
+
+nowMonth = cal.get(Calendar.MONTH) + 1;
+
+ 
+
+//표시할 년,월
+
+int year = nowYear;
+
+int month = nowMonth;
+
+ 
+
+//표시할 달력 셋팅
+
+cal.set(year, month-1, 1);
+
+int startDay = 1;
+
+ 
+
+//year년 month월의 마지막 날짜 구하기
+
+int endDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+ 
+
+//year년 month월 1일의 요일 구하기
+
+int week = cal.get(Calendar.DAY_OF_WEEK);
+
+ 
+
+//공휴일 등록 -> 배열
+
+String[] holidays = {"0101", "0301", "0550", "0606", "0815", "1003", "1225"};
+
+ 
+
+//달력출력
+
+String str = "";
+
+int newLine = 0;
+
+str += "<tr>";
+
+ 
+
+for(int i=1; i<week; i++){
+
+str += "<td>&nbsp;</td>";
+
+newLine++;
+
+}
+
+ 
+
+for(int i=startDay; i<=endDay; i++){
+
+//공휴일인 경우 색 표시 부분 추가
+
+String holiday = "";
+
+ 
+
+String smsi = String.format("%02d", month) + String.format("%02d", i);
+
+ 
+
+for(int m=0; m<holidays.length; m++){
+
+if(smsi.equals(holidays[m])){
+
+holiday = "type1";
+
+break;
+
+}
+
+}
+
+ 
+
+//일, 토요일 색 표시
+
+if(newLine == 0){ //일요일
+
+str += "<td style='color: red;' class='" + holiday + "'>" + i + "</td>";
+
+}else if(newLine == 6){ //토요일
+
+str += "<td style='color: blue;' class='" + holiday + "'>" + i + "</td>";
+
+}else{ //평일
+
+str += "<td class='" + holiday + "'>" + i + "<br>";
+
+}
+
+ 
+
+if(i == 9){
+   str += "일정";
+}
+
+ 
+
+str += "</td>";
+
+ 
+
+newLine++;
+
+ 
+
+if(newLine == 7 && i != endDay){
+
+str += "</tr><tr>";
+
+newLine = 0;
+
+}
+
+}
+
+ 
+
+while(newLine>0 && newLine<7){
+
+str += "<td>&nbsp;</td>";
+
+newLine++;
+
+}
+
+str += "</tr>";
+
+ 
+
+%>
+
+ 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>업무시간 캘린더</title>
+
+<script type="text/javascript">
+
+<!--
+
+window.onload = init;
+
+ 
+
+function init(){
+
+var f = document.frm;
+
+var fyear = f.year;
+
+ 
+
+var nowYear = <%=year %>;
+
+var startYear = nowYear -10;
+
+ 
+
+for(i=0; i<20; i++){
+
+fyear[i] = new Option(startYear, startYear);
+
+ 
+
+if(fyear[i].value == nowYear){
+
+fyear[i].selected = true;
+
+}
+
+startYear++;
+
+}
+
+ 
+
+var fmonth = f.month;
+
+ 
+
+var nowMonth = <%=month %>;
+
+ 
+
+for(i=0; i<12; i++){
+
+fmonth[i] = new Option(i+1, i+1);
+
+ 
+
+if(fmonth[i].value == nowMonth){
+
+fmonth[i].selected = true;
+
+}
+
+}
+
+}
+
+ 
+
+function fsubmit(obj){
+
+obj.form.submit();
+
+}
+
+ 
+
+//-->
+
+</script>
+
+</head>
+
+<body>
+
+<form method="get" name="frm">
+
+<table align="center">
+
+<tr>
+
+<th>
+
+<select name="year" style="font-size: 13pt" onchange="fsubmit(this)"></select>년
+
+<select name="month" style="font-size: 13pt" onchange="fsubmit(this)"></select>월
+
+</th>
+
+</tr>
+
+</table>
+
+</form>
+
+ 
+
+<table align="center" cellpadding="5" cellspacing="3" bgcolor="#cccccc">
+
+<tr>
+
+<td>일</td>
+
+<td>월</td>
+
+<td>화</td>
+
+<td>수</td>
+
+<td>목</td>
+
+<td>금</td>
+
+<td>토</td>
+
+</tr>
+
+<%=str %>
+
+</table>
+
+</body>
+
+</html> 
+
+

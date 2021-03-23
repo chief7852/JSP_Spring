@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>06/pageContextDesc.jsp</title>
+</head>
+<body>
+<h4>PageContext</h4>
+<pre>
+	: 하나의 JSP 에 대한 모든 정보를 가진 객체.
+	특징 : 가장 먼저 생성되는 기본객체로 나머지 기본객체에 대한 참조를 소유하고있음.(사실상 얘만 있어도됨)
+	<%= request==pageContext.getRequest() %>
+	<%= pageContext.getRequest() instanceof HttpServletRequest%>
+	<%=((HttpServletRequest)pageContext.getRequest()).getRequestURI() %>
+	<!-- session -->
+	<%= session == pageContext.getSession() %>
+	<%= application==pageContext.getServletContext() %>
+	${pageContext.request }
+</pre>
+</body>
+</html>

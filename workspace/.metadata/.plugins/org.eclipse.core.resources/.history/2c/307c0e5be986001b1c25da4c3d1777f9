@@ -1,0 +1,62 @@
+package kr.or.ddit.servlet02;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.ddit.enumpkg.BrowserType;
+
+@WebServlet("/03/calculator")
+public class CalculatorServlet extends HttpServlet{
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		double left = Double.parseDouble(req.getParameter("left"));
+		String oper = req.getParameter("operator");
+		System.out.println(oper);
+		double right = Double.parseDouble(req.getParameter("right"));
+		String oper2 = OperatorEnum.getOperator(oper);
+		PrintWriter out = resp.getWriter();
+		out.print(left);
+		out.print(oper2);
+		out.print(right);
+	}
+	
+   public enum OperatorEnum{
+	   PLUS("+"),MIN("-"),MULTI("*"),DIV("/"),REMAIN("%");
+	   
+	   OperatorEnum(String OperatorEnum){
+			this.Operator = Operator;
+		}
+		
+		private String Operator;
+		
+		
+		public String getOperator(){
+			return this.Operator;
+		}
+		
+		
+		public static String getOperator(String oper) {
+			OperatorEnum[] types =OperatorEnum.values();
+			
+			OperatorEnum searched = PLUS;
+			for(OperatorEnum tmp : types){
+				if(oper.contains(tmp.name())){
+					searched = tmp;
+					System.out.println("여가");
+					break;
+				}
+			}
+			String name = searched.getOperator();
+			return name;
+		}
+	}
+}
+

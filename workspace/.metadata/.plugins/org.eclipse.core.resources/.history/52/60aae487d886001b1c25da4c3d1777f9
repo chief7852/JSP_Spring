@@ -1,0 +1,27 @@
+package kr.or.ddit.enumpkg;
+
+public enum BrowserType2{
+	WIN("엣지"), CHROME("크롬"), TRIDENT("익스플로러"), OTHER("기타등등");
+	BrowserType2(String browserName){
+		this.browserName = browserName;
+	}
+	private String browserName;
+	public String getBrowserName(){
+		return this.browserName;
+	}
+	
+	
+	public static String getBrowserName(String agent) {
+		BrowserType2[] types =BrowserType2.values();
+		agent = agent.toUpperCase(); 
+		BrowserType2 searched = OTHER;
+		for(BrowserType2 tmp : types){
+			if(agent.contains(tmp.name())){
+				searched = tmp;
+				break;
+			}
+		}
+		String name = searched.getBrowserName();
+		return name;
+	}
+}

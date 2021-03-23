@@ -1,0 +1,15 @@
+package kr.or.ddit.method;
+
+public class MethodInvocation {
+	public static void main(String[] args) {
+		
+	}
+	
+	private static void callByValue(String data) {
+		data = data+"append data";
+	}
+	
+	private static void callByReference(StringBuffer data) {
+		data.append("append data");
+	}
+}

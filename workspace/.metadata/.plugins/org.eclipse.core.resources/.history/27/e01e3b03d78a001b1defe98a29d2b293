@@ -1,0 +1,81 @@
+package kr.or.ddit.servlet04;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.websocket.SendResult;
+
+/**
+ * Servlet implementation class LoginCheckServlets
+ */
+@WebServlet("/login/loginCheck.do")
+public class LoginCheckServlets extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
+		 * 요청 분석
+		 * 인증
+		 * view로이동
+		 * 인증 성공시 index.jsp로 이동 (현재 요청 정보 삭제)
+		 * 인증 실패시 lofinForm.jsp로 이동
+		 * 	1) 검증
+		 * 	2) 인증 실패(아이디 상태 유지)
+		 */
+		request.setCharacterEncoding("utf-8");
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass");
+		response.setCharacterEncoding("utf-8");
+		String view = null;
+		boolean redirect = false;
+		
+		String message = null;
+		
+		boolean valid = vlidate(id, pass);
+		if(valid) {
+			boolean auth = authenticate(id,pass);
+			request.setAttribute("ans","성공" );
+			if(auth) {
+				redirect = true;
+				view = "/";
+			}else {
+				view = "/login/loginForm.jsp";
+				// 인증실패
+				message = "비번 오류";
+			}
+		}else {
+			
+			redirect = true;
+			view ="/login/loginForm.jsp";
+			message = "아이디나 비번 누락";
+		}
+		
+		if(message!=null) {
+			
+		}
+		
+		if(redirect) {
+			response.sendRedirect(request.getContextPath() +view);
+		}else {
+			request.getRequestDispatcher(view).forward(request, response);
+		}
+		
+	}
+
+	private boolean authenticate(String id, String pass) {
+		// TODO Auto-generated method stub
+		return id.equals(pass);
+	}
+
+	private boolean vlidate(String id, String pass) {
+		boolean valid = true;
+		valid =(id==null|| id.isEmpty()||pass==null||pass.isEmpty())? false: true ;
+		
+		return valid;
+	}
+
+}

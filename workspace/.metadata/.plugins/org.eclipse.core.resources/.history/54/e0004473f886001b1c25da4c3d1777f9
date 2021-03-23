@@ -1,0 +1,74 @@
+package kr.or.ddit.vo;
+
+import java.io.Serializable;
+
+import kr.or.ddit.enumpkg.OperatorEnum;
+
+public class CalculateVO implements Serializable{
+	
+	
+	public CalculateVO(double left, double right, OperatorEnum oper) {
+		super();
+		this.left = left;
+		this.right = right;
+		this.oper = oper;
+	}
+	private double left;
+	private double right;
+	private OperatorEnum oper ;
+	
+	public double getLeft() {
+		return left;
+	}
+	public void setLeft(double left) {
+		this.left = left;
+	}
+	public double getRight() {
+		return right;
+	}
+	public void setRight(double right) {
+		this.right = right;
+	}
+	public OperatorEnum getOper() {
+		return oper;
+	}
+	public void setOper(OperatorEnum oper) {
+		this.oper = oper;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "CalculateVO [left="+left+",right="+right+",oper ="+oper+"]";
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(left);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((oper == null) ? 0 : oper.hashCode());
+		temp = Double.doubleToLongBits(right);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CalculateVO other = (CalculateVO) obj;
+		if (Double.doubleToLongBits(left) != Double.doubleToLongBits(other.left))
+			return false;
+		if (oper != other.oper)
+			return false;
+		if (Double.doubleToLongBits(right) != Double.doubleToLongBits(other.right))
+			return false;
+		return true;
+	}
+	
+	
+}

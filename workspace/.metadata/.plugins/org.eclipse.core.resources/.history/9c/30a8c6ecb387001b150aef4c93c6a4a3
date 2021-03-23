@@ -1,0 +1,23 @@
+package kr.or.ddit.servlet03.view;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+public class XmlView extends AbstractView {
+
+	@Override
+	public void mergeModelAndView(Object target, HttpServletResponse resp) throws IOException {
+		try {
+			JAXBContext context = JAXBContext.newInstance(target.getClass());
+			context.createMarshaller();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			throw new IOException(e);
+		}
+		
+	}
+
+}

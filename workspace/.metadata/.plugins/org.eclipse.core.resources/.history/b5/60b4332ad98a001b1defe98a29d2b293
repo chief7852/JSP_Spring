@@ -1,0 +1,36 @@
+<%@page import="java.util.Objects"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.error{
+color : red
+}
+</style>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%
+		String failId = String.valueOf(request.getParameter("id"));
+		String message = String.valueOf(request.getAttribute("message"));
+		if(message == null){
+			request= (String)session.getAttribute("message");
+		}
+		if(message!=null && !message.isEmpty()){
+			%>
+				<div class="error"><%=message%></div>
+			<%
+		}
+	%>
+	<form action="<%=request.getContextPath() %>/login/loginCheck.do" method="post">
+		<input type="text" name="id" />
+		<%-- valu="<%=Objects.toString(failId,"") %>" --%>
+		<input type="password" name="pass" />
+		<input type="submit" value="확인" />
+	</form>
+	
+</body>
+</html>

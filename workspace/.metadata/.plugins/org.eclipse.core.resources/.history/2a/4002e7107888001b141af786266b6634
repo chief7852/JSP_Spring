@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+img{
+	height: 500px;
+	width: 800px;
+}
+</style>
+</head>
+<body>
+<h4>캐시 제어</h4>
+<pre>
+	캐시 제어를 위한 응답 헤더
+	1) Cache-Control(Http 1.1) : public(서버에 공용 캐시로남긴다), private(내브라우저저장)
+							, no-chache(no-store)(안남김)    
+	2) pragma(Http 1.0) : public(서버에 공용 캐시로남긴다), private(내브라우저저장)
+							, no-chache(no-store)(안남김)
+	           
+	3) Expires : 캐시데이터의 만료 시점
+</pre>
+<img src="<%=application.getContextPath() %>/images/ato2.jpg" >
+</body>
+</html>

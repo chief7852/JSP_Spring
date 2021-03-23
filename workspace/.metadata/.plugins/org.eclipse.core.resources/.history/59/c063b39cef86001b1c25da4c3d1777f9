@@ -1,0 +1,29 @@
+package kr.or.ddit.enumpkg;
+
+public enum OperatorEnum {
+	PLUS("+"), MIN("-"), MULTI("*"), DIV("/"), REMAIN("%");
+
+	OperatorEnum(String Operator) {
+		this.Operator = Operator;
+	}
+
+	private String Operator;
+
+	public String getOperator() {
+		return this.Operator;
+	}
+
+	public static String getOperator(String oper) {
+		OperatorEnum[] types = OperatorEnum.values();
+
+		OperatorEnum searched = PLUS;
+		for (OperatorEnum tmp : types) {
+			if (oper.contains(tmp.name())) {
+				searched = tmp;
+				break;
+			}
+		}
+		String name = searched.getOperator();
+		return name;
+	}
+}

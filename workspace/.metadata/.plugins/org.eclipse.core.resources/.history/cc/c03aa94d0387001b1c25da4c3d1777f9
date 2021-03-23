@@ -1,0 +1,16 @@
+package kr.or.ddit.enumpkg;
+
+public enum MimeType {
+	JSON(""),XML,PLAIN,HTML;
+	
+	private String mime;
+	
+	private MimeType(String mime) {
+		this.mime = mime;
+	}
+
+	public String getMime() {
+		return mime;
+	}
+	
+}

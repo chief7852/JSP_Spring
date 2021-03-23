@@ -1,0 +1,14 @@
+package kr.or.ddit.servlet02;
+
+public class test {
+	public test() {
+		// TODO Auto-generated constructor stub
+	}
+	private String test1 ;
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

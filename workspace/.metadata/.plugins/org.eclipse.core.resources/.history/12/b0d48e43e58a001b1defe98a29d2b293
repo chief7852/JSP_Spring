@@ -1,0 +1,45 @@
+package kr.or.ddit.servlet05;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/blood/getContent.do")
+public class BloodContentServlet extends HttpServlet{
+	/*
+	 4개 혈액형 검증
+	 */
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String blood =req.getParameter("blood");
+		
+		int status = validate(blood);
+		
+		if(status != 200) {
+			resp.sendError(status);
+			return;
+		}
+	}
+
+	private int validate(String blood) {
+		int status = 200;
+		if(blood==null || blood.isEmpty()) {
+			status = 400;
+		}else {
+			
+		}
+		return status;
+	}
+	
+	/*
+	 * enum Blood{ A(""),B,C,D
+	 * 
+	 * public static Checkblood() {
+	 * 
+	 * } }
+	 */
+}

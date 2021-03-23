@@ -1,0 +1,36 @@
+package kr.or.ddit.servlet02;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
+/**
+ * 
+ * HttpServletResponse : client로 전송될 응답과 관련된 모든 정보를 가진 객체 
+ *
+ * Http 응답 패키징 방식
+ * 1. Response Line : 상태코드(status code), protocol, 성공유무
+ * 		** status code : 요청 처리 결과를 의미하는 숫자
+ * 		1) 1XX (Http 1.1 부터) : ing...(소켓 종료하지않는다)
+ * 		2) 2XX : OK(success),명령처리는 성공
+ * 		3) 3XX : 클라이언트의 추가랙션이 요구되는 상태코드
+ * 			304(Not Modified)
+ * 			302/307(Moved, location) : 자원의 위치를 찾지 못했을때 
+ * 		4) 4XX : client side Fail
+ * 			404(Not Found), 400 (Bad Request), 
+ * 			405(Method Not Allowed):doget,dopost없을때, 415(Unsupported Media Type)
+ * 			401(UnAuthorized),403(Forbidden)외부로노출시키지않기위한 필터접근제어
+ * 		5) 5XX : client side Fail, Internal server Error
+ * 2. Response Header : meta data 로 그 자체에대한 설정을 담음
+ * 					    응답데이터로 나갈때 Content-Type(mime), Content-Length(length) 적어도 이자료가있어야 가능
+ * 						response.setContentType(mime)
+ * 						response.setHeader(name,value) 						
+ * 						response.setDateHeader(name,value(long)) 						
+ * 						response.setIntHeader(name,value(long)) 						
+ * 3. Response Body(message body , content body) : 데이터를 기록하기위해서는 출력 스트림이 필요한데
+ * 												   response.getWriter(), 2진데이터는 getOutputStream()으로 기록
+ *
+ */
+@WebServlet("/respDesc.do")
+public class HttpServletResponseDesc extends HttpServlet {
+	
+}

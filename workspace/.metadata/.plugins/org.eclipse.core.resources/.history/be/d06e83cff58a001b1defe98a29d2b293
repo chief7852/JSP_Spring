@@ -1,0 +1,27 @@
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form method="post"><!-- action없이 브라우저가 사용하던 주소사용 -->
+	<select>
+		<%
+			Map<String, String> BTSMap = (Map)application.getAttribute("btsmap");
+			for(Entry<String,String> tmp : BTSMap.entrySet()){
+				String name = tmp.getKey();
+				String value = tmp.getValue();
+				%>
+				<option value="<%=name%>"></option>
+				<%
+			}
+		%>
+	</select>
+</form>
+</body>
+</html>

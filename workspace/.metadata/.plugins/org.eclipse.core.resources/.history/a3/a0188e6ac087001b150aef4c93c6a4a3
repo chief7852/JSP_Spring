@@ -1,0 +1,60 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Locale"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+ $(function(){
+	 $("#loc").change(function(){
+			<%String cal = %>$(this).val() <%;%>
+		})
+ })
+	
+</script>
+<body>
+	<h4>Locale</h4>
+	<pre>
+		:언어나 지역이나 문화적 특성들을 캡슐화한 객체
+		local_text : 언어코드_국가(지역코드)
+		<%=request.getHeader("accept-language") %>
+		<%
+		Locale locale = request.getLocale(); 
+		out.println(locale.getDisplayLanguage());
+		out.println(locale.getDisplayCountry());
+		
+	
+		%>
+	<%
+	String loc = request.getParameter("loc");
+	if(loc != null){
+		out.print(loc);
+	}
+	Calendar cal = Calendar.getInstance();
+	out.println(String.format(Locale.CHINESE, "%tc", cal));
+	%>
+	</pre>
+
+<form>
+	
+	<select id="loc" name="loc">
+		<%
+		 	for(Locale tmp : Locale.getAvailableLocales()){
+		 		String dl = tmp.getDisplayLanguage(tmp);
+		 		String dc = tmp.getDisplayCountry(tmp);
+		 		if(dl.isEmpty()&&dc.isEmpty()) continue;
+		 		%>
+		 		<option value="<%=tmp.toLanguageTag()%>"><%=String.format("%s[%s]",dl,dc) %></option>
+		 		<%
+		 		
+		 	}
+		%>
+	</select>
+</form>
+</body>
+</html>

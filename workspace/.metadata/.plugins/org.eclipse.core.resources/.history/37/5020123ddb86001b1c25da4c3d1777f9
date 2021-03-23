@@ -1,0 +1,14 @@
+package kr.or.ddit.servlet02;
+/**
+ * 
+ * HttpServletResponse : client로 전송될 응답과 관련된 모든 정보를 가진 객체 
+ *
+ * Http 응답 패키징 방식
+ * 1. Response Line : 상태코드(status code), protocol, 성공유무
+ * 2. Response Header
+ * 3. Response Body
+ *
+ */
+public class HttpServletResponseDesc {
+
+}

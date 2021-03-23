@@ -1,0 +1,42 @@
+package kr.or.ddit.servlet02;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.ddit.enumpkg.BrowserType;
+
+@WebServlet("/03/calculator")
+public class CalculatorServlet extends HttpServlet {
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		double left = Double.parseDouble(req.getParameter("left"));
+		String oper = req.getParameter("operator");
+		System.out.println(oper);
+		double right = Double.parseDouble(req.getParameter("right"));
+		String oper2 = OperatorEnum.getOperator(oper);
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("JavaScript");
+		
+		PrintWriter out = resp.getWriter();
+		out.print(left+oper2+right+" = ");
+		try {
+			out.print(engine.eval(left+oper2+right));
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+}

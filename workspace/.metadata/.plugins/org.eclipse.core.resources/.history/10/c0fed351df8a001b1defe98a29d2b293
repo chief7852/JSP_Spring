@@ -1,0 +1,38 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.LinkedHashMap"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%
+	Map<String , String> bloodMap = new LinkedHashMap<>();
+	bloodMap.put("a","");
+	bloodMap.put("b","");
+	bloodMap.put("ab","");
+	bloodMap.put("o","");
+%>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<select id ="blood">
+	<%
+		for(Entry<String,String> entry : bloodMap.entrySet()){
+			String key = entry.getKey();
+			String value = entry.getValue();
+			%>
+			<option value="<%=key%>"><%= value%></option>
+			<%
+		}
+	%>
+</select>
+<script type="text/javascript">
+	var select =document.querySelector("#blood");
+	select.onchange = function(){
+		location.href = "<%=request.getContextPath()%>/blood/getContent.do";
+	}
+</script>
+</body>
+</html>
