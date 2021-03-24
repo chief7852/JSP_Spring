@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/bts")
+@WebServlet(value = "/bts", loadOnStartup=1)
 public class BTSServlet extends HttpServlet{
 	Map<String,String> BtsMap;
 	
