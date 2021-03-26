@@ -59,6 +59,7 @@
                                                        failedIds널이면 ""으로변경
                                                         -->
    <input type="text" name="mem_pw"  placeholder="비밀번호" value=""   />
+  	<input type="checkbox" name="saveId" value="saveId"/><!-- 아이디 기억하기 -->
    <input type="submit" value="로그인"/>
    
 

@@ -11,7 +11,7 @@
    $(function(){
       const SRCPTRN = "%A?%N=%V";//const는 상수를 만드는 명령어
       console.log($("#image"));
-      let select = $("#image").on("change",function(event){   /* ★콜백함수 */
+      $("#image").on("change",function(event){   /* ★콜백함수 */
     	  $("#imageArea").empty();
 //         console.log(this.value);
 //         console.log($(this).val());
@@ -34,23 +34,9 @@
          //var value = this.value; //$(this).val()
          // imageArea 에 img 태그를 innerHTML에 넣어줌
          $("#imageArea").html(imgs);
-		$.ajax({
-			url:"<%=request.getContextPath()%>/07/cookieGeneratre.do",
-		method:"post",
-		contentType:"application/json;charset=UTF-8",
-		data: JSON.stringify(values)
-		})
-      });// change 핸들러 end
-      <%
-     	String imageName = (String)request.getAttribute("imageCookie");
-     if(imageName !=null){
-  	   %>
-  	   select.val("<%=imageName%>");
-  	 select.trigger("change");
-  	   
-  	   <%
-     }
-     %>
+         
+         
+      });
    });
    </script>
 </head>
