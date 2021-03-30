@@ -8,20 +8,27 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h4> 동일 경로에서 확인하는 쿠키</h4>
+<h4> 다른 경로에서 확인하는 쿠키 </h4>
 <pre>
-      <%
-         Cookie[] cookies = request.getCookies();
-         Cookie searched = null;
-         if(cookies!=null){
-            for(Cookie tmp :cookies){
-               String value = URLDecoder.decode(tmp.getValue(), "UTF-8");
-                out.println(
-                         String.format("%s : %s\n", tmp.getName(), value)
-                   );
-            }
-         }
-      %>
+		<%
+			Cookie[] cookies = request.getCookies();
+			Cookie searched = null;
+			if(cookies!=null){
+				for(Cookie tmp : cookies){
+					String value = URLDecoder.decode(tmp.getValue(), "UTF-8");
+					out.println(
+						String.format("%s : %s\n", tmp.getName(), value)
+					);
+				}
+			}
+		%>
 </pre>
 </body>
 </html>
+
+
+
+
+
+
+

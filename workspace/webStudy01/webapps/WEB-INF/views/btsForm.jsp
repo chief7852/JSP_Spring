@@ -1,4 +1,5 @@
 <%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -6,31 +7,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<form method="post"><!-- action없이 브라우저가 사용하던 주소사용 -->
-	<select name="memname" id="member">
-		<%
-			Map<String, String> BTSMap = (Map)application.getAttribute("btsmap");
-			for(Entry<String,String> tmp : BTSMap.entrySet()){
-				String name = tmp.getKey();
-				String value = tmp.getValue();
-				%>
-				<option value="<%=name%>"><%=value %></option>
-				<%
-			}
-		%>
+<form method="post">
+	<input type="text" name="test" />
+	<%
+		Map<String, List<String>> btsMap = (Map) application.getAttribute("btsMap");
+	%>
+	<select name="member" onchange="$(this.form).trigger('submit');">
+	<%
+		for(Entry<String,List<String>> entry : btsMap.entrySet()){
+			String id = entry.getKey();
+			String name = entry.getValue().get(0);
+			%>
+			<option value="<%=id %>"><%=name %></option>
+			<%
+		}
+	%>
 	</select>
-	<script type="text/javascript">
-	$('#member').change(function() {
-		var choice = $(this).val()
-		console.log(choice)
-		$('form').submit()
-		})
-	</script>
 </form>
+<div id="resultArea"></div>
+<script type="text/javascript">
+	let resultArea = $("#resultArea");
+	$("form").test2().formToAjax({
+		dataType:"html"
+		, success:function(resp){
+			resultArea.html(resp);
+		}
+	});
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+

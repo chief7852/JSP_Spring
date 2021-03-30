@@ -16,52 +16,57 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/02/imageForm.do")
 public class Model2ImageFormServlet extends HttpServlet{
-	
 	private ServletContext application;
-	
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
 		super.init(config);
 		application = config.getServletContext();
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
-		String folder = "d:/contents";
+		String folder = "d:/contents";			 
 		File contents = new File(folder);
 		String[] children = contents.list(new FilenameFilter() {
 			
-
 			@Override
 			public boolean accept(File dir, String name) {
 				String mime = application.getMimeType(name);
-				System.out.println("name : " + name);
-				return mime != null && mime.startsWith("image/");
+				return mime!=null && mime.startsWith("image/");
 			}
-
 		});
 		
 		Cookie[] cookies = req.getCookies();
-		Cookie imaCookie = null;
+		Cookie imageCookie = null;
 		if(cookies!=null) {
-			for(Cookie tmp:cookies) {
+			for(Cookie tmp : cookies) {
 				if(tmp.getName().equals("imageCookie")) {
-					imaCookie =tmp;
+					imageCookie = tmp;
 					break;
 				}
 			}
-			if(imaCookie!=null) {
-				String decodedJSON = URLDecoder.decode(imaCookie.getValue(),"cookie");
-				req.setAttribute("imageCookie", decodedJSON);
-			}
+		}
+		if(imageCookie!=null) {
+			String decodedJson = URLDecoder.decode( imageCookie.getValue() , "UTF-8");
+			req.setAttribute("imageCookie", decodedJson);
 		}
 		
-		req.setAttribute("childeren", children);
+		
+		req.setAttribute("children", children);
 		String view = "/WEB-INF/views/imageForm.jsp";
-		req.getRequestDispatcher(view).forward(req,resp);
+		req.getRequestDispatcher(view).forward(req, resp);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

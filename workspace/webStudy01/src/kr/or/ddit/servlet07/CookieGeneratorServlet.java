@@ -15,22 +15,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet("/07/cookieGenerate.do")
 public class CookieGeneratorServlet extends HttpServlet{
-	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try(
-		Reader reader = req.getReader();
+			Reader reader = req.getReader();
 		){
 			ObjectMapper mapper = new ObjectMapper();
 			String[] values = mapper.readValue(reader, String[].class);
 			String json = mapper.writeValueAsString(values);
 			
-			String encodedJSON=URLEncoder.encode(json,"UTF-8");
-			Cookie imageCookie = new Cookie("imageCookie", encodedJSON);
+			String encodedJson = URLEncoder.encode(json, "UTF-8");
+			Cookie imageCookie = new Cookie("imageCookie", encodedJson);
 			imageCookie.setPath(req.getContextPath());
-			imageCookie.setMaxAge(60*60*24*1);
-			
+			imageCookie.setMaxAge(60*60*24*7);
 			resp.addCookie(imageCookie);
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

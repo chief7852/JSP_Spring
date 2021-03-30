@@ -11,41 +11,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/blood/getContent.do", loadOnStartup=1)
+@WebServlet(value="/blood/getContent.do", loadOnStartup=1)
 public class BloodContentServlet extends HttpServlet{
-	Map<String, String>bloodMap;
+	Map<String, String> bloodMap;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		bloodMap = new LinkedHashMap<>();
-		bloodMap.put("a","A형");
-		bloodMap.put("b","B형");
-		bloodMap.put("ab","AB형");
-		bloodMap.put("o","O형");
+		bloodMap.put("a", "A형");
+		bloodMap.put("b", "B형");
+		bloodMap.put("ab", "AB형");
+		bloodMap.put("o", "O형");
 		config.getServletContext().setAttribute("bloodMap", bloodMap);
 	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		String blood =req.getParameter("blood");
-		System.out.println(blood);
+		String blood = req.getParameter("blood");
 		int status = validate(blood);
-		System.out.println(status);
-		if(status != 200) {
+		if(status!=200) {
 			resp.sendError(status);
 			return;
 		}
+		
 		String view = "/WEB-INF/views/blood/"+blood+".jsp";
-		req.getRequestDispatcher(view).forward(req, resp);;
-//		resp.sendRedirect(view);
+		req.getRequestDispatcher(view).forward(req, resp);
+//		resp.sendRedirect(req.getContextPath() + view);
 	}
 
 	private int validate(String blood) {
 		int status = 200;
 		if(blood==null || blood.isEmpty()) {
 			status = 400;
-			
 		}else {
 			if(!bloodMap.containsKey(blood)) {
 				status = 400;
@@ -53,12 +52,15 @@ public class BloodContentServlet extends HttpServlet{
 		}
 		return status;
 	}
-	
-	/*
-	 * enum Blood{ A(""),B,C,D
-	 * 
-	 * public static Checkblood() {
-	 * 
-	 * } }
-	 */
 }
+
+
+
+
+
+
+
+
+
+
+

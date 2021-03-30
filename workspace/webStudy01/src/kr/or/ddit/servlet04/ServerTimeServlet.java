@@ -12,34 +12,63 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.jni.Local;
-
 import kr.or.ddit.enumpkg.MimeType;
+
 @WebServlet("/04/serverTime")
 public class ServerTimeServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String loc = req.getParameter("loc");
 		String zone = req.getParameter("zone");
-		TimeZone tz = TimeZone.getTimeZone("GMT");
+		
+		TimeZone timeZone = TimeZone.getDefault();
 		Locale locale = req.getLocale();
-		if(loc != null && !loc.isEmpty()) {
+		if(loc!=null && !loc.isEmpty()) {
 			locale = Locale.forLanguageTag(loc);
 		}
-		if(zone !=null && !zone.isEmpty()) {
-			tz = TimeZone.getTimeZone(zone);
+		if(zone!=null && !zone.isEmpty()) {
+			timeZone = TimeZone.getTimeZone(zone);
 		}
+		
 		resp.setIntHeader("Refresh", 1);
 		
 		resp.setContentType(MimeType.PLAIN.getMime());
-		
 		try(
-				PrintWriter out = resp.getWriter();
-				)
-		{
-			out.print(String.format(locale,"%tc",Calendar.getInstance(tz)));
+			PrintWriter out = resp.getWriter();	
+		){
+			out.print(
+				String.format(locale, "%tc", Calendar.getInstance(timeZone))
+			);
+			
 		}
-		
-		String.format("%tc",Calendar.getInstance(tz));
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

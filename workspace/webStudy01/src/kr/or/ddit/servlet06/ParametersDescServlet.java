@@ -17,38 +17,43 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.vo.ParameterVO;
 
-@WebServlet("/08/parameters")
-public class ParametersDescServlet extends HttpServlet {
+@WebServlet("/06/parameters")
+public class ParametersDescServlet extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
-		
+		req.setCharacterEncoding("UTF-8");
 		String contentType = req.getContentType();
 		ParameterVO bean = null;
 		if(contentType!=null && contentType.toLowerCase().contains("json")) {
 			ObjectMapper mapper = new ObjectMapper();
 			bean = mapper.readValue(req.getReader(), ParameterVO.class);
-			//Map<String,Object>[] bean = mapper.readValue(req.getReader(), Map[].class);
-			
+//			Map<String, Object>[] bean = mapper.readValue(req.getReader(), Map[].class);
 		}else {
-			Map<String , String[]> parameterMap = req.getParameterMap();
+			Map<String, String[]> parameterMap = req.getParameterMap();
 			bean = new ParameterVO();
 			try {
 				BeanUtils.populate(bean, parameterMap);
-				
 			} catch (IllegalAccessException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 		
-		
 		System.out.println(bean);
-		
-//		for(String paramName : parameterMap.keySet()) {
-//			String[] value = req.getParameterValues(paramName);
-//			System.out.printf("%s : %s \n",paramName,Arrays.toString(value));
+//		for( String paramName : parameterMap.keySet()) {
+//			String[] values = req.getParameterValues(paramName);
+//			System.out.printf("%s : %s \n", 
+//						paramName, Arrays.toString(values));
 //		}
 	}
 }
+
+
+
+
+
+
+
+
+
+

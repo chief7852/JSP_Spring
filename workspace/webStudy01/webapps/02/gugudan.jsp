@@ -4,36 +4,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>구구단</title>
-
+<title>Insert title here</title>
+<style type="text/css">
+	th,td{
+		border: 1px solid black;
+	}
+	table {
+		border-collapse: collapse;
+	}
+	.red{
+		background-color: red;
+	}
+	.green{
+		background-color: green;
+	}
+</style>
 </head>
 <body>
-<%
-	String minstr = request.getParameter("minDan");
-	String maxstr = request.getParameter("maxDan");
-	int min = 2;
-	int max = 9;
-
-	if(minstr !=null && minstr.matches("[2-9]")){
-		min = Integer.parseInt(minstr);
+<%!
+	private String gugudanText(int dan, int mul, String clz){
+		return String.format("<td class='%s'>%d*%d=%d</td>"
+				, clz, dan, mul, (dan*mul));
 	}
-	
-	if(maxstr !=null && maxstr.matches("[2-9]")){
-		max = Integer.parseInt(maxstr);
-
-	}
-
 %>
-<form action="">
-	<input type="number" placeholder="최소단" name="minDan" min="2"  max="9" value="<%= min%>">
-	<select name="maxDan" required value="<%= max%>">
-		<option value> 최대단</option>
+<!-- 2단부터 9단까지의 구구단을 table 태그를 이용하여 출력. -->
+<!-- 하나의 row 에 하나의 단이 출력되도록. -->
+<%
+	String minDanStr = request.getParameter("minDan");
+	String maxDanStr = request.getParameter("maxDan");
+	int minDan = 2;
+	int maxDan = 9;
+	if(minDanStr!=null && minDanStr.matches("[2-9]")){
+		minDan = Integer.parseInt(minDanStr);
+	}
+	if(maxDanStr!=null && maxDanStr.matches("[2-9]")){
+		maxDan = Integer.parseInt(maxDanStr);
+	}
+%>
+<form>
+	<input type="number" placeholder="최소단" name="minDan" 
+		min="2" max="9" value="<%=minDan %>">
+	<select name="maxDan" required>
+		<option value>최대단</option>
 		<%
-			String OPTPTRN = "<option %2$s selected value='%1$d'>%1$d단</option>";
+			String OPTPTRN = "<option %2$s value='%1$d'>%1$d단</option>";
 			StringBuffer options = new StringBuffer();
-			for(int i=2; i <= 9; i++){
+			for(int dan=2; dan<=9; dan++){
 				options.append(
-					String.format(OPTPTRN,i,i==max?"selected":"")		
+					String.format(OPTPTRN, dan, dan==maxDan?"selected":"")		
 				);
 			}
 			out.println(options);
@@ -41,57 +59,41 @@
 	</select>
 	<input type="submit" value="전송" />
 </form>
-<!-- 	2단 부터 9단 까지의 구구단을 table태그를 이용하여 출력 -->
-	<!-- 하나의 row에 하나의 단이 출력되도록. -->
-	<table>
-	
+<table>
 	<%
-	int rowcnt =1;
-	  for(int i = min; i<=max ;i++)
-	  {
-			  String clz = "normal";
-		  if(rowcnt++ == 3){
-			  clz="red";
-		  }
-		  out.println(String.format("<tr class='%s'><td>%s</td>",clz,i));
-		for(int j =1; j <10; j++)
-		{
-			if(j==4)
-			{
-				clz = "green";	
-			}else 
-				clz ="normal";
-			out.println(gugudanText(i,j,clz));	
+		int rowcnt = 1;
+		for(int dan = minDan; dan<=maxDan; dan++){
+			String clz = "normal";
+			if(rowcnt++ == 3){
+				clz = "red";
+			}
+			out.println(String.format("<tr class='%s'>", clz));
+			for(int mul=1; mul<=9; mul++){
+				if(mul==4) clz = "green";
+				else clz = "normal";
+				out.println(
+					gugudanText(dan, mul, clz)		
+				);
+			}
+			out.println("</tr>");
 		}
-		out.println("</tr>");
-	  }
 	%>
-		
-	<%!
-		public String gugudanText(int i,int j, String clz)
-	{
-		String dan = String.format("<td class='%s'>%d*%d=%d</td>",clz, i, j,(i*j));
-		return dan;
-	}
-	%>		
-		
-	</table>
-	
+</table>
 </body>
-<style type="text/css">
- table{
- 	border : 2px solid black;
- 	border-collapse: collapse;
- }
- 
- th,td{
- 	border: 1px solid gray;
- }
- .red{
- 	background-color: red;
- }
- .green{
- 	background-color: green;
- }
-</style>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

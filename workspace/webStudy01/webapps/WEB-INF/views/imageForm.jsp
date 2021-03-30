@@ -3,82 +3,90 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <html>
 <head>
-   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <script type="text/javascript">
-   $(function(){
-      const SRCPTRN = "%A?%N=%V";//const는 상수를 만드는 명령어
-      console.log($("#image"));
-      let select = $("#image").on("change",function(event){   /* ★콜백함수 */
-    	  $("#imageArea").empty();
-//         console.log(this.value);
-//         console.log($(this).val());
-//         this.form.submit();   //change라는 이벤트가 발생했을때 화면을 전환하지 않기 위해서 위 3줄을 만들어줌
-         // img 태그 생성
-         console.log($("form")[0])
-         const action = $("form")[0].action;   //모든 폼을 select 함으로서 값이 배열로 옴
-         var name = this.name; //$(this),attr("name")
-         var values = $(this).val(); //$(this).val()
-         var imgs = [];
-         
-         $(values).each(function(idx , value){
-         var src = SRCPTRN.replace("%A", action)   //replace는 치환하는 함수
-                      .replace("%N", name)
-                      .replace("%V", value);
-         var img = $("<imag>").attr("src",src);   //동적으로 img태그를 생성해줌     
-         imgs.push(img);
-         })
-         
-         //var value = this.value; //$(this).val()
-         // imageArea 에 img 태그를 innerHTML에 넣어줌
-         $("#imageArea").html(imgs);
-		$.ajax({
-			url:"<%=request.getContextPath()%>/07/cookieGeneratre.do",
-		method:"post",
-		contentType:"application/json;charset=UTF-8",
-		data: JSON.stringify(values)
-		})
-      });// change 핸들러 end
-      <%
-     	String imageName = (String)request.getAttribute("imageCookie");
-     if(imageName !=null){
-  	   %>
-  	   select.val("<%=imageName%>");
-  	 select.trigger("change");
-  	   
-  	   <%
-     }
-     %>
-   });
-   </script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript">
+// 		$(document).on("ready", function(){
+			
+// 		});
+		$(function(){
+			const SRCPTRN = "%A?%N=%V";
+			console.log($("form")[0]);
+			const action = $("form")[0].action;
+// 			console.log($("#image"));
+			let select = $("#image").on("change", function(event){
+				$("#imageArea").empty();
+// 				console.log(this.value);
+// 				console.log($(this).val());
+// 				this.form.submit();
+				// img 태그 생성
+				var name = this.name; //$(this).attr("name")
+				var values = $(this).val();
+				var imgs = [];
+				$(values).each(function(idx, value){
+					var src = SRCPTRN.replace("%A", action)
+									 .replace("%N", name)
+									 .replace("%V", value);
+					var img = $("<img>").attr("src", src);
+					imgs.push(img);
+				});
+				// imageArea 에 img 태그를 innerHTML 로 삽입
+				$("#imageArea").html(imgs);
+				$.ajax({
+					url:"<%=request.getContextPath() %>/07/cookieGenerate.do"
+					, method:"post"
+					, contentType:"application/json;charset=UTF-8"
+					, data:JSON.stringify(values)
+				});
+			}); // change handler end
+			
+			<%
+				String imageName = (String)request.getAttribute("imageCookie");
+				if(imageName!=null){
+			%>
+				select.val(JSON.parse( '<%=imageName%>' ));
+				select.trigger("change");
+			<%
+				}
+			%>
+		}); // ready end
+	</script>
 </head>
 <body>
-<!-- <h4>%today%</h4> -->
-<h4><%= new Date() %></h4>
+<h4><%=new Date() %></h4>
+<form action='<%=request.getContextPath() %>/01/image.do' method="post">
+<input name="_method" value="put" type="hidden">
 <%
-String[] children = (String[])request.getAttribute("childeren");
+String[] children = (String[]) request.getAttribute("children");
+
 StringBuffer options = new StringBuffer();
-for (String child : children) {
+
+for(String child : children){
 	options.append(String.format("<option>%s</option>", child));
 }
-
-
 %>
-<form action='<%= request.getContextPath() %>/01/image.do'>
 <select name="image" id="image" multiple>
-<%=options%>
+<%=options %>
 </select>
 <input type="submit" value="전송" style="background-color: red;"/>
 </form>
 <div id="imageArea"></div>
-<script type="text/javascript">
-/*    var select = document.querySelector("#image");
-   select.onchange = function(event){
-      event.target.form.submit();
-   } */
-   
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

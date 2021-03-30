@@ -1,12 +1,10 @@
 package kr.or.ddit.enumpkg;
 
 public enum MimeType {
-	JSON("application/json;charset=UTF-8"),
-	XML("application/xml;charset=UTF-8"),
-	PLAIN("text/plain;charset=UTF-8"),
-	HTML("application/html;charset=UTF-8");
-	
-	
+	JSON("application/json;charset=UTF-8"), 
+	XML("application/xml;charset=UTF-8"), 
+	PLAIN("text/plain;charset=UTF-8"), 
+	HTML("text/html;charset=UTF-8");
 	
 	private MimeType(String mime) {
 		this.mime = mime;
@@ -16,22 +14,30 @@ public enum MimeType {
 		return mime;
 	}
 	
-	
 	public static MimeType searchMimeType(String accept) {
 		accept = accept.toUpperCase();
 		MimeType searched = HTML;
-		for(MimeType tmp : values())
-		{
-			if(accept.contains(tmp.name()))
-			{
+		for(MimeType tmp : values()) {
+			if(accept.contains(tmp.name())) {
 				searched = tmp;
 				break;
 			}
 		}
 		return searched;
 	}
-	public static String getMimeText(String accept) {
+	public static String getMimiText(String accept) {
 		return searchMimeType(accept).getMime();
 	}
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+

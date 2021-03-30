@@ -5,5 +5,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractView {
-	public abstract void mergeModelAndView(Object target, HttpServletResponse resp) throws IOException;
+	public abstract void mergeModelAndView(Object target, 
+			HttpServletResponse resp) throws IOException;
 }

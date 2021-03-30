@@ -9,24 +9,31 @@
 <body>
 <h4>웹 어플리케이션에서 흐름 제어 방법(페이지 이동)</h4>
 <pre>
-1. 서버내에서의 위임구조, RequestDispatcher사용
-- 원본 요청(Request)d을 도착점에서 사용하 수 있ㄲ는 구조
+1. 서버내에서의 위임구조, RequestDispatcher 사용
+	- 원본 요청(request)을 도착점에서 사용할 수 있는 구조.
 	1) forward
 	2) include
-	<%-- <%
+	<%--
 		String dest = "/04/localeDesc.jsp";
-	RequestDispatcher rd = request.getRequestDispatcher(dest);
-	rd.forward(request, response);
-	
-	%> --%>
-2. Redirect : Body가 없이, 상태코드(302)로 구성된  linerhk
+		RequestDispatcher rd = request.getRequestDispatcher(dest);
+		rd.include(request, response);
+		
+	--%>
+2. Redirect : Body 가 없이, 상태코드(302)로 구성된 line 과 
 			Location 헤더를 가지고 응답이 전송됨.
-			Http 의 Stateless 특성에따라 원본 요청에 대한 정보는 사라짐
-			<%
-			String location = request.getContextPath() + "/04/localeDes";
-			response.sendRedirect(location);
-			%>
+			HTTP 의 Stateless 특성에 따라 원본 요청에 대한 정보는 사라짐.
+	<%
+		String location = request.getContextPath() + "/04/localeDesc.jsp";
+		response.sendRedirect(location);
+	%>
 </pre>
-
 </body>
 </html>
+
+
+
+
+
+
+
+
