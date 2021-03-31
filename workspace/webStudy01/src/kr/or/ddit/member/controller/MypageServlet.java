@@ -13,12 +13,13 @@ import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.member.service.IAuthenticateService;
 import kr.or.ddit.member.service.IMemberService;
-import kr.or.ddit.member.service.MemberServiceImpl;
+
+import kr.or.ddit.member.service.MemberServiceImpl2;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/mypage.do")
 public class MypageServlet extends HttpServlet {
-	private IMemberService service = new MemberServiceImpl();
+	private IMemberService service = new MemberServiceImpl2();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

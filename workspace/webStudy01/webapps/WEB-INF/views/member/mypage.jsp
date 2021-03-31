@@ -68,19 +68,19 @@
 			<td><%=member.getMem_job()%></td>
 		</tr>
 		<tr>
-			<th>몰러</th>
+			<th>취미</th>
 			<td><%=member.getMem_like()%></td>
 		</tr>
 		<tr>
-			<th>ㅁ</th>
+			<th>결혼기념일</th>
 			<td><%=member.getMem_memorial()%></td>
 		</tr>
 		<tr>
-			<th>ㅁ</th>
+			<th>결혼일</th>
 			<td><%=member.getMem_memorialday()%></td>
 		</tr>
 		<tr>
-			<th>ㅁ</th>
+			<th>마일리지</th>
 			<td><%=member.getMem_mileage()%></td>
 		</tr>
 		<tr>

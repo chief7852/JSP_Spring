@@ -192,6 +192,7 @@ public class MemberVO implements Serializable{
 				+ ", mem_mileage=" + mem_mileage + ", mem_delete=" + mem_delete + "]";
 	}
 	
+	
 }
 
 
