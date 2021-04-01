@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.service.IAuthenticateService;
-import kr.or.ddit.member.service.IMemberService;
+import kr.or.ddit.member.service.IMemberService2;
 
 import kr.or.ddit.member.service.MemberServiceImpl2;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/mypage.do")
 public class MypageServlet extends HttpServlet {
-	private IMemberService service = new MemberServiceImpl2();
+	private IMemberService2 service = new MemberServiceImpl2();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,11 +28,16 @@ public class MypageServlet extends HttpServlet {
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String mem_id = authMember.getMem_id();
 		
-		MemberVO detailMember = service.retrieveMember(mem_id);
+		try {
+			MemberVO detailMember = service.retrieveMember(mem_id);
+			req.setAttribute("member", detailMember);
+			
+			String view = "/WEB-INF/views/member/mypage.jsp";
+			req.getRequestDispatcher(view).forward(req,resp);
+		} catch (UserNotFoundException e) {
+//			resp.sendError(400);
+			throw new IOException(e);
+		}
 		
-		req.setAttribute("member", detailMember);
-		
-		String view = "/WEB-INF/views/member/mypage.jsp";
-		req.getRequestDispatcher(view).forward(req,resp);
 	}
 }

@@ -13,6 +13,7 @@ public class JsonView extends AbstractView{
 	throws IOException
 	{
 		ObjectMapper mapper = new ObjectMapper();
+		
 //		String json = mapper.writeValueAsString(target);
 		try(
 			PrintWriter out = resp.getWriter();
@@ -20,7 +21,6 @@ public class JsonView extends AbstractView{
 			mapper.writeValue(out, target);
 //			out.print(json);
 		}				
-		
 	}
 }
 

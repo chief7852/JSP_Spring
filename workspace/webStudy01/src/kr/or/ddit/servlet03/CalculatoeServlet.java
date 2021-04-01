@@ -17,7 +17,7 @@ import kr.or.ddit.servlet03.view.JsonView;
 import kr.or.ddit.servlet03.view.XmlView;
 import kr.or.ddit.vo.CalculateVO;
 
-@WebServlet("/03/calculator")
+@WebServlet("/03/calculator.d")
 public class CalculatoeServlet extends HttpServlet {
    @Override
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

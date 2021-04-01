@@ -5,15 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp"></jsp:include>
 </head>
 <body>
 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request"></jsp:useBean>
 	<h4><%=member.getMem_name()%>님의 마이페이지
 	</h4>
+	
 	<table>
 		<tr>
 			<th>회원아이디</th>
-			<td><%=member.getMem_id()%></td>
+			<td id="mem_id"><%=member.getMem_id()%></td>
 		</tr>
 		<tr>
 			<th>비밀번호</th>
@@ -87,6 +89,47 @@
 			<th>퇴사일</th>
 			<td><%=member.getMem_delete()%></td>
 		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="button" value="수정" class="controlBtn" id="updateBtn" />
+				<button type="button" class="controlBtn" id="deleteBtn">탈퇴</button>
+			</td>
+		</tr>
 	</table>
+	
+	<script type="text/javascript">
+		
+		$(".controlBtn").on("click", function(){
+			let btnId = $(this).prop("id");
+			var memId = $("#mem_id").val();
+			if(btnId == "updateBtn"){
+				location.href="<%=request.getContextPath()%>/member/memberUpdate.do"
+			}else if(btnId == "deleteBtn"){
+				var pass = prompt('암호를 입력하십시오','암호를 입력하세요');
+				var pasOri = <%=member.getMem_pass()%>;
+				if(pass != pasOri){
+					return
+				}
+				$.ajax({
+					url : "/member/memberDelete.do",
+					method : "POST",
+					data : {
+						id : memId,
+						pass : pass
+					},
+					dataType : "json",
+					success : function(resp) {
+						
+					},
+					error : function(xhr, error, msg) {
+						console.log(xhr);
+						console.log(error);
+						console.log(msg);
+					}
+				});
+			}
+			// /member/memberUpdate.do
+		})
+	</script>
 </body>
 </html>
