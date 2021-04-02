@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.enumpkg.MimeType;
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.member.dao.IMemberDAO2;
+import kr.or.ddit.member.dao.MemberDAOImpl2;
 import kr.or.ddit.member.service.IMemberService2;
 import kr.or.ddit.member.service.MemberServiceImpl2;
 import kr.or.ddit.vo.MemberVO;
@@ -31,44 +34,51 @@ public class MemberDeleteServlet extends HttpServlet{
 	private void addCommandAttribute(HttpServletRequest req) {
 		req.setAttribute("command", "update");
 	}
-	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		addCommandAttribute(req);
-//		HttpSession session = req.getSession();
-//		MemberVO authmember = (MemberVO)session.getAttribute("authMember");
-//		String authId = authmember.getMem_id();
-//		MemberVO member = service.retrieveMember(authId);
-//		req.setAttribute("member", member);
-//		String view = "/WEB-INF/views/member/memberForm2.jsp";
-//		req.getRequestDispatcher(view).forward(req, resp);
-//		// 로그인되어있는 사람의 정보를 가지고와서 memberForm 재활용 이동
-//	}
+
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
+		System.out.println("post접속");
 		req.setCharacterEncoding("UTF-8");
-		String mem_id = req.getParameter("id");
+		
+		String mem_id = req.getParameter("memid");
+		String mem_pass = req.getParameter("password");
+		if(mem_pass == null || mem_pass.isEmpty()) {
+			resp.sendError(400);
+			return;
+		}
+		HttpSession session = req.getSession();
+		MemberVO orignMember = new MemberVO();
+		orignMember.setMem_id(mem_id);
+		orignMember.setMem_pass(mem_pass);
 		if(mem_id == null || mem_id.isEmpty()) {
 			resp.sendError(400);
 			return;
 		}
 		
-		Map<String, Object> resultMap = new HashMap<>();
-		 MemberVO member = service.
-		try {
-			MemberVO member = service.removeMember(member);
-			resultMap.put("result",ServiceResult.FAIL);
-		}catch (Exception e) {
-			resultMap.put("result",ServiceResult.OK);
-		}
-		resp.setContentType(MimeType.JSON.getMime());
-		try(
-			PrintWriter out = resp.getWriter();
-		){
-			ObjectMapper mapper =new ObjectMapper();
-			mapper.writeValue(out, resultMap);
+		ServiceResult result = service.removeMember(orignMember);
+		String view = null;
+			
+		switch (result) {
+			case INVALIDPASSWORD:
+				session.setAttribute("message", "비밀번호오류!");
+				view = "redirect:/mypage.do";
+				break;
+			case OK:
+				session.invalidate();
+				view = "redirect:/";
+				break;
+			default:
+				session.setAttribute("message", "서버오류!");
+				view = "redirect:/mypage.do";
+				break;
+			}
+		boolean redirect = view.startsWith("redirect:");
+		if(redirect) {
+			resp.sendRedirect(req.getContextPath()+view.substring("redirect:".length()));
+		}else {			
+			req.getRequestDispatcher(view).forward(req,resp);
 		}
 		
 	}
