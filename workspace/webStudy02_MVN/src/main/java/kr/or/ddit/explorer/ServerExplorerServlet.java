@@ -19,7 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+// jsp과제
 @WebServlet("/serverExplorer.do")
 public class ServerExplorerServlet extends HttpServlet{
 	private ServletContext application;
