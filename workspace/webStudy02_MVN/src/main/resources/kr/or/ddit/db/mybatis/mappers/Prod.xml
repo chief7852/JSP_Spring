@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.prod.dao.IProdDAO">
+	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
+		<collection property="buyer" ofType="BuyerVO"
+			javaType="BuyerVO" autoMapping="true">
+			<id property="buyer_id" column="BUYER_ID"></id>
+			<id property="buyer_bankname" column="BUYER_BANKNAME" />
+			<id property="buyer_bankno" column="BUYER_BANKNO" />
+			<id property="buyer_add1" column="BUYER_ADD1" />
+		</collection>
+	</resultMap>
+
+
+
+	<select id="selectProd" parameterType="string"
+		resultMap="prodMap">
+		SELECT DISTINCT
+		BUYER_ID,BUYER_BANKNAME,BUYER_BANKNO,BUYER_ADD1
+		FROM PROD RIGHT OUTER
+		JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		WHERE PROD_ID =
+		#{prod_id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

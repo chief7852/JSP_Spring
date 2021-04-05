@@ -15,13 +15,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
-import kr.or.ddit.member.service.IMemberService2;
-import kr.or.ddit.member.service.MemberServiceImpl2;
+import kr.or.ddit.member.service.IMemberService;
+import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/member/memberUpdate.do")
 public class MemberUpdateServlet extends HttpServlet{
-	private IMemberService2 service = new MemberServiceImpl2();
+	private IMemberService service = new MemberServiceImpl();
 	
 	private void addCommandAttribute(HttpServletRequest req) {
 		req.setAttribute("command", "update");
@@ -31,27 +31,28 @@ public class MemberUpdateServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
 		HttpSession session = req.getSession();
-		MemberVO authmember = (MemberVO)session.getAttribute("authMember");
-		String authId = authmember.getMem_id();
-		MemberVO member = service.retrieveMember(authId);
-		req.setAttribute("member", member);
-		String view = "/WEB-INF/views/member/memberForm2.jsp";
-		req.getRequestDispatcher(view).forward(req, resp);
-		// 로그인되어있는 사람의 정보를 가지고와서 memberForm 재활용 이동
+		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
+		String authId = authMember.getMem_id();
+ 		MemberVO member = service.retrieveMember(authId);
+ 		req.setAttribute("member", member);
+ 		String view = "/WEB-INF/views/member/memberForm.jsp";
+ 		req.getRequestDispatcher(view).forward(req, resp);
+//		memberForm.jsp 재활용
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
+		
 		req.setCharacterEncoding("UTF-8");
+		
 //		1. 요청 접수
 		MemberVO member = new MemberVO();
 		HttpSession session = req.getSession();
-		MemberVO authmember = (MemberVO)session.getAttribute("authMember");
-		String authId = authmember.getMem_id();
-		req.setAttribute("member", member);
+		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
+		String authId = authMember.getMem_id();
 		member.setMem_id(authId);
-		
+		req.setAttribute("member", member);
 //		member.setMem_id(req.getParameter("mem_id"));
 		try {
 			BeanUtils.populate(member, req.getParameterMap());
@@ -62,37 +63,36 @@ public class MemberUpdateServlet extends HttpServlet{
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
-		
 		String view = null;
 		String message = null;
 		if (valid) {
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
 			case INVALIDPASSWORD:
-				view = "/WEB-INF/views/member/memberForm2.jsp";
-				message = "비번오류";
+				view = "/WEB-INF/views/member/memberForm.jsp";
+				message = "비번 오류";
 				break;
 			case OK:
-				
 				view = "redirect:/mypage.do";
 				break;
 			default:
 				message = "서버 오류, 잠시 뒤 다시 시도하세요.";
-				view = "/WEB-INF/views/member/memberForm2.jsp";
+				view = "/WEB-INF/views/member/memberForm.jsp";
 				break;
 			}
 		} else {
 			// 검증 불통
-			view = "/WEB-INF/views/member/memberForm2.jsp";
+			view = "/WEB-INF/views/member/memberForm.jsp";
 		}
 
 		req.setAttribute("message", message);
 
 		boolean redirect = view.startsWith("redirect:");
 		if(redirect) {
-			resp.sendRedirect(req.getContextPath()+view.substring("redirect:".length()));
-		}else {			
-			req.getRequestDispatcher(view).forward(req,resp);
+			view = view.substring("redirect:".length());
+			resp.sendRedirect(req.getContextPath() + view);
+		}else {
+			req.getRequestDispatcher(view).forward(req, resp);
 		}
 	}
 
@@ -129,7 +129,14 @@ public class MemberUpdateServlet extends HttpServlet{
 
 		return valid;
 	}
-
-	
-
 }
+
+
+
+
+
+
+
+
+
+

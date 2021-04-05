@@ -5,12 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
-import kr.or.ddit.member.dao.IMemberDAO2;
-import kr.or.ddit.member.dao.MemberDAOImpl2;
+import kr.or.ddit.member.dao.IMemberDAO;
+import kr.or.ddit.member.dao.MemberDAOImpl;
+
 import kr.or.ddit.vo.MemberVO;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
-	private IMemberDAO2 dao = new MemberDAOImpl2();
+	private IMemberDAO dao = MemberDAOImpl.getInstance();
 	
 	@Override
 	public ServiceResult authenticate(MemberVO member) {
