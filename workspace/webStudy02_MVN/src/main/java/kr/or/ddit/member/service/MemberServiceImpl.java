@@ -8,6 +8,7 @@ import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 public class MemberServiceImpl implements IMemberService {
 	private IMemberDAO dao = MemberDAOImpl.getInstance();
@@ -73,8 +74,13 @@ public class MemberServiceImpl implements IMemberService {
 	}
 
 	@Override
-	public List<MemberVO> retrieveMemberList() {
-		return dao.selectMemberList();
+	public List<MemberVO> retrieveMemberList(PagingVO pagingVO) {
+		return dao.selectMemberList(pagingVO);
+	}
+
+	@Override
+	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO) {
+		return dao.selectTotalRecord(pagingVO);
 	}
 
 }

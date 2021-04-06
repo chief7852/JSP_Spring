@@ -1,26 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.prod.dao.IProdDAO">
-	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
-		<collection property="buyer" ofType="BuyerVO"
-			javaType="BuyerVO" autoMapping="true">
-			<id property="buyer_id" column="BUYER_ID"></id>
-			<id property="buyer_bankname" column="BUYER_BANKNAME" />
-			<id property="buyer_bankno" column="BUYER_BANKNO" />
-			<id property="buyer_add1" column="BUYER_ADD1" />
-		</collection>
+	<select id="selectTotalRecord" resultType="int">
+		SELECT COUNT(*)
+		FROM PROD
+	</select>
+	<select id="selectProdList" parameterType="PagingVO"
+		resultType="ProdVO"
+	>
+		SELECT B.*
+		FROM (
+			SELECT A.*, ROWNUM RNUM
+			FROM (
+				SELECT
+					PROD_ID, PROD_NAME, PROD_COST
+					, PROD_PRICE, PROD_MILEAGE
+					, PROD_LGU 
+					, LPROD_NM
+					, BUYER_NAME as "buyer.buyer_name"
+				FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+						INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+				ORDER BY PROD_LGU ASC
+			)A	 
+		)B
+		WHERE RNUM BETWEEN #{startRow} AND #{endRow} 
+	</select>
+	<resultMap type="ProdVO" id="prodMap" 
+			autoMapping="true">
+		<id property="prod_id" column="PROD_ID"/>
+		<association property="buyer" javaType="BuyerVO" 
+			autoMapping="true">
+			<id property="buyer_id" column="BUYER_ID"/>
+		</association>
 	</resultMap>
-
-
-
 	<select id="selectProd" parameterType="string"
 		resultMap="prodMap">
-		SELECT DISTINCT
-		BUYER_ID,BUYER_BANKNAME,BUYER_BANKNO,BUYER_ADD1
-		FROM PROD RIGHT OUTER
-		JOIN BUYER ON (PROD_BUYER = BUYER_ID)
-		WHERE PROD_ID =
-		#{prod_id,jdbcType=VARCHAR}
+		SELECT
+		    PROD_ID, PROD_NAME, PROD_LGU
+		    , PROD_BUYER, PROD_COST, PROD_PRICE
+		    , PROD_SALE, PROD_OUTLINE, PROD_DETAIL
+		    , PROD_IMG, PROD_TOTALSTOCK, PROD_INSDATE
+		    , PROD_PROPERSTOCK, PROD_SIZE, PROD_COLOR
+		    , PROD_DELIVERY, PROD_UNIT, PROD_QTYIN
+		    , PROD_QTYSALE, PROD_MILEAGE
+		    , LPROD_NM
+		    , BUYER_ID, BUYER_NAME, BUYER_ADD1
+		    , BUYER_COMTEL, BUYER_CHARGER
+		FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+		          INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+	    WHERE PROD_ID = #{prod_id}      	
 	</select>
-
 </mapper>

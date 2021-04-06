@@ -7,25 +7,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
 	<%
 		ProdVO prod = (ProdVO) request.getAttribute("prod");
-	
 	%>
-	<table border="1">
+	<table>
 		<tr>
 			<th>상품코드</th>
-			<td>
-				<%=prod.getBuyer().getBuyer_id() %>
-			</td>
-
+			<td><%=prod.getProd_id()%></td>
+		</tr>
+		<tr>
+			<th>상품명</th>
+			<td><%=prod.getProd_name()%></td>
+		</tr>
+		<tr>
+			<th>분류명</th>
+			<td><%=prod.getLprod_nm()%></td>
 		</tr>
 		<tr>
 			<th>거래처 정보</th>
 			<td>
-			
-				<table border="1">
+				<table>
 					<thead>
 						<tr>
 							<th>거래처명</th>
@@ -35,26 +39,104 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr><%
-							if (prod.getBuyer().getBuyer_id() != null) {
-								
-								%>
-							<td><%=prod.getBuyer().getBuyer_id()%></td> 
-							<td><%=prod.getBuyer().getBuyer_bankname()%></td>
-							<td><%=prod.getBuyer().getBuyer_bankno()%></td>
-							<td><%=prod.getBuyer().getBuyer_add1()%></td>
+						<tr>
 							<%
-								} else {
+								BuyerVO buyer = prod.getBuyer();
 							%>
-							<td colspan="4">거래처 정보가 없습니다</td>
-							<%
-								}
-							%>
+							<td><%=buyer.getBuyer_name() %></td>
+							<td><%=buyer.getBuyer_charger() %></td>
+							<td><%=buyer.getBuyer_comtel() %></td>
+							<td><%=buyer.getBuyer_add1() %></td>
 						</tr>
 					</tbody>
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<th>구매가</th>
+			<td><%=prod.getProd_cost()%></td>
+		</tr>
+		<tr>
+			<th>판매가</th>
+			<td><%=prod.getProd_price()%></td>
+		</tr>
+		<tr>
+			<th>세일가</th>
+			<td><%=prod.getProd_sale()%></td>
+		</tr>
+		<tr>
+			<th>상품정보</th>
+			<td><%=prod.getProd_outline()%></td>
+		</tr>
+		<tr>
+			<th>상세정보</th>
+			<td><%=prod.getProd_detail()%></td>
+		</tr>
+		<tr>
+			<th>이미지</th>
+			<td><%=prod.getProd_img()%></td>
+		</tr>
+		<tr>
+			<th>재고</th>
+			<td><%=prod.getProd_totalstock()%></td>
+		</tr>
+		<tr>
+			<th>입고일</th>
+			<td><%=prod.getProd_insdate()%></td>
+		</tr>
+		<tr>
+			<th>적정재고</th>
+			<td><%=prod.getProd_properstock()%></td>
+		</tr>
+		<tr>
+			<th>크기</th>
+			<td><%=prod.getProd_size()%></td>
+		</tr>
+		<tr>
+			<th>색상</th>
+			<td><%=prod.getProd_color()%></td>
+		</tr>
+		<tr>
+			<th>배송방법</th>
+			<td><%=prod.getProd_delivery()%></td>
+		</tr>
+		<tr>
+			<th>단위</th>
+			<td><%=prod.getProd_unit()%></td>
+		</tr>
+		<tr>
+			<th>입고량</th>
+			<td><%=prod.getProd_qtyin()%></td>
+		</tr>
+		<tr>
+			<th>판매량</th>
+			<td><%=prod.getProd_qtysale()%></td>
+		</tr>
+		<tr>
+			<th>마일리지</th>
+			<td><%=prod.getProd_mileage()%></td>
+		</tr>
+		<tr>
+			<td id="prodList" colspan="2">
+				<button type="button">상품목록으로</button>
+			</td>
+		</tr>
 	</table>
+	<script type="text/javascript">
+		$('#prodList').on("click",function(){
+			location.href = "<%=request.getContextPath()%>/prod/prodList.do"
+		})
+	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
