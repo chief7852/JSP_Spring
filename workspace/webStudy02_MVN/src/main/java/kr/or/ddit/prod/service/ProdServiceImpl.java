@@ -32,13 +32,16 @@ public class ProdServiceImpl implements IProdService {
 		return dao.selectProdList(pagingVO);
 	}
 	@Override
-	public int retrieveProdCount() {
-		return dao.selectTotalRecord();
+	public int retrieveProdCount(PagingVO<ProdVO> pagingVO) {
+		return dao.selectTotalRecord(pagingVO);
 	}
 	@Override
 	public ServiceResult createProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return null;
+		int cnt = dao.insertProd(prod);
+		ServiceResult result = ServiceResult.FAIL;
+		if(cnt>0)
+			result = ServiceResult.OK;
+		return result;
 	}
 	@Override
 	public ServiceResult modifyProd(ProdVO prod) {

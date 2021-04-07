@@ -25,9 +25,10 @@ public interface IProdService {
 	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO);
 	/**
 	 * 페이징 적용된 상품 건수
+	 * @param pagingVO TODO
 	 * @return
 	 */
-	public int retrieveProdCount();
+	public int retrieveProdCount(PagingVO<ProdVO> pagingVO);
 	/**
 	 * 신규 상품 등록
 	 * @param prod

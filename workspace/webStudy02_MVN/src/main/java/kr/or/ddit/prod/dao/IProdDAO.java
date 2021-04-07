@@ -12,8 +12,8 @@ import kr.or.ddit.vo.ProdVO;
 public interface IProdDAO {
 	public ProdVO selectProd(String prod_id);
 	public List<ProdVO> selectProdList(PagingVO<ProdVO> pagingVO);
-	public int selectTotalRecord();
-	public int insert(ProdVO prod);
+	public int selectTotalRecord(PagingVO<ProdVO> pagingVO);
+	public int insertProd(ProdVO prod);
 	public int updateProd(ProdVO prod);
 }
 

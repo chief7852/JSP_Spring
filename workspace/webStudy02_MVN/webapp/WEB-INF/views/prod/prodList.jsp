@@ -1,64 +1,81 @@
+<%@page import="java.util.Iterator"%>
+<%@page import="kr.or.ddit.vo.BuyerVO"%>
+<%@page import="java.util.Map"%>
 <%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp"/>
 </head>
+
 <body>
-<table>
-	<thead>
-		<tr>
-			<th>No.</th>
-			<th>상품코드</th>
-			<th>상품분류명</th>
-			<th>상품명</th>
-			<th>거래처명</th>
-			<th>구매가</th>
-			<th>판매가</th>
-			<th>마일리지</th>
-		</tr>
-	</thead>
-<%
-	PagingVO<ProdVO> pagingVO = (PagingVO) request.getAttribute("pagingVO");
-	List<ProdVO> prodList = pagingVO.getDataList();
-	if(prodList.size()>0){
-		for(ProdVO prod : prodList){
-			%>
-			<tr>
-				<td><%=prod.getRnum() %></td>
-				<td><%=prod.getProd_id() %></td>
-				<td><%=prod.getLprod_nm() %></td>
-				<td><%=prod.getProd_name() %></td>
-				<td><%=prod.getBuyer().getBuyer_name() %></td>
-				<td><%=prod.getProd_cost() %></td>
-				<td><%=prod.getProd_price() %></td>
-				<td><%=prod.getProd_mileage() %></td>
-			</tr>
+	<form id="searchForm">
+		<!-- beanutils이용 -->
+
+		<!-- lpg -->
+		<select name="prod_lgu">
+			<option value>상품분류</option>
 			<%
-		}
-	}else{
-		%>
-		<tr>
-			<td colspan="8">
-				등록된 상품이 없음.
-			</td>
-		</tr>
+				List<Map<String, Object>> lprodList = (List<Map<String, Object>>) request.getAttribute("lprodList");
+				for(Map<String,Object> lprod:lprodList){
+			%>
+				<option value="<%=lprod.get("lprod_gu")%>"><%=lprod.get("lprod_nm")%></option>
+			<%
+				}
+			%>
+		</select>
+		<!-- code  -->
+		<select name="prod_buyer">
+		<option value>거래처선택</option>
 		<%
-	}
-%>
-<tfoot>
-	<tr>
-		<td colspan="8">
-			<%=pagingVO.getPagingHTML() %>
-		</td>
-	</tr>
-</tfoot>
-</table>
+			 List<BuyerVO> buyerList = (List<BuyerVO>) request.getAttribute("buyerList"); 
+				for(BuyerVO buyer : buyerList){
+					%>
+					<option value="<%=buyer.getBuyer_id() %>" class="<%=buyer.getBuyer_lgu()%>"><%=buyer.getBuyer_name() %></option>
+					<%
+				}
+		%>
+		
+			
+		</select>
+		<!-- keyward -->
+		<input type="text" name="prod_name" /> 
+		<input type="text" name="page" />
+		<input type="submit" value="검색" />
+		<input type="button" id="newBtn" value="신규등록" />
+	</form>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>상품코드</th>
+				<th>상품분류명</th>
+				<th>상품명</th>
+				<th>거래처명</th>
+				<th>구매가</th>
+				<th>판매가</th>
+				<th>마일리지</th>
+			</tr>
+		</thead>
+		<tbody id="listBody">
+		
+		</tbody>
+		<tfoot>
+			<tr>
+				<td id="pagingArea" colspan="8"></td>
+			</tr>
+		</tfoot>
+	</table>
+	
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/prod/prodList.js">
+		
+	</script>
 </body>
 </html>
 

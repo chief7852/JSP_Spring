@@ -32,6 +32,8 @@ public class PagingVO<T> implements Serializable{
 	
 	private SearchVO simpleSearch;
 	
+	private T detailSearch;
+	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
 		totalPage = totalRecord % screenSize == 0 ?

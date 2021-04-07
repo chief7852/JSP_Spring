@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.prod.dao.IProdDAO">
-	<select id="selectTotalRecord" resultType="int">
+	<sql id="fromFrag">
+		FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+				INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+	</sql>
+	<sql id="searchFrag">
+		<trim prefix=" WHERE " prefixOverrides="AND">
+			<if test="detailSearch neq null">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.prod_lgu)">
+				AND	PROD_LGU = #{detailSearch.prod_lgu}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.lprod_nm)">
+				AND	LPROD_NM = #{detailSearch.lprod_nm}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.prod_buyer)">
+				AND	PROD_BUYER = #{detailSearch.prod_buyer}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.prod_name)">
+				AND	INSTR(PROD_NAME, #{detailSearch.prod_name}) > 0
+				</if>
+			</if>
+		</trim>
+	</sql>
+	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
 		SELECT COUNT(*)
-		FROM PROD
+		<include refid="fromFrag" />
+		<include refid="searchFrag" />		
 	</select>
 	<select id="selectProdList" parameterType="PagingVO"
 		resultType="ProdVO"
@@ -18,11 +41,11 @@
 					, PROD_LGU 
 					, LPROD_NM
 					, BUYER_NAME as "buyer.buyer_name"
-				FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
-						INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+				<include refid="fromFrag" />
+				<include refid="searchFrag" />	
 				ORDER BY PROD_LGU ASC
 			)A	 
-		)B
+		)B	
 		WHERE RNUM BETWEEN #{startRow} AND #{endRow} 
 	</select>
 	<resultMap type="ProdVO" id="prodMap" 
@@ -50,4 +73,49 @@
 		          INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
 	    WHERE PROD_ID = #{prod_id}      	
 	</select>
+	<insert id="insertProd" parameterType="ProdVO">
+		<selectKey resultType="string" order="BEFORE" keyProperty="prod_id">
+			SELECT #{prod_lgu} || LPAD(TO_NUMBER(SUBSTR(NVL(MAX(PROD_ID), LPAD('0', 10, '0')), LENGTH(#{prod_lgu})+1))+1, 6, '0')
+			FROM PROD
+			WHERE PROD_LGU = #{prod_lgu}
+		</selectKey>
+		INSERT INTO PROD (
+		    PROD_ID,    PROD_NAME,
+		    PROD_LGU,    PROD_BUYER,
+		    PROD_COST,    PROD_PRICE,
+		    PROD_SALE,    PROD_OUTLINE,
+		    PROD_DETAIL,    PROD_IMG,
+		    PROD_TOTALSTOCK,    PROD_INSDATE,
+		    PROD_PROPERSTOCK,    PROD_SIZE,
+		    PROD_COLOR,    PROD_DELIVERY,
+		    PROD_UNIT,    PROD_QTYIN,
+		    PROD_QTYSALE,    PROD_MILEAGE
+		) VALUES (
+			#{prod_id,jdbcType=VARCHAR},    #{prod_name,jdbcType=VARCHAR},
+		    #{prod_lgu,jdbcType=VARCHAR},    #{prod_buyer,jdbcType=VARCHAR},
+		    #{prod_cost,jdbcType=NUMERIC},    #{prod_price,jdbcType=NUMERIC},
+		    #{prod_sale,jdbcType=NUMERIC},    #{prod_outline,jdbcType=VARCHAR},
+		    #{prod_detail,jdbcType=VARCHAR},    #{prod_img,jdbcType=VARCHAR},
+		    #{prod_totalstock,jdbcType=NUMERIC},    SYSDATE,
+		    #{prod_properstock,jdbcType=NUMERIC},    #{prod_size,jdbcType=VARCHAR},
+		    #{prod_color,jdbcType=VARCHAR},    #{prod_delivery,jdbcType=VARCHAR},
+		    #{prod_unit,jdbcType=VARCHAR},    #{prod_qtyin,jdbcType=NUMERIC},
+		    #{prod_qtysale,jdbcType=NUMERIC},    #{prod_mileage,jdbcType=NUMERIC}	
+		)
+	</insert>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
