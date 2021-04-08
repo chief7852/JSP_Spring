@@ -12,18 +12,22 @@ import javax.servlet.http.HttpSession;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberDelete.do")
-public class MemberDeleteServlet extends HttpServlet{
+//@WebServlet("/member/memberDelete.do")
+@Controller
+public class MemberDeleteServlet{
 	private IMemberService service =
 					new MemberServiceImpl();
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(method=RequestMethod.POST,value="/member/memberDelete.do")
+	public String deleteMem(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String password = req.getParameter("password");
 		if(password==null || password.isEmpty()) {
 			resp.sendError(400);
-			return;
+			return null;
 		}
 		HttpSession session = req.getSession();
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
@@ -46,13 +50,8 @@ public class MemberDeleteServlet extends HttpServlet{
 			break;
 		}
 		
-		boolean redirect = view.startsWith("redirect:");
-		if(redirect) {
-			view = view.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		
+		return view;
 	}
 }
 

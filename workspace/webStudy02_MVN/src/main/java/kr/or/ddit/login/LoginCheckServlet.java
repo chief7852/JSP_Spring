@@ -22,27 +22,31 @@ import kr.or.ddit.db.ConnectionFactory;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.AuthenticateServiceImpl;
 import kr.or.ddit.member.service.IAuthenticateService;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/login/loginCheck.do")
-public class LoginCheckServlet extends HttpServlet{
+//@WebServlet("/login/loginCheck.do")
+@Controller
+public class LoginCheckServlet{
 	private static final Logger logger = LoggerFactory.getLogger(LoginCheckServlet.class);
 	private IAuthenticateService service =
 			new AuthenticateServiceImpl();
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value="/login/loginCheck.do",method=RequestMethod.POST)
+	public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		if(session.isNew()) {
 			resp.sendError(400);
-			return;
+			return null;
 		}
 		//		요청 분석
 		String mem_id = req.getParameter("mem_id");
 		String mem_pass = req.getParameter("mem_pass");
 		String saveId = req.getParameter("saveId");
 		String view = null;
-		boolean redirect = false;
+		
 		String message = null;
 		boolean valid = validate(mem_id, mem_pass);
 		if(valid) {
@@ -54,9 +58,9 @@ public class LoginCheckServlet extends HttpServlet{
 			ServiceResult result = service.authenticate(member);
 			switch (result) {
 			case OK:
-				redirect = true;
+				
 				logger.debug("인증후 MemberVO : ", member);
-				view = "/";
+				view = "redirect:/";
 				session.setAttribute("authMember", member);
 				Cookie idCookie = new Cookie("idCookie", mem_id);
 				idCookie.setPath(req.getContextPath());
@@ -68,13 +72,12 @@ public class LoginCheckServlet extends HttpServlet{
 				resp.addCookie(idCookie);
 				break;
 			case NOTEXIST:
-				redirect = true;
-				view = "/login/loginForm.jsp";
+				
+				view = "redirect:/login/loginForm.jsp";
 				message = "아이디 오류";
 				break;
 			case INVALIDPASSWORD:
-				redirect = true;
-				view = "/login/loginForm.jsp";
+				view = "redirect:/login/loginForm.jsp";
 //			2) 인증 실패(아이디 상태 유지)
 				message = "비번 오류";
 				session.setAttribute("failedId", mem_id);
@@ -82,19 +85,13 @@ public class LoginCheckServlet extends HttpServlet{
 			}
 		}else {
 //			1) 검증
-			redirect = true;
-			view = "/login/loginForm.jsp";
+			view = "redirect:/login/loginForm.jsp";
 			message = "아이디나 비번 누락";
 		}
 		
+		req.getSession().setAttribute("message", message);
 //		view 로 이동
-		if(redirect) {
-			req.getSession().setAttribute("message", message);
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.setAttribute("message", message);
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		return view;
 		
 	}
 

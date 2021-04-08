@@ -15,26 +15,30 @@ import kr.or.ddit.member.service.AuthenticateServiceImpl;
 import kr.or.ddit.member.service.IAuthenticateService;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/mypage.do")
-public class MypageServlet extends HttpServlet{
+//@WebServlet("/mypage.do")
+@Controller
+public class MypageServlet {
 	IMemberService service = new MemberServiceImpl();
 	IAuthenticateService authService =
 					new AuthenticateServiceImpl();
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String view = "/WEB-INF/views/member/passwordForm.jsp";
-		req.getRequestDispatcher(view).forward(req, resp);
+	@RequestMapping("/mypage.do")
+	public String mypadeform(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String view = "member/passwordForm";
+		return view;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value="/mypage.do",method=RequestMethod.POST)
+	public String login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String mem_pass = req.getParameter("mem_pass");
 		if(mem_pass==null || mem_pass.isEmpty()) {
 			resp.sendError(400);
-			return;
+			return null;
 		}
 		HttpSession session = req.getSession();
 		MemberVO authMember = 
@@ -48,19 +52,13 @@ public class MypageServlet extends HttpServlet{
 			MemberVO detailMember = service.retrieveMember(mem_id);
 			
 			req.setAttribute("member", detailMember);
-			view = "/WEB-INF/views/member/mypage.jsp";
+			view = "member/mypage";
 		}else {
 			session.setAttribute("message", "비번 오류");
 			view = "redirect:/mypage.do";
 		}
 		
-		boolean redirect = view.startsWith("redirect:");
-		if(redirect) {
-			view = view.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		return view;
 	}
 }
 

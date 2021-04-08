@@ -120,11 +120,23 @@
 			<td id="prodList" colspan="2">
 				<button type="button">상품목록으로</button>
 			</td>
+			<td id="prodUpdate" colspan="2">
+				<button type="button">상품수정</button>
+			</td>			
 		</tr>
 	</table>
+	<form id="act" action="<%=request.getContextPath() %>/prod/prodUpdate">
+	<input type="hidden" name="prod_id" />
+	</form>
+	
 	<script type="text/javascript">
 		$('#prodList').on("click",function(){
 			location.href = "<%=request.getContextPath()%>/prod/prodList.do"
+		})
+		$('#prodUpdate').on("click",function(){
+			let sub = $("#act")
+			sub.find("[name='prod_id']").val('<%=prod.getProd_id()%>')
+			sub.submit();
 		})
 	</script>
 </body>

@@ -17,13 +17,17 @@ import kr.or.ddit.enumpkg.MimeType;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 
-@WebServlet("/member/idCheck.do")
-public class IdCheckServlet extends HttpServlet{
+//@WebServlet("/member/idCheck.do")
+@Controller
+public class IdCheckServlet {
 	private IMemberService service = new MemberServiceImpl();
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value="/member/idCheck.do",method=RequestMethod.POST)
+	public void idcheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String mem_id = req.getParameter("id");
 		if(mem_id==null || mem_id.isEmpty()) {

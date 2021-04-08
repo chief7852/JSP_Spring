@@ -17,31 +17,36 @@ import org.apache.commons.beanutils.BeanUtils;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberUpdate.do")
-public class MemberUpdateServlet extends HttpServlet{
+//@WebServlet("/member/memberUpdate.do")
+@Controller
+public class MemberUpdateServlet {
 	private IMemberService service = new MemberServiceImpl();
 	
 	private void addCommandAttribute(HttpServletRequest req) {
 		req.setAttribute("command", "update");
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping("/member/memberUpdate.do")
+	public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
 		HttpSession session = req.getSession();
 		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
  		MemberVO member = service.retrieveMember(authId);
  		req.setAttribute("member", member);
- 		String view = "/WEB-INF/views/member/memberForm.jsp";
- 		req.getRequestDispatcher(view).forward(req, resp);
+ 		String view = "member/memberForm";
+ 		return view;
 //		memberForm.jsp 재활용
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+	@RequestMapping(value= "/member/memberUpdate.do", method=RequestMethod.POST)
+	public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
 		
 		req.setCharacterEncoding("UTF-8");
@@ -69,7 +74,7 @@ public class MemberUpdateServlet extends HttpServlet{
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
 			case INVALIDPASSWORD:
-				view = "/WEB-INF/views/member/memberForm.jsp";
+				view = "member/memberForm";
 				message = "비번 오류";
 				break;
 			case OK:
@@ -77,23 +82,17 @@ public class MemberUpdateServlet extends HttpServlet{
 				break;
 			default:
 				message = "서버 오류, 잠시 뒤 다시 시도하세요.";
-				view = "/WEB-INF/views/member/memberForm.jsp";
+				view = "member/memberForm";
 				break;
 			}
 		} else {
 			// 검증 불통
-			view = "/WEB-INF/views/member/memberForm.jsp";
+			view = "member/memberForm";
 		}
 
 		req.setAttribute("message", message);
 
-		boolean redirect = view.startsWith("redirect:");
-		if(redirect) {
-			view = view.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		return view;
 	}
 
 	private boolean validate(MemberVO member, Map<String, String> errors) {
