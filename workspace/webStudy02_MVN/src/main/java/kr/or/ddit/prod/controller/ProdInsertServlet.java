@@ -44,7 +44,7 @@ public class ProdInsertServlet{
    }
    
    @RequestMapping("/prod/prodInsert.do")
-   public String prodform(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   public String prodform(HttpServletRequest req) throws ServletException, IOException {
       addAttribute(req);
       
       return "prod/prodForm";

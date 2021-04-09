@@ -12,7 +12,7 @@
 	color: red;
 }
 </style>
-<jsp:include page="/includee/preScript.jsp"></jsp:include>
+<jsp:include page="/includee/preScript.jsp" />
 <%
 	String message = (String) request.getAttribute("message");
 	if(message!=null && !message.isEmpty()){
@@ -27,29 +27,29 @@
 <body>
 	<h4>가입양식</h4>
 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" />
-	<jsp:useBean id="errors" class="java.util.LinkedHashMap" scope="request" />
-	<form id="memberForm" method="post" >
+	<jsp:useBean id="errors" class="java.util.LinkedHashMap"
+		scope="request" />
+	<form method="post" id="memberForm">
 		<table>
-		<%
-			String command = (String)request.getAttribute("command");
-			if(!"update".equals(command)){
-		%>
-		<!-- 수정일때는 if문으로 묶어서 안보이게 만들어준다  -->
+			<%
+				String command = (String) request.getAttribute("command");
+				if(!"update".equals(command)){
+			%>
+		
 			<tr>
 				<th>회원아이디</th>
 				<td><input type="text" name="mem_id" required
 					value="<%=Objects.toString(member.getMem_id(), "")%>" />
-				<span class="error"><%=Objects.toString(errors.get("mem_id"), "")%></span></td>
-				<button type="button" id="idCheck">아이디중복체크</button>
+					<span class="error"><%=Objects.toString(errors.get("mem_id"), "")%></span>
+					<button type="button" id="idCheck">아이디중복체크</button>
+				</td>
 			</tr>
-			<!--  -->
 			<%
 			}
 			%>
 			<tr>
 				<th>비밀번호</th>
-				<td><input type="text" name="mem_pass" required
-					 />
+				<td><input type="text" name="mem_pass" required />
 				<span class="error"><%=errors.get("mem_pass")%></span></td>
 			</tr>
 			<tr>
@@ -147,20 +147,17 @@
 				<td>3000</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input id="memberForm" type="submit" value="저장" /></td>
+				<td colspan="2"><input type="submit" value="저장" /></td>
 			</tr>
 		</table>
 	</form>
-	<%
-	if(!"update".equals(command)){
-		
-	
-	%>
-	<script type="text/javascript" src="<%=request.getContextPath() %>/js/member/memberForm.js"></script>
-	<%
-		}
-	%>
-	
+<%
+if(!"update".equals(command)){
+%>	
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/member/memberForm.js"></script>
+<%
+}
+%>
 </body>
 </html>
 
