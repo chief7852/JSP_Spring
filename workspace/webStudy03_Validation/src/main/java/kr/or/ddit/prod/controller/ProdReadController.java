@@ -45,7 +45,7 @@ public class ProdReadController{
 	
 	@RequestMapping("/prod/prodList.do")
 	public String list(
-			@ModelAttribute(valString = "detailSearch") ProdVO detailSearch,
+			@ModelAttribute(value = "detailSearch") ProdVO detailSearch,
 			@RequestParam(value="page",required=false,defaultValue="1")int currentPage,
 			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addAttribute(req);
@@ -94,14 +94,4 @@ public class ProdReadController{
 		return "prod/prodView";
 	}
 }
-
-
-
-
-
-
-
-
-
-
 

@@ -54,7 +54,7 @@ public class ProdInsertServlet{
    }
    @RequestMapping(value="/prod/prodInsert.do",method=RequestMethod.POST)
    public String prodcreate(
-		   @ModelAttribute(valString = "prod") ProdVO prod,
+		   @ModelAttribute(value = "prod") ProdVO prod,
 		   HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //      ProdVO prod;
 //      createProd(prod)

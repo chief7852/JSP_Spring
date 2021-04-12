@@ -1,0 +1,60 @@
+package kr.or.ddit.security;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+
+import org.apache.commons.codec.binary.Base64;
+
+/**
+  encoding(부호화/decode) : 저장이나 전송을 위해 매체가 인지 할 수 있는 방식으로 데이터의 표현 방식을 바꾸는 작업
+  UrlEncoding(Percent encoding), Base64
+  encrypting(암호화) : 허가되지 않은 사용자의 데이터 접근을 막기위해 터이터를 변환하는 작업.
+  
+  단방향 암호화(해시함수) : 복호화 불가능한 암호화
+  		: 입력 데이터의 길이가 달라도, 출력 데이터의 길이는 동일한 구조.
+  		SHA-512(64byte)
+  양방향 암호화 : 키를 소유한 경우 복호화가 가능한 암호화 (전송데이터)
+  	대칭키 암호화 : 하나의 동일키(비밀키)를 통해 암복호화 수행 ,문제점 : 키분배 문제가생김(키공유하기가힘듬)
+  		AESs
+  	비대칭키 암호화 : 하나가 아니라 한쌍의 키(개인키/공개키)를 통해 암복호화 수행 ,문제점 : 시간이오래걸림
+ */
+public class EncryptDesc {
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
+		String plian = "졸려";
+		
+		try {
+			Cipher cipher = Cipher.getInstance("RSA");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	args 
+	}
+	
+	
+	public static void encode512(String plain) throws IOException{
+//		1. Url encoding
+		String encoded = URLEncoder.encode(plain,"UTF-8");
+		System.out.println(encoded);
+		
+		String decoded = URLDecoder.decode(encoded,"UTF-8");
+		System.out.println(decoded);
+
+//		2. Base 64 
+		byte[] binary = plain.getBytes();
+		encoded = Base64.encodeBase64String(binary);
+		System.out.println(encoded);
+		byte[] decodeBinary = Base64.decodeBase64(encoded);
+		System.out.println(new String(decodeBinary));
+	}
+}

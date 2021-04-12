@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(PARAMETER)
 @Retention(RUNTIME)
 public @interface ModelAttribute {
-	String valString();
+	String value();
 }

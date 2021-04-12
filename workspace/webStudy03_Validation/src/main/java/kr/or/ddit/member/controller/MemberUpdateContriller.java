@@ -52,7 +52,7 @@ public class MemberUpdateContriller {
 	@RequestMapping(value= "/member/memberUpdate.do", method=RequestMethod.POST)
 	public String doPost(
 //			@ModelAttribute(valString="authMember")MemberVO authMember,
-			@ModelAttribute(valString="member")MemberVO member,
+			@ModelAttribute(value="member")MemberVO member,
 			HttpServletRequest req,HttpSession session) throws ServletException, IOException {
 		addCommandAttribute(req);
 		

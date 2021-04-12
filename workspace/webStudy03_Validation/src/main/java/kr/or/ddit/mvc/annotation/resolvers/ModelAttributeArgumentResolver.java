@@ -39,7 +39,7 @@ public class ModelAttributeArgumentResolver implements IHandlerMethodArgumentRes
 		ModelAttribute annotation =parameter.getAnnotation(ModelAttribute.class);
 		try {
 		Object parameterValue = parameterType.newInstance();
-		String attributeName = annotation.valString();
+		String attributeName = annotation.value();
 		
 		req.setAttribute(attributeName, parameterValue);
 

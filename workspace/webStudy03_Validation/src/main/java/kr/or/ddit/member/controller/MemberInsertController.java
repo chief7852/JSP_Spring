@@ -47,7 +47,7 @@ public class MemberInsertController {
 	}
 
 	@RequestMapping(value="/member/memberInsert.do",method=RequestMethod.POST)
-	public String process(@ModelAttribute(valString = "member") MemberVO member,
+	public String process(@ModelAttribute(value = "member") MemberVO member,
 			HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 //		Locale.setDefault(Locale.ENGLISH); 임시로 지역바꿔주는 코드

@@ -58,7 +58,7 @@ public class ProdUpdateController {
 	@RequestMapping(value="/prod/prodUpdate.do", method=RequestMethod.POST)
 	public String update(
 			// 커맨드오브젝트라고부른다
-			@ModelAttribute(valString="prod")ProdVO prod,
+			@ModelAttribute(value="prod")ProdVO prod,
 			HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
 		
@@ -86,14 +86,4 @@ public class ProdUpdateController {
 
 	
 }
-
-
-
-
-
-
-
-
-
-
 

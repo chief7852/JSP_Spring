@@ -41,7 +41,7 @@ public class FrontController extends HttpServlet{
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
+		
 		RequestMappingInfo mappinginfo =  handlerMapping.findCommandHandler(req);
 		
 		if(mappinginfo==null) {
