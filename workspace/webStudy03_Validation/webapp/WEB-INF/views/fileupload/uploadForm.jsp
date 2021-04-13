@@ -11,6 +11,8 @@
 <form method="post" enctype="multipart/form-data">	<!-- enctype="multipart/form-data"란 --><!-- body영역을 여러가지로 쪼개고 form으로 입력된데이터를 입력할수있다  -->
 	<input type="text" name="uploader" placeholder="업로더"/>
 	<input type="file" name="uploadFile1" accept="image/*"/>
+	<input type="file" name="uploadFile1" accept="image/*"/>
+	<input type="file" name="uploadFile2" accept="image/*"/>
 	<input type="file" name="uploadFile2" accept="image/*"/>
 	<button type="submit">업로드</button>
 </form>

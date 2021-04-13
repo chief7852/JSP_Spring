@@ -7,7 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
 	<%
@@ -74,7 +73,7 @@
 		</tr>
 		<tr>
 			<th>이미지</th>
-			<td><%=prod.getProd_img()%></td>
+			<td><img src="<%=request.getContextPath() %>/prodImages/<%=prod.getProd_img()%>"/></td>
 		</tr>
 		<tr>
 			<th>재고</th>
@@ -117,24 +116,15 @@
 			<td><%=prod.getProd_mileage()%></td>
 		</tr>
 		<tr>
-			<td id="prodList" colspan="2">
-				<button type="button">상품목록으로</button>
+			<td colspan="2">
+				<button type="button" 
+				onclick="location.href='prodUpdate.do?what=<%=prod.getProd_id() %>';">수정</button>
+				<button type="button" 
+				onclick="location.href='prodList.do';">상품목록으로</button>
 			</td>
-					
 		</tr>
 	</table>
-	<form id="act" action="<%=request.getContextPath() %>/prod/prodUpdate.do">
-	<input type="hidden" name="prod_id" value="<%=prod.getProd_id()%>"/>
-	<input type="submit" value="상품수정">
-	</form>
 	
-	<script type="text/javascript">
-	
-		$('#prodList').on("click",function(){
-			location.href = "<%=request.getContextPath()%>/prod/prodList.do"
-		})
-		
-	</script>
 </body>
 </html>
 

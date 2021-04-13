@@ -1,6 +1,7 @@
 package kr.or.ddit.vo;
 
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ import lombok.ToString;
 //@Getter
 //@Setter
 @EqualsAndHashCode(of= {"mem_id", "mem_regno1", "mem_regno2"})
-@ToString(exclude= {"mem_pass", "mem_regno1", "mem_regno2"})
+@ToString(exclude= {"mem_pass", "mem_regno1", "mem_regno2","mem_img"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -94,6 +95,16 @@ public class MemberVO implements Serializable{
 	private Set<ProdVO> prodList; // has many(1:N) 관계
 	
 	private String mem_role;
+	
+	private transient byte[] mem_img;
+	
+	public String getBase64Image() {
+		String  encoded =null;
+		if(mem_img!=null) {
+			encoded = Base64.getEncoder().encodeToString(mem_img);
+		}
+		return encoded;
+	}
 	
 }
 

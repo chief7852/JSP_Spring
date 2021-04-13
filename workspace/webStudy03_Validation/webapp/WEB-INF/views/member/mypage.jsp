@@ -20,6 +20,12 @@
 			<td><%=member.getMem_id()%></td>
 		</tr>
 		<tr>
+			<th>프로필</th>
+			<td>
+				<img src="data:image/*;base64,<%=member.getBase64Image() %>" />
+			</td>
+		</tr>
+		<tr>
 			<th>비밀번호</th>
 			<td><%=member.getMem_pass()%></td>
 		</tr>

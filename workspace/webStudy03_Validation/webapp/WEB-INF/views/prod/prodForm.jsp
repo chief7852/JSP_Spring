@@ -24,9 +24,9 @@
 <body>
 <jsp:useBean id="prod" class="kr.or.ddit.vo.ProdVO" scope="request" />
 <jsp:useBean id="errors" class="java.util.LinkedHashMap" scope="request" />
-<form method="post">	
+<form method="post" enctype="multipart/form-data">
+	<input type="hidden" name="prod_id" value="<%=prod.getProd_id() %>" />	
 	<table>
-		
 		<tr>
 			<th>상품명</th>
 			<td><input type="text" name="prod_name" required
@@ -105,8 +105,8 @@
 		</tr>
 		<tr>
 			<th>이미지</th>
-			<td><input type="text" name="prod_img" required
-				value="<%=prod.getProd_img()%>" />
+			<td>
+				<input type="file" name="prod_image" />
 				<span class="error"><%=errors.get("prod_img")%></span></td>
 		</tr>
 		<tr>
@@ -114,12 +114,6 @@
 			<td><input type="number" name="prod_totalstock" required
 				value="<%=prod.getProd_totalstock()%>" />
 				<span class="error"><%=errors.get("prod_totalstock")%></span></td>
-		</tr>
-		<tr>
-			<th>입고일</th>
-			<td><input type="date" name="prod_insdate"
-				value="<%=prod.getProd_insdate()%>" />
-				<span class="error"><%=errors.get("prod_insdate")%></span></td>
 		</tr>
 		<tr>
 			<th>적정재고</th>
@@ -178,7 +172,7 @@
 	</table>
 </form>	
 	<script type="text/javascript">
-		let prod_buyerTag =	$("[name='prod_buyer']");
+		let prod_buyerTag =	$("[name='prod_buyer']").val("<%=prod.getProd_buyer() %>");
 		$("[name='prod_lgu']").on("change", function(){
 			let selectedLgu = $(this).val();
 			if(selectedLgu){
@@ -188,7 +182,7 @@
 				prod_buyerTag.find("option").show();
 			}
 			prod_buyerTag.find("option:first").show();
-		});
+		}).val("<%=prod.getProd_lgu() %>");
 	</script>
 </body>
 </html>

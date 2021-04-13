@@ -1,7 +1,7 @@
 package kr.or.ddit.prod.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
@@ -17,7 +16,8 @@ import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
-import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -44,10 +44,12 @@ public class ProdUpdateController {
 	}
 	
 	@RequestMapping("/prod/prodUpdate.do")
-	public String updateForm(
-			@RequestParam(value="prod_id",required=false)String prod_id,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		
+	public String updateForm(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String prod_id = req.getParameter("what");
+		if(StringUtils.isBlank(prod_id)) {
+			resp.sendError(400);
+			return null;
+		}
 		
 		addAttribute(req);
 		ProdVO prod = service.retrieveProd(prod_id);
@@ -57,14 +59,23 @@ public class ProdUpdateController {
 	
 	@RequestMapping(value="/prod/prodUpdate.do", method=RequestMethod.POST)
 	public String update(
-			// 커맨드오브젝트라고부른다
-			@ModelAttribute(value="prod")ProdVO prod,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		
-		
+		 	@ModelAttribute("prod") ProdVO prod,
+		 	@RequestPart(value="prod_image", required=false) MultipartFile prod_image,
+			HttpServletRequest req) throws IOException{
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
-		boolean valid = new CommonValidator<ProdVO>().validate(prod, errors, UpdateGroup.class);
+		
+		String saveFolderUrl = "/prodImages";
+		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		if(prod_image!=null && !prod_image.isEmpty()) {
+			prod_image.saveTo(saveFolder);
+			prod.setProd_img(prod_image.getUniqueSaveName());
+		}
+		
+		
+		boolean valid = new CommonValidator<ProdVO>()
+							.validate(prod, errors, 
+									UpdateGroup.class);
 		String view = null;
 		String message = null;
 		if(valid) {
@@ -83,7 +94,15 @@ public class ProdUpdateController {
 		
 		return view;
 	}
-
-	
 }
+
+
+
+
+
+
+
+
+
+
 

@@ -16,7 +16,7 @@
 		%>
 		<form name="logoutForm" method="post" action="<%=request.getContextPath() %>/login/logout.do"></form>
 		<a href="<%=request.getContextPath() %>/mypage.do"><%=authMember.getMem_name() %></a>님 [<%=authMember.getMem_role() %>]
-		
+		"<%=authMember.getMem_img()%>"
 		<a href="#" onclick="clickHandler(event);">로그아웃</a>
 		<script type="text/javascript">
 			function clickHandler(event){

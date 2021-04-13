@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,6 +25,9 @@ import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
 
 @Controller
 public class FileUploadController {
@@ -35,7 +41,9 @@ public class FileUploadController {
    @RequestMapping(value="/fileUpload.do", method=RequestMethod.POST)
    public String upload(
          @RequestParam("uploader") String uploader,
-         HttpServletRequest req, HttpSession session) throws IOException, ServletException {
+         @RequestPart(value = "uploadFile1") MultipartFile[] file1,
+         @RequestPart(value = "uploadFile2", required=false) MultipartFile[] file2
+         , HttpServletRequest req,HttpSession session) throws IOException, ServletException {
       
       ServletContext application = req.getServletContext();
       String saveFolderUrl = "/prodImages";
@@ -44,56 +52,52 @@ public class FileUploadController {
          saveFolder.mkdirs();
       }
       
-      Collection<Part> parts = req.getParts();
-      int index = 1;
-      for(Part tmp : parts) {
-    	 // 파일인지 텍스트인지 확인 
-    	 if(tmp.getContentType()==null) {
-    		 continue;
-    	 }
-         String saveFileName = processPart(tmp, saveFolder);
-         String saveFileUrl = saveFolderUrl+"/"+saveFileName;
-         session.setAttribute("uploadFile"+index++, saveFileUrl);
-         logger.info("saveFile : {}", saveFileUrl);
+      if(file1.length>0) {
+    	  file1[0].saveTo(saveFolder);
+    	  String saveFileUrl = saveFolderUrl + "/" +file1[0].getUniqueSaveName();
+		  session.setAttribute("uploadFile1", saveFileUrl);
+		  logger.info("saveFile : {}", saveFileUrl);
       }
+      if(file2!=null && file2.length>0) {
+    	  file2[0].saveTo(saveFolder);
+    	  String saveFileUrl = saveFolderUrl + "/" +file2[0].getUniqueSaveName();
+		  session.setAttribute("uploadFile2", saveFileUrl);
+		  logger.info("saveFile : {}", saveFileUrl);
+      }
+//      if(req instanceof MultipartHttpServletRequest) {
+//    	  MultipartHttpServletRequest wrapper = (MultipartHttpServletRequest)req;
+//    	  Map<String, List<MultipartFile>> fileMap = wrapper.getFileMap();
+//    	  for(Entry<String, List<MultipartFile>> entry : fileMap.entrySet()) {
+//    		  String partName = entry.getKey();
+//    		  List<MultipartFile> files = entry.getValue();
+//    		  for(MultipartFile file : files) {
+//    			  if(file.isEmpty()) continue;
+//    			  file.saveTo(saveFolder);
+//    			 String saveFileUrl = saveFolderUrl + "/" +file.getUniqueSaveName();
+//    			  session.setAttribute(partName, saveFileUrl);
+//    			  logger.info("saveFile : {}", saveFileUrl);
+//    		  }
+//    	  }
+//      }@RequestParam생긴이후 필요없음
+      
+//      Collection<Part> parts = req.getParts();
+//      int index = 1;
+//      for(Part tmp : parts) {
+//    	 // 파일인지 텍스트인지 확인 
+//    	 if(tmp.getContentType()==null) {
+//    		 continue;
+//    	 }
+//         String saveFileName = processPart(tmp, saveFolder);
+//         String saveFileUrl = saveFolderUrl+"/"+saveFileName;
+//         session.setAttribute("uploadFile"+index++, saveFileUrl);
+//         logger.info("saveFile : {}", saveFileUrl);
+//      }
       
       logger.info("uploader : {}", uploader);
       return "redirect:/fileUpload.do";
    }
 
-   private String getOriginalFilename(Part part) {
-//      Content-Disposition: form-data; name="uploadFile1"; filename="test.jpg"
-      String disposition = part.getHeader("Content-Disposition");
-      int index = disposition.indexOf("\"", disposition.indexOf("filename="));
-      String originalFilename = null;
-      if(index!=-1) {
-         originalFilename = disposition.substring(index).replace("\"", "");
-      }
-      return originalFilename;
-   }
    
-   //카피뜨고 카피된 meta데이터 저장
-   private String processPart(Part uploadFile1, File saveFolder) throws IOException {
-      String originalFilename1 = getOriginalFilename(uploadFile1);
-      // 원본 파일이 있는지 부터 검사.
-      if(StringUtils.isNotBlank(originalFilename1)) {
-         String mime1 = uploadFile1.getContentType();
-         if(!mime1.startsWith("image/")) {
-            throw new BadRequestException();
-         }
-         File saveFile1 = new File(saveFolder, originalFilename1);
-         
-         byte[] buffer = new byte[1024];
-         int  cnt = -1;
-         try(
-            InputStream is1 = uploadFile1.getInputStream();   
-            FileOutputStream fos1 = new FileOutputStream(saveFile1);
-         ){
-            while((cnt = is1.read(buffer))!=-1) {
-               fos1.write(buffer,  0, cnt);
-            }
-         } // try end
-      }  // if end
-      return originalFilename1;
-   }
+   
+  
 }
