@@ -69,6 +69,11 @@ public class MultipartFile {
 		adaptee.write(saveFile.getAbsolutePath());
 	}
 	
+	public void transferTo(File dest) throws IOException {
+		this.uniqueSaveName = dest.getName();
+		adaptee.write(dest.getAbsolutePath());
+	}
+	
 	public boolean isEmpty() {
 		return empty;
 	}

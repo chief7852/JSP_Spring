@@ -1,34 +1,40 @@
 package kr.or.ddit.servlet01;
 import javax.servlet.http.*;
+
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 
 import java.io.*;
 import java.net.URLEncoder;
 
-@WebServlet("/01/image.do")
-public class ImageServlet extends HttpServlet{
+//@WebServlet("/01/image.do")
+@Controller
+public class ImageServlet {
 
-	protected void doGet(HttpServletRequest req,
+	@RequestMapping("/01/image.do")
+	public String doGet(
+			@RequestParam("image")String imageFilename,
+			HttpServletRequest req,
                      HttpServletResponse resp)
               throws ServletException,
                      IOException{
-		String imageFilename = req.getParameter("image");
-		if(imageFilename==null || imageFilename.isEmpty()) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;	
-		}
-		String folder = "d:/contents";			 
+		
+		
+		String folder = req.getServletContext().getInitParameter("contentFolder");			 
 		File imageFile = new File(folder, imageFilename);
 		if(!imageFile.exists()) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return;
+			return null;
 		}
 		
-		String mime = getServletContext().getMimeType(imageFilename);
+		String mime = req.getServletContext().getMimeType(imageFilename);
 		if(mime==null || !mime.startsWith("image/")) {
 			resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
-			return;
+			return null;
 		}
 		
 		resp.setContentType(mime);		
@@ -42,6 +48,7 @@ public class ImageServlet extends HttpServlet{
 				os.write(buffer, 0, pointer);
 			}
 		}
+		return null;
 	}
 
 }

@@ -1,6 +1,12 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="kr.or.ddit.Contants"%>
+<%@page import="org.apache.logging.log4j.util.Constants"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <!-- 커스텀태그 지시자 taglib -->
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +15,17 @@
 </head>
 <body>
 <h4>Welcome Page~</h4>
-
+<pre>
+	누적 방문자수 <%=application.getAttribute(Contants.SESSIONCOUNTATTRNAE) %>
+	
+</pre>
+<ul>
+<!-- for문임 var는 블럭변수인데 속성인상태 page에 넣어놓는다 -->
+	<c:forEach items="${userList }" var="user">
+	<%-- <li><%=page. %></li> --%>
+		<li>${user.mem_name }</li>
+	</c:forEach>
+</ul>
 <%
 	MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 	if(authMember!=null){

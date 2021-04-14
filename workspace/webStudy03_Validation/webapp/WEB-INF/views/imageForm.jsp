@@ -72,6 +72,10 @@ for(String child : children){
 <input type="submit" value="전송" style="background-color: red;"/>
 </form>
 <div id="imageArea"></div>
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="uploadImage" />
+	<input type="submit" value="업로드">
+</form>
 </body>
 </html>
 

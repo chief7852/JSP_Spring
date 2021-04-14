@@ -56,6 +56,9 @@ public class ProdInsertController{
 		req.setAttribute("errors", errors);
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		if(!saveFolder.exists()) {
+			saveFolder.mkdirs();
+		}
 		if(!prod_image.isEmpty()) {
 			prod_image.saveTo(saveFolder);
 			prod.setProd_img(prod_image.getUniqueSaveName());

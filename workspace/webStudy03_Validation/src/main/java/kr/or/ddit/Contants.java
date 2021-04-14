@@ -1,0 +1,6 @@
+package kr.or.ddit;
+
+public class Contants {
+	public static final String SESSIONCOUNTATTRNAE = "sessionCount";
+	public static final String USERLISTATTRNAME = "userList";
+}

@@ -5,11 +5,15 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import kr.or.ddit.Contants;
 import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
@@ -47,7 +51,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberVO implements Serializable{
+public class MemberVO implements Serializable, HttpSessionBindingListener{
 
 	public MemberVO(String mem_id, String mem_pass) {
 		super();
@@ -105,7 +109,31 @@ public class MemberVO implements Serializable{
 		}
 		return encoded;
 	}
+	//CustomHttpSessionAttributeListener.java 여기랑 같음
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		if("authMember".equals(event.getName())){
+       	 MemberVO authMember =(MemberVO)event.getValue();
+       	 ServletContext application = event.getSession().getServletContext();
+       	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
+       	 userList.add(this);
+        }
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		if("authMember".equals(event.getName())){
+       	 MemberVO authMember =(MemberVO)event.getValue();
+       	 ServletContext application = event.getSession().getServletContext();
+       	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
+       	 userList.remove(this);
+        }
+	}
+	//
 	
+	public String getTest() {
+		return "테스트";
+	}
 }
 
 

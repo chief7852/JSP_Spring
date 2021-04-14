@@ -49,7 +49,7 @@ public class MemberInsertController {
 		return view;
 	}
 
-	@RequestMapping(value="/member/memberInsert.do",method=RequestMethod.POST)
+	@RequestMapping(value="/member/memberInsert.do",method=RequestMethod.POST)  
 	public String process(@ModelAttribute(value = "member") MemberVO member,
 			@RequestPart(value="mem_image",required=false) MultipartFile mem_image,
 			HttpServletRequest req,

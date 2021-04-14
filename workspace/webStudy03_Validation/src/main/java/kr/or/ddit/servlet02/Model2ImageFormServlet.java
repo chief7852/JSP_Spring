@@ -14,19 +14,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/02/imageForm.do")
-public class Model2ImageFormServlet extends HttpServlet{
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+
+//@WebServlet("/02/imageForm.do")
+@Controller
+public class Model2ImageFormServlet{
 	private ServletContext application;
+	private static final Logger logger = LoggerFactory.getLogger(Model2ImageFormServlet.class);
 	
-	@Override
 	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
+		init(config);
 		application = config.getServletContext();
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String folder = "d:/contents";			 
+	@RequestMapping("/02/imageForm.do")
+	public String viewSup(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if(application == null)
+			application = req.getServletContext();
+		String folder = application.getInitParameter("contentFolder");			 
 		File contents = new File(folder);
 		String[] children = contents.list(new FilenameFilter() {
 			
@@ -34,6 +47,7 @@ public class Model2ImageFormServlet extends HttpServlet{
 			public boolean accept(File dir, String name) {
 				String mime = application.getMimeType(name);
 				return mime!=null && mime.startsWith("image/");
+//				return true;
 			}
 		});
 		
@@ -54,8 +68,26 @@ public class Model2ImageFormServlet extends HttpServlet{
 		
 		
 		req.setAttribute("children", children);
-		String view = "/WEB-INF/views/imageForm.jsp";
-		req.getRequestDispatcher(view).forward(req, resp);
+		String view = "imageForm";
+//		req.getRequestDispatcher(view).forward(req, resp);
+		return view;
+	}
+	
+	@RequestMapping(value="/02/imageForm.do",method=RequestMethod.POST)
+	public String upload(
+			@RequestPart(value="uploadImage") MultipartFile image ,
+			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if(!image.isEmpty()) {
+			String folder = application.getInitParameter("contentFolder");			 
+			File contents = new File(folder);
+			String contentType = application.getMimeType(image.getOrinalFilename());
+			if(contentType==null || !contentType.startsWith("image/")) {
+				throw new BadRequestException("이미지가아님");
+			}
+			image.transferTo(new File(contents,image.getOrinalFilename()));
+		}
+//		PostRedirectGet 패턴
+		return "redirect:/02/imageForm.do";
 	}
 }
 
