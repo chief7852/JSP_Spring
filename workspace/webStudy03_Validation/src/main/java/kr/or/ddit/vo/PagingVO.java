@@ -2,6 +2,7 @@ package kr.or.ddit.vo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,8 @@ public class PagingVO<T> implements Serializable{
 	
 	private T detailSearch;
 	
+	private Map<String, Object> searchMap;
+	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
 		totalPage = totalRecord % screenSize == 0 ?
@@ -49,33 +52,60 @@ public class PagingVO<T> implements Serializable{
 		startPage = endPage - (blockSize - 1);
 	}
 	
-	private static String aPattern = "<a href='#' data-page='%d'>[%s]</a>";
-	private static String currentPagePtrn= "<a href='#'>[%s]</a>";
-	
+	private static String aPattern = "<li class='page-item'><a href='#' data-page='%d'>[%s]</a><li>";
+	private static String currentPagePtrn= "<li class='page-item'><a href='#'>[%s]</a></li>";
+	private static String pageItem = "<li class='page-item %s' %s>"
+			+"<a class='page-link' href='#' data-page='%d'>%s</a>"
+			+ "</li>";
 	public String getPagingHTML() {
 		StringBuffer html = new StringBuffer();
+		html.append("<nav aria-label='...' class='mt-3'>");
+		html.append("<ul class='pagination'>");
+		String first = null;
+		String second = null;
+		int third = -1;
+		String fourth = "이전";
 		if(startPage > 1) {
-			html.append(
-				String.format(aPattern, (startPage-1), "이전")	
-			);
+			first = "";
+			second = "";
+			third = startPage - 1;
+		}else {
+			first ="disabled";
+			second = "tabindex='-1' aria-disabled='true'";
+			third = -1;
 		}
+		html.append(
+			String.format(pageItem, first, second, third, fourth)	
+		);
 		endPage = endPage < totalPage ? endPage : totalPage;
 		for(int page=startPage; page<=endPage; page++) {
+			second = "";
+			third = page;
+			fourth = page + "";
 			if(page==currentPage) {
-				html.append(
-					String.format(currentPagePtrn, page+"")	
-				);
+				first = "active";
 			}else {
-				html.append(
-					String.format(aPattern, page, page+"")	
-				);
+				first = "";
 			}
-		}
-		if(endPage < totalPage) {
 			html.append(
-				String.format(aPattern, (endPage + 1), "다음")	
+				String.format(pageItem, first, second, third, fourth)	
 			);
 		}
+		fourth = "다음";
+		if(endPage < totalPage) {
+			first = "";
+			second = "";
+			third = endPage + 1;
+		}else {
+			first ="disabled";
+			second = "tabindex='-1' aria-disabled='true'";
+			third = -1;
+		}
+		html.append(
+			String.format(pageItem, first, second, third, fourth)	
+		);
+		html.append("</ul>");
+		html.append("</nav>");
 		return html.toString();
 	}
 }
