@@ -1,32 +1,32 @@
 package kr.or.ddit.mvc.annotation;
 
+/**
+ * HandlerMappging 에 의해 수집된 핸들러들에 대한 정보가 Map으로 구성될때,
+ * key 의 역할을 부여할 클래스.
+ *
+ */
 public class RequestMappingCondition {
 	private String url;
-	RequestMethod method;
+	private RequestMethod method;
 	
-	
+	public RequestMappingCondition(RequestMapping requestMapping){
+		this.url = requestMapping.value();
+		this.method = requestMapping.method();
+	}
+
 	public RequestMappingCondition(String url, RequestMethod method) {
 		super();
 		this.url = url;
 		this.method = method;
 	}
-
-
-
-
+	
 	public String getUrl() {
 		return url;
 	}
 
-
-
-
 	public RequestMethod getMethod() {
 		return method;
 	}
-
-
-
 
 	@Override
 	public int hashCode() {
@@ -36,7 +36,6 @@ public class RequestMappingCondition {
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,6 +56,18 @@ public class RequestMappingCondition {
 		return true;
 	}
 	
-	
-	
+	@Override
+	public String toString() {
+		return String.format("[%s-%s]", url, method);
+	}
 }
+
+
+
+
+
+
+
+
+
+
