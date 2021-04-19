@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;kr.or.ddit.mvc.annotation.resolvers.ModelAttribute.valString()&apos; to &apos;value&apos;&#x0D;&#x0A;- Original project: &apos;webStudy03_Validation&apos;&#x0D;&#x0A;- Original element: &apos;kr.or.ddit.mvc.annotation.resolvers.ModelAttribute.valString()&apos;&#x0D;&#x0A;- Renamed element: &apos;kr.or.ddit.mvc.annotation.resolvers.ModelAttribute.value()&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;valString&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src\/main\/java&lt;kr.or.ddit.mvc.annotation.resolvers{ModelAttribute.java[ModelAttribute~valString" name="value" references="true" stamp="1617964812002" version="1.0"/>
+</session>

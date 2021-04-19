@@ -1,0 +1,36 @@
+1617584754984	Copy compilation unit
+1617584766263	Delete element
+1617584767482	Delete element
+1617584791500	Delete element
+1617584798469	Copy compilation unit
+1617585998254	Rename type 'MemberDAOImpl2'
+1617590058525	Rename resource 'memberForm.jsp'
+1617590065741	Rename resource 'memberForm2.jsp'
+1617592280993	Delete element
+1617620183505	Delete element
+1617620528739	Delete element
+1617668272979	Copy file
+1617668546637	Copy file
+1617673004378	Rename resource 'prodlist.jsp'
+1617683746836	Change method 'retrieveMemberList'
+1617683798909	Change method 'selectMemberList'
+1617689400932	Change method 'selectProdList'
+1617689429262	Change method 'retrieveProdList'
+1617694298568	Change method 'selectTotalRecord'
+1617694428303	Change method 'selectTotalRecord'
+1617694476218	Change method 'retrieveMemberCount'
+1617755134092	Change method 'retrieveProdCount'
+1617755187837	Change method 'selectTotalRecord'
+1617789339571	Move 'dbInfo.properties' to 'db'
+1617851965808	Copy compilation unit
+1617852023015	Copy package
+1617852029814	Copy package
+1617852040191	Delete element
+1617852710001	Rename type 'MemberInsertServlet'
+1617863653067	Delete element
+1617863727604	Rename type 'ProdListController'
+1617864287127	Rename method 'InvokeHandler'
+1617878397486	Delete element
+1617930839502	Move compilation unit
+1617939200047	Rename compilation unit 'IdCheckServlet.java'
+1617946435848	Rename type 'MemberUpdateServlet'
