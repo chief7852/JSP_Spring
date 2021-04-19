@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=dummy01/D:\/B_Util\/2.Java\/jdk1.8\/jre\/lib\/rt.jar&lt;javax.xml.bind(JAXB.class[JAXB" modifiers="49" timestamp="1605490417383"/>
-<typeInfo handle="=dummy01/D:\/B_Util\/2.Java\/jdk1.8\/jre\/lib\/rt.jar&lt;java.util(Locale.class[Locale" modifiers="49" timestamp="1605490417383"/>
-<typeInfo handle="=dummy01/D:\/B_Util\/2.Java\/jdk1.8\/jre\/lib\/rt.jar&lt;java.util(Formatter.class[Formatter" modifiers="49" timestamp="1605490417383"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.mvc.annotation.resolvers{IHandlerMethodArgumentResolver.java[IHandlerMethodArgumentResolver" modifiers="513" timestamp="1617931316064"/>
+<typeInfo handle="=webStudy03_Validation/D:\/B_Util\/6.maven\/.m2\/repository\/javax\/servlet\/jstl\/1.2\/jstl-1.2.jar&lt;javax.servlet.jsp.jstl.core(LoopTagStatus.class[LoopTagStatus" modifiers="1537" timestamp="1618375861969"/>
+<typeInfo handle="=webStudy03_Validation/D:\/B_Util\/6.maven\/.m2\/repository\/javax\/servlet\/jstl\/1.2\/jstl-1.2.jar&lt;org.apache.taglibs.standard.functions(Functions.class[Functions" modifiers="33" timestamp="1618375861969"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.board.dao{IBoardDAO.java[IBoardDAO" modifiers="513" timestamp="1618557535709"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.board.dao{IAttatchDAO.java[IAttatchDAO" modifiers="513" timestamp="1618537544288"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.board.service{IBoardService.java[IBoardService" modifiers="513" timestamp="1618548432180"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.buyer.dao{IBuyerDAO.java[IBuyerDAO" modifiers="513" timestamp="1618828160196"/>
+<typeInfo handle="=webStudy03_Validation/src\/main\/java&lt;kr.or.ddit.buyer.service{IBuyerService.java[IBuyerService" modifiers="513" timestamp="1618831076116"/>
 </typeInfoHistroy>
