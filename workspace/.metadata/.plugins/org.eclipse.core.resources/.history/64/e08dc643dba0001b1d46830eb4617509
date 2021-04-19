@@ -1,0 +1,127 @@
+package kr.or.ddit.board.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import kr.or.ddit.board.service.BoardServiceImpl;
+import kr.or.ddit.board.service.IBoardService;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
+
+@Controller
+public class BoardReadController {
+	public static final String BOARDAUTH = "board.authenticated";
+	private IBoardService service = new BoardServiceImpl();
+
+	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
+	public String boardAuth(
+			@RequestParam("bo_no") int bo_no,
+			@RequestParam("bo_pass") String bo_pass
+			,HttpSession session
+			) {
+		BoardVO search = new BoardVO();
+		search.setBo_no(bo_no);
+		search.setBo_pass(bo_pass);
+		String view = null;
+		if(service.boardAuthenticate(search)) {//인증성공
+			session.setAttribute(BOARDAUTH, new Boolean(true));
+			view = "redirect:/board/boardView.do?what"+bo_no;
+		}else {
+			view = "redirect:/board/boardList.do"
+		}
+		
+		return view;
+	}
+	
+	@RequestMapping("/board/boardView.do")
+	public String viewer(@RequestParam(value = "what") int bo_no, HttpServletRequest req) {
+		BoardVO search = new BoardVO();
+		search.setBo_no(bo_no);
+
+		BoardVO borvo = service.retrieveBoard(search);
+		req.setAttribute("board", borvo);
+
+		return "board/boardView";
+	}
+
+	@RequestMapping(value="/board/boardView.do", method=RequestMethod.POST)
+	public String viewForAjax(
+			@RequestParam(value="what") int bo_no,
+			HttpServletResponse resp,
+			HttpServletRequest req,
+			HttpSession session
+		) throws IOException{
+		
+		BoardVO search = new BoardVO();
+		
+		BoardVO borvo = service.retrieveBoard(search); 
+		req.setAttribute("search", search);
+		search.setBo_no(bo_no);
+		boolean valid = true;
+		String view =null;
+		if("Y".equals(borvo.getBo_sec())) {
+			Boolean authenticated = (Boolean) session.getAttribute(BOARDAUTH);
+			if(authenticated==null || !authenticated) {
+				valid = false; 
+			}
+		}
+		if(valid) {			
+
+				resp.setContentType("text/plain;charset=UTF-8");
+				try(
+						PrintWriter out = resp.getWriter();	
+						){
+					out.println(borvo.getBo_content());				
+
+			}
+		}else {
+		    view = "board/passwordForm;"	
+		}
+		
+		return null;
+	}
+
+	@RequestMapping("/board/boardList.do")
+	public String list(@RequestParam(value = "page", required = false, defaultValue = "1") int currentPage,
+			@RequestParam(value = "searchType", required = false) String searchType,
+			@RequestParam(value = "searchWord", required = false) String searchWord,
+			@RequestParam(value = "minDate", required = false) String minDate,
+			@RequestParam(value = "maxDate", required = false) String maxDate
+//		, @ModelAttribute("searchVO") SearchVO searchVO
+			, HttpServletRequest req) {
+		PagingVO<BoardVO> pagingVO = new PagingVO<>(7, 5);
+		pagingVO.setCurrentPage(currentPage);
+		// 검색 조건
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchType", searchType);
+		searchMap.put("searchWord", searchWord);
+		searchMap.put("minDate", minDate);
+		searchMap.put("maxDate", maxDate);
+		pagingVO.setSearchMap(searchMap);
+
+//		pagingVO.setSimpleSearch(searchVO);
+
+		int totalRecord = service.retrieveBoardCount(pagingVO);
+		pagingVO.setTotalRecord(totalRecord);
+
+		List<BoardVO> boardList = service.retrieveBoardList(pagingVO);
+		pagingVO.setDataList(boardList);
+
+		req.setAttribute("pagingVO", pagingVO);
+
+		return "board/boardList";
+	}
+}

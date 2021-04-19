@@ -1,0 +1,11 @@
+package kr.or.ddit.alba.controller;
+
+public class Snippet {
+	url=jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+	user=JYS02
+	password=JAVA
+	initialSize=2
+	maxTotal=2
+	maxWait=2000
+}
+

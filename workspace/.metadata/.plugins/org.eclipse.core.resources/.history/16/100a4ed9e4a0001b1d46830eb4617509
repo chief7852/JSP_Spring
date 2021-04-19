@@ -1,0 +1,12 @@
+package kr.or.ddit.board.controller;
+
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+
+@Controller
+public class BoardFileController {
+	@RequestMapping("/board/boardImapge.do")
+	public String imageUpload() {
+		
+	}
+}

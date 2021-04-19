@@ -1,0 +1,79 @@
+package kr.or.ddit.buyer.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import kr.or.ddit.board.dao.IBoardDAO;
+import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
+import kr.or.ddit.prod.dao.ProdDAOImpl;
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.BuyerVO;
+import kr.or.ddit.vo.PagingVO;
+
+public class BuyerDAOImpl implements IBuyerDAO {
+
+	private static BuyerDAOImpl self;
+	BuyerDAOImpl(){}
+	
+	public static BuyerDAOImpl getInstance() {
+		if(self == null) self = new BuyerDAOImpl();
+		return self;
+	}
+	private SqlSessionFactory sessionFactory = 
+			CustomSqlSessionFactoryBuilder.getSessionFactory();
+	@Override
+	public List<BuyerVO> selectBuyerList(PagingVO<BuyerVO> pagingVO) {
+		
+		try(
+		SqlSession session = sessionFactory.openSession(false);
+		){
+			IBuyerDAO mapper = session.getMapper(IBuyerDAO.class);
+			return mapper.selectBuyerList(pagingVO);
+		}
+		
+	}
+	
+	@Override
+	public int selectBuyerCount(PagingVO<BuyerVO> pagingVO) {
+		try (
+				SqlSession session = connecFactory.openSession(false);
+				){
+			IBuyerDAO mapper = session.getMapper(IBuyerDAO.class);
+			return mapper.selectBoardCount(pagingVO);
+		}
+	}
+	
+	@Override
+	public BuyerVO selectBuyer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int buyerCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}

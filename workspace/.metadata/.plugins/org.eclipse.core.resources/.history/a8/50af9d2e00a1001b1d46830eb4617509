@@ -1,0 +1,16 @@
+package kr.or.ddit.buyer.dao;
+
+import java.util.List;
+
+import kr.or.ddit.vo.BuyerVO;
+
+public interface IBuyerDAO {
+	
+	public List<BuyerVO> selectBuyerList();
+	
+	public BuyerVO selectBuyer();
+	
+	public int insertBuyer();
+	
+	public int deleteBuyer();
+}

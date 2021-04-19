@@ -1,0 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>12/eventDesc.jsp</title>
+</head>
+<body>
+<h4>서버사이드 이벤트 처리방법</h4>
+1. 이벤트 대상(target )식별 : button
+</body>
+</html>

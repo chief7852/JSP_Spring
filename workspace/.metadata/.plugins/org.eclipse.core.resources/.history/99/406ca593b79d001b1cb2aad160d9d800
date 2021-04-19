@@ -1,0 +1,7 @@
+import java.util.Date;
+
+public class DateTime {
+	public static void DateCall() {
+		return new Date();
+	}
+}

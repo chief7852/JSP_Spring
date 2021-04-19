@@ -1,0 +1,8 @@
+package kr.or.ddit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class Listants {
+	public static final Collection<String> CONNECTMEMBERS = new ArrayList<>(); 
+}

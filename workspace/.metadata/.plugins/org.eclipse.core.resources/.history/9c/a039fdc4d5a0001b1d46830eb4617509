@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<jsp:include page="/includee/preScript.jsp" />
+<body>
+		<
+	<table  class="table table-bordered">
+		<thead>
+			<tr>
+				<td colspan="2">(${board.bo_type eq 'NOTICE' ? '공지사항' : '일반글' })  <strong>${board.bo_title }</strong></td>
+				
+			</tr>
+		</thead>
+		
+		<tbody>
+		<tr>
+			<td>내용</td>
+			<td>${board.bo_content }</td>
+		</tr>
+
+		<tr>
+			<td>조회수</td>
+			<td>${board.bo_hit }</td>
+		</tr>
+		
+		<tr>
+			<td>작성자</td>
+			<td>${board.bo_writer }</td>
+		</tr>
+		<tr>
+			<td>추천수</td>
+			<td>${board.bo_rec }</td>
+		</tr>
+		</tbody>
+		<tfoot>
+		<tr>
+			<td>작성일</td>
+			<td>${board.bo_date }</td>
+		</tr>
+		<tr>
+			<td>신고수</td>
+			<td>${board.bo_rep }</td>
+		</tr>
+		<tr>
+			<td>첨부파일</td>
+		<c:if test="${not empty board.attatchList }">
+			<c:forEach items="${board.attatchList }" var="attatch">
+			<td>${attatch.att_filename }</td>
+			</c:forEach>
+		</c:if>
+		</tr>
+		
+		
+		</tfoot>
+	</table>
+<jsp:include page="/includee/postScript.jsp" />
+</body>
+</html>

@@ -1,0 +1,14 @@
+package kr.or.ddit.alba.dao;
+
+public interface IAlbamon {
+	
+	//AlbaList조회
+	
+	//상세조회
+	
+	//insert
+	
+	//update
+	
+	//delete
+}

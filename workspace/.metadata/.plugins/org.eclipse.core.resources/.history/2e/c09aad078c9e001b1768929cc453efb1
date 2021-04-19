@@ -1,0 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<jsp:include page="/includee/preScript.jsp" />
+<body>
+		<
+	<table  class="table table-bordered">
+		<thead>
+			<tr>
+				<td>(${board.bo_type eq 'NOTICE' ? '공지사항' : '일반글' })</td>
+				<td>${board.bo_title }</td>
+			</tr>
+		</thead>
+		
+
+		<tr>
+			<td>내용</td>
+			<td>${board.bo_content }</td>
+		</tr>
+
+		<tr>
+			<td>조회수</td>
+			<td>${board.bo_hit }</td>
+		</tr>
+		<tr>
+			<td>작성일</td>
+			<td>${board.bo_date }</td>
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td>${board.bo_writer }</td>
+		</tr>
+		<tr>
+			<td>추천수</td>
+			<td>${board.bo_rec }</td>
+		</tr>
+	</table>
+<jsp:include page="/includee/postScript.jsp" />
+</body>
+</html>

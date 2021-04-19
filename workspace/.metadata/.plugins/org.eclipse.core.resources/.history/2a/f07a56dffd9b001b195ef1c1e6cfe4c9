@@ -1,0 +1,26 @@
+package kr.or.ddit.mvc.filter.wrapper;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+public class MultipartHttpServletRequest extends HttpServletRequestWrapper{
+	
+	private Map<String , List<MultipartFile>> fileMap;
+	
+	//모든 데이터를 가지고 있음
+	public MultipartHttpServletRequest(HttpServletRequest request) {
+		super(request);
+		fileMap = new LinkedHashMap<>();
+		parseRequest(request);
+	}
+	
+	
+	private void parseRequest(HttpServletRequest request) {
+		request.getParts();
+	}
+	
+}

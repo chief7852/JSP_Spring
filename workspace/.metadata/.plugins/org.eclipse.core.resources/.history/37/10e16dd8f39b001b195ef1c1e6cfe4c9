@@ -1,0 +1,10 @@
+package kr.or.ddit.designpattern.adapterpattern;
+
+public class Adapter implements Target {
+	private Adaptee adaptee
+	@Override
+	public void request() {
+		
+	}
+
+}

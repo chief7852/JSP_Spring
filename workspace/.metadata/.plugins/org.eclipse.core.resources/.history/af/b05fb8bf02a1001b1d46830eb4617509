@@ -1,0 +1,48 @@
+package kr.or.ddit.buyer.service;
+
+import java.util.List;
+
+import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.vo.BuyerVO;
+import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
+
+public class BuyerService implements IBuyerService {
+
+	@Override
+	public BuyerVO retrieveBuyer(String buyer_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServiceResult createBuyer(BuyerVO buyer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServiceResult modifyBuyer(BuyerVO buyer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServiceResult removeBuyer(BuyerVO buyer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MemberVO> retrieveBuyerList(PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int retrieveBuyerCount(PagingVO<BuyerVO> pagingVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

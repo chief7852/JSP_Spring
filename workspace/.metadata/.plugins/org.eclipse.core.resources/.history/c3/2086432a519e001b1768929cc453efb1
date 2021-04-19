@@ -1,0 +1,19 @@
+package kr.or.ddit.vo;
+
+import java.io.Serializable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(of="att_no")
+public class AttatchVO implements Serializable{
+	private Integer bo_no;
+	private Integer att_no;
+	private String att_filename;
+	private String att_savename;
+	private Integer att_size;
+	private String att_contenttype;
+	private Integer att_downcount;
+	
+}

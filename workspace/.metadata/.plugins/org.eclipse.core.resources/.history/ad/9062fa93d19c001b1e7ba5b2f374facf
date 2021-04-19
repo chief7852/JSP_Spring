@@ -1,0 +1,9 @@
+package kr.or.ddit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
+public class Listants {
+	public static final Collection<Map> CONNECTMEMBERS = new hashMap<>(); 
+}

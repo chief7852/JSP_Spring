@@ -1,0 +1,26 @@
+package kr.or.ddit.board.controller;
+
+import java.io.File;
+
+import javax.servlet.http.HttpServletRequest;
+
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+
+@Controller
+public class BoardFileController {
+	@RequestMapping(value="/board/boardImapge.do",method=RequestMethod.POST)
+	public String imageUpload(
+			@RequestPart("upload") MultipartFile upload
+			, HttpServletRequest req
+			) {
+		String saveFolderURL = "/boardImages";
+		req.getServletContext().getRealPath(saveFolderURL);
+		File saveFolder = new File();
+		upload.sa
+		return null;
+	}
+}

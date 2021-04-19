@@ -1,0 +1,25 @@
+package kr.or.ddit.listener;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class CustomHttpSessionListener implements HttpSessionListener{
+	private static final Logger logger = LoggerFactory.getLogger(CustomHttpSessionListener.class);
+	
+	@Override
+	public void sessionCreated(HttpSessionEvent se) {
+		HttpSession session = se.getSession();
+		logger.info("세션생성 : {}",session.getId())
+	}
+
+	@Override
+	public void sessionDestroyed(HttpSessionEvent se) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

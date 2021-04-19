@@ -1,0 +1,14 @@
+package kr.or.ddit.utils;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class CryptoUtilTest {
+
+	@Test
+	public void testSha512() {
+		
+	}
+
+}

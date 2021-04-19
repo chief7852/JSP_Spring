@@ -1,0 +1,91 @@
+package kr.or.ddit.mvc.filter.wrapper;
+// 파트를 wrapping하는과정 Adapter
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
+public class MultipartFile {
+	private Part adaptee;
+	private String originalFilename;
+	private String uniqueSaveName;
+	private boolean empty;
+	
+	public MultipartFile(Part adapter) {
+		super();
+		this.adaptee = adapter;
+		String disposition = adaptee.getHeader("Content-Disposition");
+		int index = disposition.indexOf("\"", disposition.indexOf("filename="));
+		if (index != -1) {
+			originalFilename = disposition.substring(index).replace("\"", "");
+		}
+		
+		//원본파일이 비어있으면
+		empty = StringUtils.isBlank(originalFilename);
+		//확장자 제거와 업로드한사람이 최근 저장한파일이름을 알지못하게하기위해
+		this.uniqueSaveName = UUID.randomUUID().toString();
+	}
+
+	public String getName() {
+
+		return adaptee.getName();
+	}
+
+	public String getContentType() {
+		return adaptee.getContentType();
+	}
+
+	public long getFileSize() {
+		return adaptee.getSize();
+	}
+
+	// 기존인터페이스에서 없던 값추가
+	public String getOrinalFilename() {
+		return originalFilename;
+	}
+
+	public String getSaveName() {
+		return null;
+	}
+	
+	public String getUniqueSaveName() {
+		return uniqueSaveName;
+	}
+	
+	public InputStream getInputStream() throws IOException {
+		return adaptee.getInputStream();
+	}
+	
+	public void saveTo(File saveFolder) throws IOException {
+		File saveFile = new File(saveFolder,uniqueSaveName);
+		// 파일 전체 퀄러파일네임을 요청
+		adaptee.write(saveFile.getAbsolutePath());
+	}
+	
+	public void transferTo(File dest) {
+		adaptee.write(dest.getAbsolutePath());
+	}
+	
+	public boolean isEmpty() {
+		return empty;
+	}
+
+	public byte[] getBytes() throws IOException {
+		try(
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			InputStream is = getInputStream();
+		){//commons io라이브러리
+			IOUtils.copy(is, os);
+			return os.toByteArray();
+	
+		}
+
+	}
+}

@@ -1,0 +1,13 @@
+package kr.or.ddit.board.dao;
+
+/**
+  첨부파일 관리를 위한 persistence layer
+ *
+ */
+public interface IAttatchDAO {
+	//여러개 를 인서트하기위해
+	inserAttatches
+	//첨부파일 다운로드용 1개만 필요
+	selectAttatch
+	
+}

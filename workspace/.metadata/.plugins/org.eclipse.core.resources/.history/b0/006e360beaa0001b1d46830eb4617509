@@ -1,0 +1,23 @@
+package kr.or.ddit.utils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import kr.or.ddit.board.controller.ㄱㄷ셔구;
+
+public class RegexUtils {
+	public static String name(String origin, String replace,String...tokens) {
+		
+	
+	String regex = String.format("(%s)", String.join("|", tokens));
+	Pattern patter = Pattern.compile(regex);
+	Matcher matcher  =patter.matcher(origin);
+	StringBuffer result = new StringBuffer();
+	while(matcher.find()) {
+		matcher.appendReplacement(result, "AAA");
+	}
+	// 마지막 말 이후의 텍스트 처리
+	matcher.appendTail(result);
+	return result.toString();
+}
+}

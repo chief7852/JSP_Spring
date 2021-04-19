@@ -1,0 +1,33 @@
+package kr.or.ddit.listener;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Application Lifecycle Listener implementation class CustomServletContextListener
+ *
+ */
+@WebListener
+public class CustomServletContextListener implements ServletContextListener {
+	private static final Logger logger = LoggerFactory.getLogger(CustomServletContextListener.class);
+   
+	/**
+     * @see ServletContextListener#contextInitialized(ServletContextEvent)
+     */
+    public void contextInitialized(ServletContextEvent sce)  { 
+         logger.info("{}에서 어플리케이션 초기화 이벤트 처리",getClass().getName());
+    }
+	
+	/**
+     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+     */
+    public void contextDestroyed(ServletContextEvent sce)  { 
+        logger.info("{}에서 어플리케이션 thauf 이벤트 처리",getClass().getName());
+    }
+
+	
+}

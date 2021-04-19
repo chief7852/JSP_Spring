@@ -1,0 +1,11 @@
+package kr.or.ddit.designpattern.adapterpattern;
+
+public class OtherConcrete implements Target {
+
+	@Override
+	public void request() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

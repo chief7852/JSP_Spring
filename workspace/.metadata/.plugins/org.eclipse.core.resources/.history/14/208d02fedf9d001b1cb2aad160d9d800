@@ -1,0 +1,6 @@
+package kr.or.ddit.mvc.annotation;
+
+public class RequestMappingCondition {
+	private String url;
+	RequestMethod method;
+}

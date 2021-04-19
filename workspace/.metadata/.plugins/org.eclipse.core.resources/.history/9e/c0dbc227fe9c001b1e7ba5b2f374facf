@@ -1,0 +1,15 @@
+package kr.or.ddit.prod.dao;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class ProdDAOImplTest {
+	private IProdDAO dao = ProdDAOImpl.getInstance();
+	
+	@Test
+	public void testSelectProd() {
+		dao.selectProd("P101000001");
+	}
+
+}

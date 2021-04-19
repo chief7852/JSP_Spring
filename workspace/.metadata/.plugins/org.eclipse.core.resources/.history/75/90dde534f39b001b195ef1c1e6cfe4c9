@@ -1,0 +1,11 @@
+package kr.or.ddit.designpattern.adapterpattern;
+
+public class Client {
+	private Target target;
+
+	public Client(Target target) {
+		super();
+		this.target = target;
+	}
+	
+}

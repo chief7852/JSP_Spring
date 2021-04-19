@@ -1,0 +1,7 @@
+driverClassName=net.sf.log4jdbc.DriverSpy
+url="jdbc:mysql://localhost/serverTimezone=UTC";
+user=root
+password=python
+initialSize=2
+maxTotal=2
+maxWait=2000

@@ -1,0 +1,41 @@
+package kr.or.ddit.mvc.annotation.resolvers;
+
+import java.io.IOException;
+import java.lang.reflect.Parameter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
+
+public class RequestPartArgumentResolver implements IHandlerMethodArgumentResolver {
+
+	// 어노테이션 가지고있는지, requestPart인지
+	@Override
+	public boolean isSupported(Parameter parameter) {
+		Class<?> parameterType = parameter.getType();
+		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
+		boolean supported = annotation!=null
+				&&(
+					MultipartFile.class.equals(parameterType)
+				);
+		return supported;
+	}
+
+	// requestPart의 파일데이터를 꺼낸다
+	@Override
+	public Object argumentResolve(Parameter parameter, HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		Class<?> parameterType = parameter.getType();
+		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
+		String reqPartName = annotation.value();
+		boolean required = annotation.required();
+		MultipartHttpServletRequest wrapper = (MultipartHttpServletRequest)req;
+		MultipartFile reqPartValue = (MultipartFile)wrapper.getAttribute(reqPartName);
+		
+		return null;
+	}
+
+}

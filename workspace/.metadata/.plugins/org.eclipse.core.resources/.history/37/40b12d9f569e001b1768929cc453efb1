@@ -1,0 +1,24 @@
+package kr.or.ddit.board.service;
+
+import java.util.List;
+
+import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.PagingVO;
+
+public interface IBoardService {
+	public ServiceResult createBoard(BoardVO board);
+	public int retrieveBoardCount(PagingVO<BoardVO> pagingVO);
+	public List<BoardVO>retrieveBoardList(PagingVO<BoardVO> pagingVO);
+	/**
+	 * @param search
+	 * @return 존재 하지 않을시 custom excepton
+	 */
+	public BoardVO retrieveBoard(BoardVO search);
+	//성공실패
+	public ServiceResult modifyBoard(BoardVO board);
+	//성공실패
+	public ServiceResult removeBoard(BoardVO search);
+	
+	download
+}

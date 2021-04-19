@@ -1,0 +1,11 @@
+package kr.or.ddit.vo;
+
+public class AttatchVO {
+	private Integer bo_no;
+	private Integer att_no;
+	private String att_filename;
+	private String att_savename;
+	private Integer att_size;
+	private String att_contenttype;
+	private Integer att_downcount;
+}

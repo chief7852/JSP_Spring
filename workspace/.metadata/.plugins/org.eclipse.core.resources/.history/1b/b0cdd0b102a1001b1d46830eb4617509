@@ -1,0 +1,20 @@
+package kr.or.ddit.buyer.dao;
+
+import java.util.List;
+
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.BuyerVO;
+import kr.or.ddit.vo.PagingVO;
+
+public interface IBuyerDAO {
+	
+	public List<BuyerVO> selectBuyerList(PagingVO<BoardVO> pagingVO);
+	
+	public BuyerVO selectBuyer();
+	
+	public int insertBuyer();
+	
+	public int deleteBuyer();
+	
+	public int updateBuyer();
+}

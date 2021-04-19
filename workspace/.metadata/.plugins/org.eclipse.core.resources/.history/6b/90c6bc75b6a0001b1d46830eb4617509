@@ -1,0 +1,61 @@
+package kr.or.ddit.board.service;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.or.ddit.board.dao.BoardDAOImpl;
+import kr.or.ddit.board.dao.IBoardDAO;
+import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.member.dao.IMemberDAO;
+import kr.or.ddit.member.dao.MemberDAOImpl;
+import kr.or.ddit.utils.CryptoUtil;
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.MemberVO;
+
+public class AuthenticateServiceImpl implements IAuthenticateService {
+	private IBoardDAO dao = BoardDAOImpl.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticateServiceImpl.class);
+	@Override
+	public ServiceResult authenticate(BoardVO board) {
+		BoardVO saveBoard = dao.selectBoard(board);
+		logger.info("{} select board 실패",saveBoard)
+		ServiceResult result =null;
+		if(saveBoard != null) {
+			String inputPass = board.getBo_pass();
+			try {
+				String encodedPass = CryptoUtil.sha512(inputPass);
+				String savedPass = saveBoard.getBo_pass();
+				if(savedPass.equals(encodedPass)) {
+					try {
+						BeanUtils.copyProperties(board, saveBoard);
+					} catch (IllegalAccessException | InvocationTargetException e) {
+						throw new RuntimeException(e);
+					}
+					result = ServiceResult.OK;
+				}else {
+					result = ServiceResult.INVALIDPASSWORD;
+				}
+				}catch (Exception e) {
+					logger.error("",e);
+					result = ServiceResult.FAIL;
+				}
+			}else {
+				result = ServiceResult.NOTEXIST;
+			}
+			return result;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+

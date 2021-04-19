@@ -1,0 +1,24 @@
+package kr.or.ddit.board.dao;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import kr.or.ddit.vo.BoardVO;
+
+public class IBoardDAOTest {
+	private IBoardDAO dao = new BoardDAOImpl();
+	@Test
+	public void testSelectBoard() {
+		/*
+		 * <select id="selectBoard" parameterType="BoardVO" resultMap="boardMap"> SELECT
+		 * BO_TITLE, BO_CONTENT, BO_TYPE ,A.BO_NO BONO ,BO_WRITER, BO_DATE
+		 * ,BO_HIT,BO_REC, BO_REP, BO_SEQ , B.ATT_NO,B.ATT_FILENAME, B.ATT_CONTENTTYPE
+		 * FROM BOARDVIEW A LEFT OUTER JOIN ATTATCH B ON(A.BO_NO = B.BO_NO) WHERE
+		 * A.BO_NO = #{bo_no} </select>
+		 */
+		BoardVO search = new BoardVO();
+		search.setBo_no(151);
+	}
+
+}

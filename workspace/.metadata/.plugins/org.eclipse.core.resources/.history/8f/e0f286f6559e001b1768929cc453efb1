@@ -1,0 +1,14 @@
+package kr.or.ddit.board.service;
+
+import kr.or.ddit.enumpkg.ServiceResult;
+
+public interface IBoardService {
+	public ServiceResult createBoard(BoardVO board);
+	retrieveBoardCount
+	retrieveBoardList
+	retrieveBoard
+	modifyBoard
+	removeBoard
+	
+	download
+}

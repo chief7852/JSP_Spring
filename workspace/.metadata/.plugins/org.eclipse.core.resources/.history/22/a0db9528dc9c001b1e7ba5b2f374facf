@@ -1,0 +1,17 @@
+package kr.or.ddit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import kr.or.ddit.vo.MemberVO;
+
+public class Listants {
+	public static final Collection<Map<String, String>> CONNECTMEMBERS = new ArrayList<Map<String, String>>();
+	public static final String CONKEY = "connect";
+
+	
+}

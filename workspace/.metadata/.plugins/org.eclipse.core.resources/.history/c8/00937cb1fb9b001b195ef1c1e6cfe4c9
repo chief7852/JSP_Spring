@@ -1,0 +1,42 @@
+package kr.or.ddit.mvc.filter.wrapper;
+// 파트를 wrapping하는과정 Adapter
+
+import javax.servlet.http.Part;
+
+public class MultipartFile {
+	private Part adaptee;
+	private String originalFilename;
+
+	public MultipartFile(Part adapter) {
+		super();
+		this.adaptee = adapter;
+		String disposition = adaptee.getHeader("Content-Disposition");
+		int index = disposition.indexOf("\"", disposition.indexOf("filename="));
+		String originalFilename = null;
+		if (index != -1) {
+			originalFilename = disposition.substring(index).replace("\"", "");
+		}
+	}
+
+	public String getName() {
+
+		return adaptee.getName();
+	}
+
+	public String getContentType() {
+		return adaptee.getContentType();
+	}
+
+	public long getFileSize() {
+		return adaptee.getSize();
+	}
+
+	// 기존인터페이스에서 없던 값추가
+	public String getOrinalFilename() {
+		return originalFilename;
+	}
+
+	public String getSaveName() {
+
+	}
+}

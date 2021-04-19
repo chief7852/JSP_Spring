@@ -1,0 +1,14 @@
+package kr.or.ddit.board.dao;
+
+/**
+ * 게시글 관리를 위한 persistence layer
+ *
+ */
+public interface IBoardDAO {
+	insertBoard
+	selectBoardCount
+	selectBoardList
+	selectBoard
+	updateBoard
+	deleteBoard
+}
