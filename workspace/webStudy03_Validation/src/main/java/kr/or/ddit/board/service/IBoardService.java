@@ -23,4 +23,6 @@ public interface IBoardService {
 	public ServiceResult removeBoard(BoardVO search);
 	
 	public AttatchVO download(int att_no);
+	
+	public boolean boardAuthenticate(BoardVO search);
 }

@@ -1,0 +1,17 @@
+package kr.or.ddit.board.dao;
+
+import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.vo.PagingVO;
+
+/**
+ * 게시글 관리를 위한 persistence layer
+ *
+ */
+public interface IBoardDAO {
+	public int insertBoard(BoardVO board);
+	public int selectBoardCount(PagingVO<BoardVO> pagingVO);
+	selectBoardList(PagingVO<BoardVO> pagingVO);
+	selectBoard
+	updateBoard
+	deleteBoard
+}

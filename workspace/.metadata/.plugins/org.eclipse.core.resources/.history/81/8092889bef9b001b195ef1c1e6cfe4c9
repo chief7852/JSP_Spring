@@ -1,0 +1,7 @@
+package kr.or.ddit.filter;
+
+import javax.servlet.Filter;
+
+public class RequestChangeFilter implements Filter{
+
+}

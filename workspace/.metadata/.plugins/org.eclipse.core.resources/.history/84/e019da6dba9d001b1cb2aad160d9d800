@@ -1,0 +1,58 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.util.TimeZone"%>
+<%@ page import="java.util.Locale" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+   <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+   <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+   <%@taglib uri="http://www.ddit.or.kr" prefix="my" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<pre>
+1. java의 모든 timezone을 select로 선택 가능하도록.
+
+2. 선택한 시간대에 맞춰서 시간출력
+3. java의 모든 locale을 select로 선택 가능하도록.
+4. 선택한 locale에 맞춰 출력 메시지 형식 결정 ( 가능하면 표현식과 스트립틀릿)
+</pre>
+<form>
+<select name="loc" >
+	<c:forEach items="${Locale.getAvailableLocales()}" var="tmp">
+		<option value="${tmp.toLanguageTag() }" ${not empty lang ? 'selected':'' }>${tmp.displayLanguage }[${tmp.displayCountry }]
+		</option>
+	</c:forEach>
+</select>
+
+<select name="zone">
+	<c:forEach items="${my:getAvailableIDs() }" var="tz">
+		<option value="${tz}">${my:getTimeZone(tz).displayName }</option>
+	</c:forEach>
+</select>
+</form>
+
+<c:set var="now" value="${my:getNow() }"></c:set>
+${now }
+<fmt:setLocale value="${not empty param.loc ? param.loc : pageContext.request.locale}"/>
+<fmt:formatDate value="${now }" type="both"/>
+
+<script type="text/javascript">
+	function changeHandler(event){
+		let select = event.target;/* == this */
+		select.form.submit();
+	}
+	let selects = document.getElementsByTagName("select");
+	for(let i=0;i<selects.length;i++){
+		selects[i].onchange=changeHandler;
+	}
+	/* forms = 모든레퍼런스를 들고있는배열  */
+	document.forms[0]
+</script>
+
+</body>
+
+</html>

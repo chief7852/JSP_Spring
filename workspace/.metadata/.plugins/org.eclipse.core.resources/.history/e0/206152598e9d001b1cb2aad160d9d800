@@ -1,0 +1,8 @@
+package kr.or.ddit.member.controller;
+
+public class Snippet {
+	public static void main(String[] args) {
+		viewURL
+	}
+}
+

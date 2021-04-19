@@ -13,7 +13,7 @@ import kr.or.ddit.vo.PagingVO;
 public class BoardDAOImpl implements IBoardDAO {
 	
 	private static BoardDAOImpl self;
-	private BoardDAOImpl() {}
+	public BoardDAOImpl() {}
 	public static BoardDAOImpl getInstance() {
 		if(self==null) self = new BoardDAOImpl();
 		return self;
@@ -22,8 +22,15 @@ public class BoardDAOImpl implements IBoardDAO {
 	public SqlSessionFactory connecFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
 	@Override
 	public int insertBoard(BoardVO board) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		try (
+				SqlSession session = connecFactory.openSession(false);
+				){
+			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+			result = mapper.insertBoard(board);
+			session.commit();
+			return result;
+		}
 	}
 
 	@Override

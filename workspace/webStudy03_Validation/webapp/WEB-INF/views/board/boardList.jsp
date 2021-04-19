@@ -7,6 +7,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<style type="text/css">
+	.preView{
+		width: 100px;
+		height: 100px;
+	}
+	.preView img{
+		size : auto;
+	}
+</style>
+<c:if test="${not empty message }">
+	<script type="text/javascript">
+		alert("${message}")
+	</script>
+	<c:remove var="message" scope="session" />
+</c:if>
+
 </head>
 <body>
 <h4>게시글 목록 조회</h4>
@@ -33,9 +49,19 @@
 						<c:url value="/board/boardView.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }" />
 						</c:url>
-						<a href="${viewURL }"  data-toggle="popover" title="Popover title" >
-						${board.bo_title }
-						</a>
+						<c:choose>
+							<c:when test="${board.bo_sec eq 'Y'}">
+									<a class="secret" href="#">
+								${board.bo_title }
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a class="nonsecret" href="${viewURL }"  data-toggle="popover" title="Popover title" >
+								${board.bo_title }
+								</a>
+							</c:otherwise>
+						</c:choose>
+						
 					</td>
 					<td>${board.bo_writer }</td>
 					<td>${board.bo_date }</td>
@@ -75,6 +101,9 @@
 						<input type="date" name="minDate" value="${pagingVO.searchMap.minDate }" />
 						<input type="date" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
 						<input id="searchBtn" type="button" value="검색" />
+						
+						
+						<button type="button"><a href="${cPath }/board/boardInsert.do">새글작성</a></button>
 					</div>
 				<div id="pagingArea" class="d-flex justify-content-center">
 					
@@ -114,7 +143,7 @@
 	});
 	
 	$(function () {
-		$("#listBody a").hover(function(){
+		$("#listBody a.nonsecret").hover(function(){
 			
 			$(this).popover({
 				html:true
@@ -123,7 +152,6 @@
 					let retValue = null;
 					$.ajax({
 						url : url,
-						method : "post",
 						dataType : "text",
 						success : function(resp) {
 							console.log(1);
@@ -138,13 +166,34 @@
 						}
 					});
 					console.log(2);
+					retValue = $("<div>").addClass("preView").html(retValue)
 					return retValue;
 				}
 			}).popover("toggle")
 		});
 // 	  $('[data-toggle="popover"]').popover()
 	});
-	
+	/* 	<a class="secret" href="${viewURL }">
+								${board.bo_title }
+								</a> */
+	$(".secret").on('click',function(){
+		let bono = 
+		let cpass = prompt("비밀번호입력하십시오")
+		$.ajax({
+			url : "/board/authenticate.do",
+			method : "",
+			data : "",
+			dataType : "",
+			success : function(resp) {
+
+			},
+			error : function(xhr, error, msg) {
+				console.log(xhr);
+				console.log(error);
+				console.log(msg);
+			}
+		});
+	})
 </script>
 
 <jsp:include page="/includee/postScript.jsp" />

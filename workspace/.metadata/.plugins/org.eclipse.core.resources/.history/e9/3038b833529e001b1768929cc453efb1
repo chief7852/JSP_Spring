@@ -1,0 +1,10 @@
+package kr.or.ddit.vo;
+
+public class Reply2 {
+	private Integer bo_no;
+	private Integer rep_no;
+	private String rep_writer;
+	private String rep_pass;
+	private String rep_content;
+	private String rep_date;
+}

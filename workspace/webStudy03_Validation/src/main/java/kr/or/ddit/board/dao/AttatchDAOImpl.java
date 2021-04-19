@@ -1,14 +1,25 @@
 package kr.or.ddit.board.dao;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.AttatchVO;
 import kr.or.ddit.vo.BoardVO;
 
 public class AttatchDAOImpl implements IAttatchDAO {
-
+	
+	public SqlSessionFactory connecFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
 	@Override
 	public int inserAttatches(BoardVO board) {
-		// TODO Auto-generated method stub
-		return 0;
+		try (
+				SqlSession session = connecFactory.openSession(false);
+				){
+			IAttatchDAO mapper = session.getMapper(IAttatchDAO.class);
+			int cnt = mapper.inserAttatches(board);
+			session.commit();
+			return cnt;
+		}
 	}
 
 	@Override

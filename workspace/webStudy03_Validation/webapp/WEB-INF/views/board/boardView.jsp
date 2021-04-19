@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,7 @@
 		</thead>
 		
 		<tbody>
-		<tr colspan=>
+		<tr>
 			<td>내용</td>
 			<td>${board.bo_content }</td>
 		</tr>
@@ -42,6 +43,20 @@
 			<td>작성일</td>
 			<td>${board.bo_date }</td>
 		</tr>
+		<tr>
+			<td>신고수</td>
+			<td>${board.bo_rep }</td>
+		</tr>
+		<tr>
+			<td>첨부파일</td>
+		<c:if test="${not empty board.attatchList }">
+			<c:forEach items="${board.attatchList }" var="attatch">
+				<span>${attatch.att_filename }</span>
+			</c:forEach>
+		</c:if>
+		</tr>
+		
+		
 		</tfoot>
 	</table>
 <jsp:include page="/includee/postScript.jsp" />

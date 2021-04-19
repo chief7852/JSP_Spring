@@ -1,0 +1,48 @@
+package kr.or.ddit.buyer.dao;
+
+import java.util.List;
+
+import kr.or.ddit.prod.dao.ProdDAOImpl;
+import kr.or.ddit.vo.BuyerVO;
+
+public class BuyerDAOImpl implements IBuyerDAO {
+
+	private static BuyerDAOImpl self;
+	BuyerDAOImpl(){}
+	
+	public static BuyerDAOImpl getInstance() {
+		if(self == null) self = new BuyerDAOImpl();
+		return self;
+	}
+	
+	@Override
+	public List<BuyerVO> selectBuyerList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BuyerVO selectBuyer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateBuyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}
