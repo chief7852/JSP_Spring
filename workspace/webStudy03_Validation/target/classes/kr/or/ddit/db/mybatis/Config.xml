@@ -23,6 +23,7 @@
 		<mapper resource="kr/or/ddit/db/mybatis/mappers/Board.xml"/>
 		<mapper resource="kr/or/ddit/db/mybatis/mappers/Attatch.xml"/>
 		<mapper resource="kr/or/ddit/db/mybatis/mappers/Reply.xml"/>
+		<mapper resource="kr/or/ddit/db/mybatis/mappers/Buyer.xml"/>
 	</mappers>
 </configuration>
 

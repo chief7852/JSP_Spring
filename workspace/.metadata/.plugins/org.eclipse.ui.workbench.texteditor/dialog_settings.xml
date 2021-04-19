@@ -1,19 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item value="false" key="isRegEx"/>
-		<item value="out" key="selection"/>
-		<item value="false" key="casesensitive"/>
+		<item value="true" key="isRegEx"/>
+		<item value="" key="selection"/>
+		<item value="true" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="04/ser"/>
-			<item value="data"/>
-			<item value="videon"/>
-			<item value="vi"/>
-			<item value="src"/>
-			<item value="xml"/>
+			<item value="비밀"/>
+			<item value="비"/>
+			<item value="비밀글"/>
+			<item value="pass"/>
+			<item value="au"/>
+			<item value="boardForm"/>
+			<item value="seq"/>
+			<item value="sec"/>
+			<item value="SEQ"/>
+			<item value="map"/>
+			<item value="검색"/>
+			<item value="FROM"/>
+			<item value="cu"/>
+			<item value="MessageDigest"/>
+			<item value="51"/>
 		</list>
 		<list key="replacehistory">
+			<item value="\${prod[&quot;prod_$1&quot;]}"/>
+			<item value="\${member.mem_$1 }"/>
+			<item value="\${lprod.$1}"/>
+			<item value="\${buyer[&quot;buyer_$1&quot;]}"/>
+			<item value="\$buyer.buyer[&quot;buyer_$1&quot;]}"/>
+			<item value="\$buyer.buyer[&quot;buyer_$2&quot;]}"/>
+			<item value="\$"/>
+			<item value="\${"/>
+			<item value="\${errors[&quot;prod_$1&quot;]}"/>
+			<item value="\${errors[&quot;mem_$1&quot;]"/>
+			<item value="\${errors[&quot;prod_$1&quot;]"/>
+			<item value="\${prod.prod_$1 }"/>
+			<item value="."/>
+			<item value=""/>
+			<item value="DataAccessException"/>
 		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="271" key="DIALOG_WIDTH"/>
+		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
+		<item value="391" key="DIALOG_HEIGHT"/>
+		<item value="1135" key="DIALOG_X_ORIGIN"/>
+		<item value="314" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
