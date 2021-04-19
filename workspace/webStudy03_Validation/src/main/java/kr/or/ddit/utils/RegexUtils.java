@@ -1,0 +1,40 @@
+package kr.or.ddit.utils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+
+public class RegexUtils {
+	public static String filteringTokens(String origin, String replace,String...tokens) {
+		
+	
+	String regex = String.format("(%s)", String.join("|", tokens));
+	Pattern patter = Pattern.compile(regex);
+	Matcher matcher  =patter.matcher(origin);
+	StringBuffer result = new StringBuffer();
+	while(matcher.find()) {
+		matcher.appendReplacement(result, replace);
+	}
+	// 마지막 말 이후의 텍스트 처리
+	matcher.appendTail(result);
+	return result.toString();
+}
+	
+	public static String filteringTokens(String origin, char maskingCh,String...tokens) {
+		
+		
+		String regex = String.format("(%s)", String.join("|", tokens));
+		Pattern patter = Pattern.compile(regex);
+		Matcher matcher  =patter.matcher(origin);
+		StringBuffer result = new StringBuffer();
+		while(matcher.find()) {
+			String replace = 
+			matcher.group(1).replaceAll(".", new Character(maskingCh).toString());
+			matcher.appendReplacement(result, replace);
+		}
+		// 마지막 말 이후의 텍스트 처리
+		matcher.appendTail(result);
+		return result.toString();
+	}
+}

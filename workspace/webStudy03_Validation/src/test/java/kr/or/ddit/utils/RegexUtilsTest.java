@@ -1,0 +1,16 @@
+package kr.or.ddit.utils;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class RegexUtilsTest {
+
+	@Test
+	public void testFilteringTokens() {
+		String oringin = "힘들어 말미잘 해삼";
+		String newStr = RegexUtils.filteringTokens(oringin, 'ㅁ', "말미잘", "해삼");
+		System.out.println(newStr);
+	}
+
+}
