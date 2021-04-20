@@ -1,6 +1,5 @@
 package kr.or.ddit.member.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -26,8 +25,7 @@ public class MemberDAOImpl implements IMemberDAO {
 		try(
 			SqlSession session = sessionFactory.openSession();
 		){
-//			return (MemberVO) session.selectOne("kr.or.ddit.member.dao.IMemberDAO.selectMemberForAuth");
-			// mapper 프록시
+//			return (MemberVO) session.selectOne("kr.or.ddit.member.dao.IMemberDAO.selectMemberForAuth", mem_id);
 			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
 			return mapper.selectMemberForAuth(mem_id);
 		}
@@ -36,7 +34,7 @@ public class MemberDAOImpl implements IMemberDAO {
 	@Override
 	public MemberVO selectMemberDetail(String mem_id) {
 		try(
-			SqlSession session = sessionFactory.openSession();
+			SqlSession session = sessionFactory.openSession();	
 		){
 			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
 			return mapper.selectMemberDetail(mem_id);
@@ -46,9 +44,10 @@ public class MemberDAOImpl implements IMemberDAO {
 	@Override
 	public int insertMember(MemberVO member) {
 		try(
-				SqlSession session = sessionFactory.openSession(false);
-			){
-			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IMemberDAO mapper =
+					session.getMapper(IMemberDAO.class);
 			int cnt = mapper.insertMember(member);
 			session.commit();
 			return cnt;
@@ -58,9 +57,10 @@ public class MemberDAOImpl implements IMemberDAO {
 	@Override
 	public int updateMember(MemberVO member) {
 		try(
-				SqlSession session = sessionFactory.openSession(false);
-			){
-			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IMemberDAO mapper =
+					session.getMapper(IMemberDAO.class);
 			int cnt = mapper.updateMember(member);
 			session.commit();
 			return cnt;
@@ -70,9 +70,10 @@ public class MemberDAOImpl implements IMemberDAO {
 	@Override
 	public int deleteMember(String mem_id) {
 		try(
-				SqlSession session = sessionFactory.openSession(false);
-			){
-			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IMemberDAO mapper =
+					session.getMapper(IMemberDAO.class);
 			int cnt = mapper.deleteMember(mem_id);
 			session.commit();
 			return cnt;
@@ -82,22 +83,25 @@ public class MemberDAOImpl implements IMemberDAO {
 	@Override
 	public List<MemberVO> selectMemberList(PagingVO pagingVO) {
 		try(
-				SqlSession session = sessionFactory.openSession(false);
-			){
-			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
-			
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IMemberDAO mapper =
+					session.getMapper(IMemberDAO.class);
 			return mapper.selectMemberList(pagingVO);
 		}
 	}
+	
 	@Override
 	public int selectTotalRecord(PagingVO<MemberVO> pagingVO) {
 		try(
-				SqlSession session = sessionFactory.openSession(false);
-			){
-			IMemberDAO mapper = session.getMapper(IMemberDAO.class);
-			
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IMemberDAO mapper =
+					session.getMapper(IMemberDAO.class);
 			return mapper.selectTotalRecord(pagingVO);
 		}
 	}
 
 }
+
+

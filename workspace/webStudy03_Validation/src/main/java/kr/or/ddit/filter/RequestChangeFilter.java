@@ -22,24 +22,23 @@ public class RequestChangeFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest)request;
+		HttpServletRequest req = (HttpServletRequest) request;
 		request = new HttpServletRequestWrapper(req) {
-			@Override
 			public String getParameter(String name) {
-				if("what".equals(name)){
+				if("what".equals(name)) {
 					return "P101000001";
 				}else {
 					return super.getParameter(name);
 				}
-
 			};
-		};
+		} ;
 		chain.doFilter(request, response);
+		
 	}
 
 	@Override
 	public void destroy() {
-		
+		// TODO Auto-generated method stub
 		
 	}
 

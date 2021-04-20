@@ -1,7 +1,6 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,18 +8,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.hibernate.validator.internal.util.Contracts;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
@@ -36,41 +28,39 @@ import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.MemberVO;
 
-
 @Controller
-public class MemberInsertController {
+public class MemberInsertController{
 	private IMemberService service = new MemberServiceImpl();
 
-	
 	@RequestMapping("/member/memberInsert.do")
-	public String form() {
-		String view = "member/memberForm";
-		
-		return view;
+	public String form(){
+		return "member/memberForm";
 	}
 
-	@RequestMapping(value="/member/memberInsert.do",method=RequestMethod.POST)  
-	public String process(@ModelAttribute(value = "member") MemberVO member,
-			@RequestPart(value="mem_image",required=false) MultipartFile mem_image,
-			HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-//		Locale.setDefault(Locale.ENGLISH); 임시로 지역바꿔주는 코드
-		
+	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
+	public String process(
+			@ModelAttribute("member") MemberVO member
+			, @RequestPart(value="mem_image", required=false) MultipartFile mem_image
+			, HttpServletRequest req) throws IOException {
+//		Locale.setDefault(Locale.ENGLISH);
 //		1. 요청 접수
 
-//		2. 검증
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		req.setAttribute("errors", errors);
-		if(mem_image!=null && mem_image.isEmpty()) {
+		if(mem_image!=null && !mem_image.isEmpty()) {
 			String mime = mem_image.getContentType();
 			if(!mime.startsWith("image/")) {
 				throw new BadRequestException("이미지 이외의 프로필은 처리 불가.");
-			}else {				
-				byte[] mem_img = mem_image.getBytes();
-				member.setMem_img(mem_img);
 			}
-		}
-		boolean valid = new CommonValidator<MemberVO>().validate(member, errors,InsertGroup.class);
+			byte[] mem_img = mem_image.getBytes();
+			member.setMem_img(mem_img);
+		}	
+//		2. 검증
+		Map<String, List<String>> errors = new LinkedHashMap<>();
+		req.setAttribute("errors", errors);
+		
+		boolean valid = 
+				new CommonValidator<MemberVO>()
+						.validate(member, errors, InsertGroup.class);
+		
 //		boolean valid = validate(member, errors);
 		
 		String view = null;
@@ -100,5 +90,4 @@ public class MemberInsertController {
 		return view;
 	}
 
-	
 }

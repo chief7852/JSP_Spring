@@ -2,7 +2,6 @@ package kr.or.ddit.vo;
 
 import java.io.Serializable;
 import java.util.Base64;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -10,20 +9,16 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import kr.or.ddit.Contants;
+import kr.or.ddit.Constants;
 import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.InsertGroup;
-import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.validator.constraint.TelephoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -47,7 +42,7 @@ import lombok.ToString;
 //@Getter
 //@Setter
 @EqualsAndHashCode(of= {"mem_id", "mem_regno1", "mem_regno2"})
-@ToString(exclude= {"mem_pass", "mem_regno1", "mem_regno2","mem_img"})
+@ToString(exclude= {"mem_pass", "mem_regno1", "mem_regno2", "mem_img"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,17 +53,13 @@ public class MemberVO implements Serializable, HttpSessionBindingListener{
 		this.mem_id = mem_id;
 		this.mem_pass = mem_pass;
 	}
-	/**
-	 * @NotBlank 빈글자제한
-	 * @Size(n) n개글자
-	 */
 	private int rnum;
-	@NotBlank(groups= {InsertGroup.class,DeleteGroup.class},message="")
+	@NotBlank(groups= {InsertGroup.class, DeleteGroup.class}, message="아이디 필수")
 	private String mem_id;
 	@NotBlank(message="{NotBlank.kr.or.ddit.vo.MemberVO.mem_pass.message}")
-	@Size(min=4, max=8,message="{Size.kr.or.ddit.vo.MemberVO.mem_pass.message}")
+	@Size(min=4, max=8, message="{Size.kr.or.ddit.vo.MemberVO.mem_pass.message}")
 	private String mem_pass;
-	@NotBlank
+	@NotBlank(groups=InsertGroup.class)
 	private String mem_name;
 	@NotBlank(groups=InsertGroup.class)
 	private String mem_regno1;
@@ -85,6 +76,7 @@ public class MemberVO implements Serializable, HttpSessionBindingListener{
 	private String mem_hometel;
 	@TelephoneNumber
 	private String mem_comtel;
+	@TelephoneNumber
 	private String mem_hp;
 	@NotBlank
 	@Email
@@ -98,38 +90,36 @@ public class MemberVO implements Serializable, HttpSessionBindingListener{
 	
 	private Set<ProdVO> prodList; // has many(1:N) 관계
 	
-	private String mem_role;
+	private String mem_role;	
 	
 	private transient byte[] mem_img;
 	
 	public String getBase64Image() {
-		String  encoded =null;
-		if(mem_img!=null) {
+		String encoded = null;
+		if(mem_img!=null)
 			encoded = Base64.getEncoder().encodeToString(mem_img);
-		}
 		return encoded;
 	}
-	//CustomHttpSessionAttributeListener.java 여기랑 같음
+
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-		if("authMember".equals(event.getName())){
-       	 MemberVO authMember =(MemberVO)event.getValue();
-       	 ServletContext application = event.getSession().getServletContext();
-       	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
-       	 userList.add(this);
+		if("authMember".equals(event.getName())) {
+        	ServletContext application = event.getSession().getServletContext();
+        	Set<MemberVO> userList = 
+        			(Set) application.getAttribute(Constants.USERLISTATTRNAME);
+        	userList.add(this);
         }
 	}
 
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
-		if("authMember".equals(event.getName())){
-       	 MemberVO authMember =(MemberVO)event.getValue();
-       	 ServletContext application = event.getSession().getServletContext();
-       	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
-       	 userList.remove(this);
+		if("authMember".equals(event.getName())) {
+        	ServletContext application = event.getSession().getServletContext();
+        	Set<MemberVO> userList = 
+        			(Set) application.getAttribute(Constants.USERLISTATTRNAME);
+        	userList.remove(this);
         }
 	}
-	//
 	
 	public String getTest() {
 		return "테스트";

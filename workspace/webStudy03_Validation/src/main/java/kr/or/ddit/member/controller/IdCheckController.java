@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,14 +24,9 @@ public class IdCheckController{
 	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping(value="/member/idCheck.do", method=RequestMethod.POST)
-	public String idcheck(
-			@RequestParam(value="id",required=false)String mem_id,
-			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		String mem_id = req.getParameter("id");
-//		if(mem_id==null || mem_id.isEmpty()) {
-//			resp.sendError(400);
-//			return null;
-//		}
+	public String doPost(
+			@RequestParam("id") String mem_id
+			, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		try {

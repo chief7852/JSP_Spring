@@ -16,17 +16,18 @@ import org.slf4j.LoggerFactory;
 import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
 
 /**
-	1. 파일이 포함된 multipart 요청인지 식별.
-	2. multipart 요청이라면, 원본 요청을 wrapper로 변경.
-	3. wrapper를 이용해 Part 데이터를 쉽게 핸들링 할 수 있는 구조 설정.
+ * 1. 파일이 포함된 multipart 요청인지 식별.
+ * 2. multipart 요청이라면, 원본 요청을 wrapper로 변경.
+ * 3. wrapper 를 이용해 Part 데이터를 쉽게 핸들링할수 있는 구조 설정.
+ *
  */
 public class FileUploadRequestCheckFilter implements Filter{
-	private static final Logger logger = 
+	private static final Logger logger =
 			LoggerFactory.getLogger(FileUploadRequestCheckFilter.class);
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		logger.info("{} 필터 초기화", getClass().getName());
-		
 	}
 
 	@Override
@@ -34,20 +35,24 @@ public class FileUploadRequestCheckFilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String contentType = req.getContentType();
-		// 컨텐츠 타입확인하며 파일이 업로드되는지 확인
-		if(contentType != null && contentType.startsWith("multipart")) {
-			MultipartHttpServletRequest wrapper = new MultipartHttpServletRequest(req);
-			//성질이 변경된 데이터
+		if(contentType!=null 
+				&& contentType.startsWith("multipart")) {
+			MultipartHttpServletRequest wrapper 
+					= new MultipartHttpServletRequest(req);
 			chain.doFilter(wrapper, response);
-		}else {//일반적인 요청
+		}else {
 			chain.doFilter(request, response);
 		}
+		
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		logger.info("{} 필터 소멸", getClass().getName());
 	}
-	
+
 }
+
+
+
+

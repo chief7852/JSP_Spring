@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- appender : where layout : how message : logger : who logging event level 
-	: logger가 메시지를 기록할지 여부를 결정하는기준. debug -> info -> warn -> error -> fatal logger에 
-	설정된 이벤트 등급 이상의 이벤트 메시지만 기록 -->
+<!-- appender : where -->
+<!-- layout : how -->
+<!-- message : -->
+<!-- logger : who -->
+<!-- logging event level : logger 가 메시지를 기록할지 여부를 결정하는 기준. -->
+<!-- debug -> info -> warn -> error -> fatal -->
+<!-- logger 에 설정된 이벤트 등급 이상의 이벤트 메시지만 기록. -->
 <Configuration status="WARN">
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout
-				pattern="[%t] %-5level %logger{1.} - %msg%n" />
+				pattern="%-5level %logger{1.} - %msg%n" />
 		</Console>
 	</Appenders>
 	<Loggers>
@@ -24,3 +28,6 @@
 		</Root>
 	</Loggers>
 </Configuration>
+
+
+

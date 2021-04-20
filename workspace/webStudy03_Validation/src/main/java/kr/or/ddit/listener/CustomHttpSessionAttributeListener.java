@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import kr.or.ddit.Contants;
+import kr.or.ddit.Constants;
 import kr.or.ddit.vo.MemberVO;
 
 /**
@@ -17,29 +17,30 @@ import kr.or.ddit.vo.MemberVO;
 //@WebListener
 public class CustomHttpSessionAttributeListener implements HttpSessionAttributeListener {
 
-   
 	/**
      * @see HttpSessionAttributeListener#attributeAdded(HttpSessionBindingEvent)
      */
     public void attributeAdded(HttpSessionBindingEvent event)  { 
-         if("authMember".equals(event.getName())){
-        	 MemberVO authMember =(MemberVO)event.getValue();
-        	 ServletContext application = event.getSession().getServletContext();
-        	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
-        	 userList.add(authMember);
-         }
+        if("authMember".equals(event.getName())) {
+        	MemberVO authMember = (MemberVO)event.getValue();
+        	ServletContext application = event.getSession().getServletContext();
+        	Set<MemberVO> userList = 
+        			(Set) application.getAttribute(Constants.USERLISTATTRNAME);
+        	userList.add(authMember);
+        }
     }
 
 	/**
      * @see HttpSessionAttributeListener#attributeRemoved(HttpSessionBindingEvent)
      */
     public void attributeRemoved(HttpSessionBindingEvent event)  { 
-    	 if("authMember".equals(event.getName())){
-        	 MemberVO authMember =(MemberVO)event.getValue();
-        	 ServletContext application = event.getSession().getServletContext();
-        	 Set<MemberVO> userList =(Set)application.getAttribute(Contants.USERLISTATTRNAME);
-        	 userList.remove(authMember);
-         }
+    	if("authMember".equals(event.getName())) {
+        	MemberVO authMember = (MemberVO)event.getValue();
+        	ServletContext application = event.getSession().getServletContext();
+        	Set<MemberVO> userList = 
+        			(Set) application.getAttribute(Constants.USERLISTATTRNAME);
+        	userList.remove(authMember);
+        }
     }
 
 	/**

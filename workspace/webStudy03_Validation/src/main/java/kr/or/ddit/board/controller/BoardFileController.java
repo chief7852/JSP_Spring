@@ -19,33 +19,54 @@ import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 
 @Controller
 public class BoardFileController {
-	@RequestMapping(value = "/board/boardImapge.do", method = RequestMethod.POST)
-	public String imageUpload(@RequestPart("upload") MultipartFile upload, HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
-		String saveFolderURL = "/boardImages";
-		// 찐주소
+	@RequestMapping(value="/board/boardImage.do", method=RequestMethod.POST)
+	public String imageUpload(
+		@RequestPart("upload") MultipartFile upload
+		, HttpServletRequest req
+		, HttpServletResponse resp
+	) throws IOException {
+		String saveFolderURL= "/boardImages";
 		String saveFolderPath = req.getServletContext().getRealPath(saveFolderURL);
 		File saveFolder = new File(saveFolderPath);
 		Map<String, Object> resultMap = new HashMap<>();
-		if (!upload.isEmpty()) {
+		if(!upload.isEmpty()) {
 			upload.saveTo(saveFolder);
 			int uploaded = 1;
-			String fileName = upload.getOrinalFilename();
+			String fileName = upload.getOriginalFilename();
 			String saveName = upload.getUniqueSaveName();
 			String url = req.getContextPath() + saveFolderURL + "/" + saveName;
 			resultMap.put("uploaded", uploaded);
 			resultMap.put("fileName", fileName);
 			resultMap.put("url", url);
 		}
-
-		// mime설정
-		// 마샬링해서 직렬화 한뒤
-		// 출력될수있게
+		
 		resp.setContentType("application/json;charset=UTF-8");
-		PrintWriter out = resp.getWriter();
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(out, resultMap);
-
+		try(
+			PrintWriter out = resp.getWriter();	
+		){
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(out, resultMap);
+		}
+		
 		return null;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

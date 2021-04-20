@@ -2,6 +2,8 @@ package kr.or.ddit.board.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
@@ -10,12 +12,20 @@ import kr.or.ddit.vo.PagingVO;
  *
  */
 public interface IBoardDAO {
-	public int insertBoard(BoardVO board);
+	public int insertBoard(BoardVO board, SqlSession session);
 	public int selectBoardCount(PagingVO<BoardVO> pagingVO);
 	public List<BoardVO> selectBoardList(PagingVO<BoardVO> pagingVO);
-	//글번호와 검색타입으로도 검색하기위해서 BOardVO
 	public BoardVO selectBoard(BoardVO search);
-	public int updateBoard(BoardVO board);
+	public int updateBoard(BoardVO board, SqlSession session);
 	public int deleteBoard(BoardVO search);
-	
 }
+
+
+
+
+
+
+
+
+
+

@@ -52,12 +52,40 @@ public class PagingVO<T> implements Serializable{
 		startPage = endPage - (blockSize - 1);
 	}
 	
-	private static String aPattern = "<li class='page-item'><a href='#' data-page='%d'>[%s]</a><li>";
-	private static String currentPagePtrn= "<li class='page-item'><a href='#'>[%s]</a></li>";
+	private static String aPattern = "<a href='#' data-page='%d'>[%s]</a>";
+	private static String currentPagePtrn= "<a href='#'>[%s]</a>";
+	
+	public String getPagingHTML() {
+		StringBuffer html = new StringBuffer();
+		if(startPage > 1) {
+			html.append(
+				String.format(aPattern, (startPage-1), "이전")	
+			);
+		}
+		endPage = endPage < totalPage ? endPage : totalPage;
+		for(int page=startPage; page<=endPage; page++) {
+			if(page==currentPage) {
+				html.append(
+					String.format(currentPagePtrn, page+"")	
+				);
+			}else {
+				html.append(
+					String.format(aPattern, page, page+"")	
+				);
+			}
+		}
+		if(endPage < totalPage) {
+			html.append(
+				String.format(aPattern, (endPage + 1), "다음")	
+			);
+		}
+		return html.toString();
+	}
 	private static String pageItem = "<li class='page-item %s' %s>"
 			+"<a class='page-link' href='#' data-page='%d'>%s</a>"
 			+ "</li>";
-	public String getPagingHTML() {
+
+	public String getPagingHTMLBS() {
 		StringBuffer html = new StringBuffer();
 		html.append("<nav aria-label='...' class='mt-3'>");
 		html.append("<ul class='pagination'>");

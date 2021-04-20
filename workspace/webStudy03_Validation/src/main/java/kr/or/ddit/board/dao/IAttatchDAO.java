@@ -1,18 +1,19 @@
 package kr.or.ddit.board.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.vo.AttatchVO;
 import kr.or.ddit.vo.BoardVO;
 
 /**
-  첨부파일 관리를 위한 persistence layer
+ * 첨부파일 관리를 위한 persistence layer
  *
  */
 public interface IAttatchDAO {
-	//여러개 를 인서트하기위해 게시글 작성과 수정 둘다이용해야함
-	public int inserAttatches(BoardVO board);
-	//첨부파일 다운로드용 1개만 필요
+	public int insertAttatches(BoardVO board, SqlSession session);
 	public AttatchVO selectAttatch(int att_no);
-//	//첨부파일 3개 case cade옵션달아야 같이지워지는데 그러면 미들티어에있는 데이터 삭제하기 곤란함 
-	public int deleteAttatches(BoardVO board);
-	
+	public List<String> selectSaveNamesForDelete(BoardVO board);
+	public int deleteAttathes(BoardVO board, SqlSession session);
 }

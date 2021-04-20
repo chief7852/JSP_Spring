@@ -29,7 +29,6 @@ public class HandlerAdapter implements IHandlerAdapter {
 		argumentResolvers.add(new RequestPartArgumentResolver());
 	}
 	
-	//다른개발자가 어규먼트 넣을수있게
 	public void addHandlerMethodArgumentResolver(IHandlerMethodArgumentResolver...resolvers) {
 		argumentResolvers.addAll(Arrays.asList(resolvers));
 	}
@@ -40,7 +39,7 @@ public class HandlerAdapter implements IHandlerAdapter {
 			if(resolver.isSupported(parameter)) {
 				finded = resolver;
 				break;
-			};
+			}
 		}
 		return finded;
 	}
@@ -48,39 +47,45 @@ public class HandlerAdapter implements IHandlerAdapter {
 	@Override
 	public String invokeHandler(RequestMappingInfo mappingInfo, HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Object controllerObj = mappingInfo.getCommandHandler();
-		
-		Method handlerMethod = mappingInfo.getHandlerMethod();
-		
-		// 파라미터가 몇개인지 판단한다
-		int parameterCount =handlerMethod.getParameterCount();
+		Object controllerObj 
+			= mappingInfo.getCommandHandler();
+		Method handlerMethod 
+			= mappingInfo.getHandlerMethod();
+		int parameterCount = handlerMethod.getParameterCount();
 		Parameter[] parameters = handlerMethod.getParameters();
 		try {
-			// 파라미터를 안받는 케이스
-			if(parameterCount == 0) {
+			if(parameterCount==0) {
 				return (String)handlerMethod.invoke(controllerObj);
 			}
 			Object[] parameterValues = new Object[parameterCount];
-			
-			for(int idx = 0; idx < parameterCount;idx++) {
+			for(int idx = 0; idx < parameterCount; idx++) {
 				Parameter parameter = parameters[idx];
 				Class<?> parameterType = parameter.getType();
-				IHandlerMethodArgumentResolver resolver
-								= findArgumentResolver(parameter);	
-				if(resolver == null) {
+				IHandlerMethodArgumentResolver resolver = 
+								findArgumentResolver(parameter);
+				if(resolver==null)
 					throw new ServletException(
-						String.format("%s 타입의 핸들러 메소드 아규먼트는 처리할수 없음", parameterType.getName())
+						String.format("%s 타입의 핸들러 메소드 아규먼트는 처리할 수 없음", parameterType.getName())	
 					);
-				}
 				parameterValues[idx] = resolver.argumentResolve(parameter, req, resp);
 			}
 			return (String)handlerMethod.invoke(controllerObj, parameterValues);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new ServletException(e);
-		}catch (BadRequestException e) {
-			resp.sendError(400,e.getMessage());
+		} catch (BadRequestException e) {
+			resp.sendError(400, e.getMessage());
 			return null;
 		}
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

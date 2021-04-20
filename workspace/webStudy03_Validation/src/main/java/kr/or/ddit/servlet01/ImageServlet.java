@@ -1,29 +1,27 @@
 package kr.or.ddit.servlet01;
-import javax.servlet.http.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-
-import java.io.*;
-import java.net.URLEncoder;
-
-//@WebServlet("/01/image.do")
 @Controller
-public class ImageServlet {
+public class ImageServlet{
 
 	@RequestMapping("/01/image.do")
 	public String doGet(
-			@RequestParam("image")String imageFilename,
-			HttpServletRequest req,
-                     HttpServletResponse resp)
+			@RequestParam("image") String imageFilename
+			, HttpServletRequest req,
+              HttpServletResponse resp)
               throws ServletException,
                      IOException{
-		
-		
 		String folder = req.getServletContext().getInitParameter("contentFolder");			 
 		File imageFile = new File(folder, imageFilename);
 		if(!imageFile.exists()) {

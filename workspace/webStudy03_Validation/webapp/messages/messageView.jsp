@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-블라인드 처리사유 : <%=session.getAttribute("reason") %>
+블라인드 처리 사유 : <%=session.getAttribute("reason") %>
 <%
 	session.removeAttribute("reason");
 %>

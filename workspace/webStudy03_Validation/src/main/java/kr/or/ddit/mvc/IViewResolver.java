@@ -10,7 +10,7 @@ public interface IViewResolver {
 	public void setPrefix(String prefix);
 	public void setSuffix(String suffix);
 	
-	public void viewResolve(String viewName,HttpServletRequest req,
-							HttpServletResponse resp) throws ServletException,IOException;
-
+	public void viewResolve(String viewName, 
+			HttpServletRequest req, HttpServletResponse resp) 
+				throws ServletException, IOException;
 }

@@ -7,22 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
-<style type="text/css">
-	.preView{
-		width: 100px;
-		height: 100px;
-	}
-	.preView img{
-		size : auto;
-	}
-</style>
 <c:if test="${not empty message }">
 	<script type="text/javascript">
-		alert("${message}")
+		alert("${message}");
 	</script>
-	<c:remove var="message" scope="session" />
+	<c:remove var="message" scope="session"/>
 </c:if>
-
 </head>
 <body>
 <h4>게시글 목록 조회</h4>
@@ -50,18 +40,17 @@
 							<c:param name="what" value="${board.bo_no }" />
 						</c:url>
 						<c:choose>
-							<c:when test="${board.bo_sec eq 'Y'}">
-									<a class="secret" href="#">
-								${board.bo_title }
+							<c:when test="${board.bo_sec eq 'Y' }">
+								<a class="secret" href="${viewURL }">
+									${board.bo_title }
 								</a>
 							</c:when>
 							<c:otherwise>
 								<a class="nonsecret" href="${viewURL }"  data-toggle="popover" title="Popover title" >
-								${board.bo_title }
+									${board.bo_title }
 								</a>
 							</c:otherwise>
 						</c:choose>
-						
 					</td>
 					<td>${board.bo_writer }</td>
 					<td>${board.bo_date }</td>
@@ -72,7 +61,7 @@
 		</c:when>
 		<c:otherwise>
 			<tr>
-				<td colspan="8">
+				<td colspan="7">
 					조건에 맞는 게시글이 없음.
 				</td>
 			</tr>
@@ -81,44 +70,46 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="6">
-					<form id="searchForm" hidden>
-						<input type="text" name="searchType" value="${pagingVO.searchMap.searchType }"/>
-						<input type="text" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
-						<input type="text" name="minDate" value="${pagingVO.searchMap.minDate }"/>
-						<input type="text" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
-						<input type="text" name="page" />
-					</form>
-					<div id="searchUI" class="d-flex justify-content-center">
-						<select name="searchType">
-							<option value>전체</option>
-							<option value="title">제목</option>
-							<option value="writer">작성자</option>
-							<option value="content">내용</option>
-							<option value="type">게시판종류</option>
-						</select>
-						<input type="text" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
-						<input type="date" name="minDate" value="${pagingVO.searchMap.minDate }" />
-						<input type="date" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
-						<input id="searchBtn" type="button" value="검색" />
-						
-						
-						<button type="button"><a href="${cPath }/board/boardInsert.do">새글작성</a></button>
-					</div>
+			<td colspan="7">
+				<form id="searchForm">
+					<input type="hidden" name="searchType" value="${pagingVO.searchMap.searchType }"/>
+					<input type="hidden" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
+					<input type="hidden" name="minDate" value="${pagingVO.searchMap.minDate }"/>
+					<input type="hidden" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
+					<input type="hidden" name="page" />
+				</form>
+				<div id="searchUI" class="form-inline d-flex justify-content-center">
+					<select name="searchType" class="form-control mr-2">
+						<option value>전체</option>
+						<option value="title">제목</option>
+						<option value="writer">작성자</option>
+						<option value="content">내용</option>
+						<option value="type">게시판종류</option>
+					</select>
+					<input class="form-control mr-2" type="text" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
+					<input class="form-control mr-2" type="date" name="minDate" value="${pagingVO.searchMap.minDate }" />
+					<input class="form-control mr-2" type="date" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
+					<input class="btn btn-primary mr-2" id="searchBtn" type="button" value="검색" />
+					<input class="goBtn btn btn-success" type="button" value="새글쓰기" 
+						data-gopage="<c:url value='/board/boardInsert.do'/>"
+					/>
+					<input type="button" value="공지글쓰기"
+						onclick="location.href='${cPath}/board/noticeInsert.do';"
+					/>
+				</div>
 				<div id="pagingArea" class="d-flex justify-content-center">
-					
-					
-					
-					${pagingVO.pagingHTML }
-					
-					
-					
+					${pagingVO.pagingHTMLBS }
 				</div>
 			</td>
 		</tr> 
 	</tfoot>
 </table>
 <script type="text/javascript">
+	$(".goBtn").on("click", function(){
+		let url = $(this).data("gopage");
+		if(url)
+			location.href = url;
+	});
 	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.searchMap.searchType }");
@@ -144,7 +135,6 @@
 	
 	$(function () {
 		$("#listBody a.nonsecret").hover(function(){
-			
 			$(this).popover({
 				html:true
 				, content:function(){
@@ -166,34 +156,12 @@
 						}
 					});
 					console.log(2);
-					retValue = $("<div>").addClass("preView").html(retValue)
 					return retValue;
 				}
 			}).popover("toggle")
 		});
 // 	  $('[data-toggle="popover"]').popover()
 	});
-	/* 	<a class="secret" href="${viewURL }">
-								${board.bo_title }
-								</a> */
-	$(".secret").on('click',function(){
-		let bono = 
-		let cpass = prompt("비밀번호입력하십시오")
-		$.ajax({
-			url : "/board/authenticate.do",
-			method : "",
-			data : "",
-			dataType : "",
-			success : function(resp) {
-
-			},
-			error : function(xhr, error, msg) {
-				console.log(xhr);
-				console.log(error);
-				console.log(msg);
-			}
-		});
-	})
 </script>
 
 <jsp:include page="/includee/postScript.jsp" />

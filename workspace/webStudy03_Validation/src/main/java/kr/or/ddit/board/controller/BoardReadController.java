@@ -6,13 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -29,7 +25,7 @@ import kr.or.ddit.vo.SearchVO;
 public class BoardReadController {
 	public static final String BOARDAUTH = "board.authenticated";
 	private IBoardService service = new BoardServiceImpl();
-	private static Logger logger = LoggerFactory.getLogger(BoardReadController.class);
+	
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
 	public String boardAuth(
 		@RequestParam("bo_no") int bo_no
@@ -39,7 +35,6 @@ public class BoardReadController {
 		BoardVO search = new BoardVO();
 		search.setBo_no(bo_no);
 		search.setBo_pass(bo_pass);
-		logger.info("{} 패스워드 없음", bo_pass);
 		String view = null;
 		if(service.boardAuthenticate(search)) {
 			session.setAttribute(BOARDAUTH, search);
@@ -93,6 +88,21 @@ public class BoardReadController {
 		
 		session.removeAttribute(BOARDAUTH);
 		return view;
+	}
+	
+	@RequestMapping("/board/noticeList.do")
+	public String noticeList(
+			@RequestParam(value="searchType", required=false) String searchType
+			, @RequestParam(value="searchWord", required=false) String searchWord
+			, @RequestParam(value="page", required=false, defaultValue="1") int currentPage
+			, @RequestParam(value="minDate", required=false) String minDate
+			, @RequestParam(value="maxDate", required=false) String maxDate
+			, HttpServletRequest req
+			) {
+		searchType = "type";
+		searchWord = "NOTICE";
+		return list(currentPage, searchType, 
+				searchWord, minDate, maxDate, req);
 	}
 	
 	@RequestMapping("/board/boardList.do")

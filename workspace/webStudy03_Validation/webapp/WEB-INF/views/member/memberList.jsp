@@ -1,7 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +10,7 @@
 </head>
 <body>
 <h4>회원 목록 조회</h4>
-<table border="1">
+<table>
 	<thead>
 		<tr>
 			<th>No.</th>
@@ -25,7 +24,6 @@
 		</tr>
 	</thead>
 	<tbody>
-
 	<c:choose>
 		<c:when test="${not empty pagingVO.dataList }">
 			<c:forEach items="${pagingVO.dataList }" var="member">
@@ -34,32 +32,28 @@
 					<td>${member.mem_id }</td>
 					<td>
 					<c:url value="/member/memberView.do" var="viewURL">
-						<c:param name="who" value="${member.mem_id }" ></c:param>
+						<c:param name="who" value="${member.mem_id }" />
 					</c:url>
-					<a href="${viewURL }">
-					${member.mem_name }
-					</a>
+					<a href="${viewURL }">${member.mem_name }</a>
 					</td>
 					<td>${member.mem_mail }</td>
 					<td>${member.mem_hp }</td>
 					<td>${member.mem_mileage }</td>
 					<td>
-						${"Y" eq member.mem_delete ? "탈퇴":"" }
-						
+						${"Y" eq member.mem_delete ? "탈퇴":""}
 					</td>
 					<td>${member.mem_add1 }</td>
 				</tr>
 			</c:forEach>
 		</c:when>
 		<c:otherwise>
-		<tr>
+			<tr>
 				<td colspan="8">
 					등록된 회원이 없음.
 				</td>
 			</tr>
 		</c:otherwise>
 	</c:choose>
-	
 	</tbody>
 	<tfoot>
 		<tr>
@@ -79,7 +73,7 @@
 						<input id="searchBtn" type="button" value="검색" />
 					</div>
 				<div id="pagingArea">
-				${pagingVO.pagingHTML }
+					${pagingVO.pagingHTML }
 				</div>
 			</td>
 		</tr> 

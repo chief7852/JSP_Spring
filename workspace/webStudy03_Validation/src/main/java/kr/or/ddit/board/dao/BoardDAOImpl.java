@@ -1,43 +1,31 @@
 package kr.or.ddit.board.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
 public class BoardDAOImpl implements IBoardDAO {
-	
-	private static BoardDAOImpl self;
-	public BoardDAOImpl() {}
-	public static BoardDAOImpl getInstance() {
-		if(self==null) self = new BoardDAOImpl();
-		return self;
-	}
-	
-	public SqlSessionFactory connecFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
+	private SqlSessionFactory sessionFactory =
+			CustomSqlSessionFactoryBuilder.getSessionFactory();
+	private static Logger logger = LoggerFactory.getLogger(BoardDAOImpl.class);
 	@Override
-	public int insertBoard(BoardVO board) {
-		int result = 0;
-		try (
-				SqlSession session = connecFactory.openSession(false);
-				){
-			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			result = mapper.insertBoard(board);
-			session.commit();
-			return result;
-		}
+	public int insertBoard(BoardVO board, SqlSession session) {
+			return session.insert("kr.or.ddit.board.dao.IBoardDAO.insertBoard",board);
 	}
 
 	@Override
 	public int selectBoardCount(PagingVO<BoardVO> pagingVO) {
-		try (
-				SqlSession session = connecFactory.openSession(false);
-				){
+		try(
+			SqlSession session = sessionFactory.openSession();	
+		){
 			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
 			return mapper.selectBoardCount(pagingVO);
 		}
@@ -45,33 +33,28 @@ public class BoardDAOImpl implements IBoardDAO {
 
 	@Override
 	public List<BoardVO> selectBoardList(PagingVO<BoardVO> pagingVO) {
-		List<BoardVO> boardList = new ArrayList<BoardVO>();
-		try (
-				SqlSession session = connecFactory.openSession(false);
-				){
+		try(
+			SqlSession session = sessionFactory.openSession();	
+		){
 			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			boardList = mapper.selectBoardList(pagingVO);
+			return mapper.selectBoardList(pagingVO);
 		}
-		
-		return boardList;
-	}
-	
-	@Override
-	public BoardVO selectBoard(BoardVO search) {
-		BoardVO result = new BoardVO();
-		try (
-				SqlSession session = connecFactory.openSession(false);
-				){
-			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			result = mapper.selectBoard(search);
-		}
-		return result;
 	}
 
 	@Override
-	public int updateBoard(BoardVO board) {
-		// TODO Auto-generated method stub
-		return 0;
+	public BoardVO selectBoard(BoardVO search) {
+		try(
+			SqlSession session = sessionFactory.openSession();	
+		){
+			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+			return mapper.selectBoard(search);
+		}
+	}
+
+	@Override
+	public int updateBoard(BoardVO board, SqlSession session) {
+				
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.updateBoard",board);
 	}
 
 	@Override

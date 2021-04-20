@@ -21,13 +21,13 @@ import org.slf4j.LoggerFactory;
 import kr.or.ddit.vo.MemberVO;
 
 /**
- * 이미 인증을 거치고 온 요청에 대해
+ * 이미 인증을 거치고 온 요청에 대해 
  * 현재 보호 자원에 대한 접근 허용 여부를 확인할 필터.
  *
  */
 public class AuthorizationFilter implements Filter{
-	private static final Logger logger = 
-			LoggerFactory.getLogger(AuthenticationFilter.class);
+	private static final Logger logger =
+			LoggerFactory.getLogger(AuthorizationFilter.class);
 	private ServletContext application;
 	private int statusCode = HttpServletResponse.SC_UNAUTHORIZED;
 	@Override
@@ -37,42 +37,47 @@ public class AuthorizationFilter implements Filter{
 		if(scStr!=null && StringUtils.isNumeric(scStr)) {
 			statusCode = Integer.parseInt(scStr);
 		}
-		this.application = filterConfig. getServletContext();
+		this.application = filterConfig.getServletContext();
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		Map<String, String[]> securedResources = (Map)application.getAttribute(AuthenticationFilter.RESOUCEMAPNAME);
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
+		Map<String, String[]> securedResources =
+				(Map)application.getAttribute(AuthenticationFilter.RESOUCEMAPNAME);
+		
+		HttpServletRequest req = 
+				(HttpServletRequest) request;
+		HttpServletResponse resp = 
+				(HttpServletResponse) response;
+		// 1. 보호 자원에 대한 요청인지 식별
 		String uri = req.getRequestURI();
-		uri = uri.substring(req.getContextPath().length()).split(";")[0];
+ 		uri = uri.substring(req.getContextPath().length())
+ 								.split(";")[0];
+ 		boolean secured = securedResources.containsKey(uri);
 		
-		boolean secured = securedResources.containsKey(uri);
-		boolean pass = true;
-		if(secured) {
-			String[] resRoles =securedResources.get(uri);
-			MemberVO authMember = (MemberVO)req.getSession().getAttribute("authMember");
-			String userRole = authMember.getMem_role();
-			if(Arrays.binarySearch(resRoles, userRole)<0) {
-				pass = false;
-			};
-		}
-		
-		if(pass) {
-			chain.doFilter(request, response);
-		}else {
-			resp.sendError(statusCode,
-					String.format("%s 자원에 대한 권한이 없음.",uri)
-					);
-		}
+ 		boolean pass = true;
+ 		if(secured) {
+  			String[] resRoles = securedResources.get(uri);
+   			MemberVO authMember = 
+   				(MemberVO) req.getSession().getAttribute("authMember");
+    		String userRole = authMember.getMem_role();
+    		if(Arrays.binarySearch(resRoles, userRole)<0) {
+    			pass = false;
+    		}
+ 		}
+ 		
+ 		if(pass) {
+ 			chain.doFilter(request, response);
+ 		}else {
+ 			resp.sendError(statusCode, 
+ 				String.format("%s 자원에 대한 권한이 없음.", uri)
+			);
+ 		}
 	}
 
 	@Override
 	public void destroy() {
-		logger.info("{} 필터 소멸", getClass().getName());
-		
-	}
-	
+		logger.info("{} 필터 소멸", getClass().getName());	}
+
 }

@@ -54,6 +54,7 @@ public class ProdInsertController{
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
+//		EventDrivenDevelopment/TestDrivenDevelopment
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
 		if(!saveFolder.exists()) {

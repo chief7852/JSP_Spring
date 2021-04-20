@@ -74,7 +74,7 @@ for(String child : children){
 <div id="imageArea"></div>
 <form method="post" enctype="multipart/form-data">
 	<input type="file" name="uploadImage" />
-	<input type="submit" value="업로드">
+	<input type="submit" value="업로드" />
 </form>
 </body>
 </html>

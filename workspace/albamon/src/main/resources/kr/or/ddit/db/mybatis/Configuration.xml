@@ -2,12 +2,10 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 <properties resource="kr/or/ddit/db/dbinfo.properties"/>
-<settings>
-	<setting name="mapUnderscoreToCamelCase" value="true"/>
-</settings>
-<!-- subDB가 존재할경우 기본사용할 enviroment의 id -->
+	<typeAliases>
+		<package name="kr.or.ddit.vo"/>
+	</typeAliases>
 <environments default="dev">
-<!--  -->
 	<environment id="dev">
 		<transactionManager type="JDBC" />
 		<dataSource type="POOLED" >

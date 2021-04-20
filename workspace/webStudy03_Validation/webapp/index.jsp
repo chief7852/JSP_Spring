@@ -1,12 +1,8 @@
-<%@page import="java.util.Map"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="kr.or.ddit.Contants"%>
-<%@page import="org.apache.logging.log4j.util.Constants"%>
+<%@page import="kr.or.ddit.Constants"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <!-- 커스텀태그 지시자 taglib -->
- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,13 +12,10 @@
 <body>
 <h4>Welcome Page~</h4>
 <pre>
-	누적 방문자수 <%=application.getAttribute(Contants.SESSIONCOUNTATTRNAE) %>
-	
+	누적 방문자수 : <%=application.getAttribute(Constants.SESSIONCOUNTATTRNAME) %>
 </pre>
 <ul>
-<!-- for문임 var는 블럭변수인데 속성인상태 page에 넣어놓는다 -->
 	<c:forEach items="${userList }" var="user">
-	<%-- <li><%=page. %></li> --%>
 		<li>${user.mem_name }</li>
 	</c:forEach>
 </ul>
@@ -32,7 +25,6 @@
 		%>
 		<form name="logoutForm" method="post" action="<%=request.getContextPath() %>/login/logout.do"></form>
 		<a href="<%=request.getContextPath() %>/mypage.do"><%=authMember.getMem_name() %></a>님 [<%=authMember.getMem_role() %>]
-		"<%=authMember.getMem_img()%>"
 		<a href="#" onclick="clickHandler(event);">로그아웃</a>
 		<script type="text/javascript">
 			function clickHandler(event){
@@ -45,7 +37,7 @@
 	}else{
 		%>
 		<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인</a>
-		<a href="<%=request.getContextPath() %>/member/memberInsert.do">회원가입</a>
+		<a href="<%=request.getContextPath() %>/member/memberInsert.do">회원 가입</a>
 		<%
 	}
 %>

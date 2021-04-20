@@ -47,13 +47,12 @@ public interface IMemberService {
 	 * @return 조건에 맞는 회원이 없으면, size()==0
 	 */
 	public List<MemberVO> retrieveMemberList(PagingVO pagingVO);
-	
 	/**
-	 * 페이징처리를 위한
-	 * @param pagingVO TODO
+	 * 페이징 처리를 위한 회원수 조회
+	 * @param paingVO TODO
 	 * @return
 	 */
-	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO);
+	public int retrieveMemberCount(PagingVO<MemberVO> paingVO);
 }
 
 

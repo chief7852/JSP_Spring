@@ -13,21 +13,20 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(of="att_no")
 @NoArgsConstructor
-//제외용
 @ToString(exclude="file")
 public class AttatchVO implements Serializable{
-// 직렬화할때 지우기위한 transient
+	
 	private transient MultipartFile file;
 	
 	public AttatchVO(MultipartFile file) {
 		super();
 		this.file = file;
-		this.att_filename = file.getOrinalFilename();
+		this.att_filename = file.getOriginalFilename();
 		this.att_savename = file.getUniqueSaveName();
 		this.att_contenttype = file.getContentType();
 		this.att_size = file.getFileSize();
 	}
-
+	
 	private Integer bo_no;
 	private Integer att_no;
 	private String att_filename;
@@ -36,10 +35,17 @@ public class AttatchVO implements Serializable{
 	private String att_contenttype;
 	private Integer att_downcount;
 	
-	
-	//미들티어 저장용
 	public void saveTo(File saveFolder) throws IOException {
-		
-		file.transferTo(new File(saveFolder,att_savename));
+		file.transferTo(new File(saveFolder, att_savename));
 	}
 }
+
+
+
+
+
+
+
+
+
+

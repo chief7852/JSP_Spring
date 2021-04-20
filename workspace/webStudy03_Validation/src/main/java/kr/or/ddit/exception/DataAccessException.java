@@ -1,8 +1,7 @@
 package kr.or.ddit.exception;
 
 /**
- * Persistence Layer 에서만 사용할 예외로 정의
- * 
+ * Persistence Layer 에서만 사용할 예외로 정의.
  *
  */
 public class DataAccessException extends RuntimeException{
@@ -31,5 +30,5 @@ public class DataAccessException extends RuntimeException{
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

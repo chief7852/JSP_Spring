@@ -35,7 +35,7 @@ public class ConnectionFactory {
 //         properties.load(is);
 	   
 	   // class인것처럼 받아오기때문에 퀄러파일네임을 /이아니라 .으로 받아온다
-	   ResourceBundle bundle = ResourceBundle.getBundle("kr.or.ddit.db.dbInfo",Locale.ENGLISH);
+	   ResourceBundle bundle = ResourceBundle.getBundle("kr.or.ddit.db.dbInfo",Locale.KOREA);
 	   	
         // 받아오는형식 bundle.getString(key);
 	   // 기존 properties.getProperty

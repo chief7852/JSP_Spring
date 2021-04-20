@@ -1,5 +1,4 @@
 package kr.or.ddit.mvc.filter.wrapper;
-// 파트를 wrapping하는과정 Adapter
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,42 +16,33 @@ public class MultipartFile {
 	private String originalFilename;
 	private String uniqueSaveName;
 	private boolean empty;
-	
-	public MultipartFile(Part adapter) {
+
+	public MultipartFile(Part adaptee) {
 		super();
-		this.adaptee = adapter;
+		this.adaptee = adaptee;
 		String disposition = adaptee.getHeader("Content-Disposition");
 		int index = disposition.indexOf("\"", disposition.indexOf("filename="));
-		if (index != -1) {
-			originalFilename = disposition.substring(index).replace("\"", "");
+		if(index!=-1) {
+ 			originalFilename = disposition.substring(index).replace("\"", "");
 		}
-		
-		//원본파일이 비어있으면
 		empty = StringUtils.isBlank(originalFilename);
-		//확장자 제거와 업로드한사람이 최근 저장한파일이름을 알지못하게하기위해
 		this.uniqueSaveName = UUID.randomUUID().toString();
 	}
-
+	
 	public String getName() {
-
 		return adaptee.getName();
 	}
-
+	
 	public String getContentType() {
 		return adaptee.getContentType();
 	}
-
+	
 	public long getFileSize() {
 		return adaptee.getSize();
 	}
-
-	// 기존인터페이스에서 없던 값추가
-	public String getOrinalFilename() {
+	
+	public String getOriginalFilename() {
 		return originalFilename;
-	}
-
-	public String getSaveName() {
-		return null;
 	}
 	
 	public String getUniqueSaveName() {
@@ -63,13 +53,12 @@ public class MultipartFile {
 		return adaptee.getInputStream();
 	}
 	
-	public void saveTo(File saveFolder) throws IOException {
-		File saveFile = new File(saveFolder,uniqueSaveName);
-		// 파일 전체 퀄러파일네임을 요청
+	public void saveTo(File saveFolder) throws IOException{
+		File saveFile = new File(saveFolder, uniqueSaveName);
 		adaptee.write(saveFile.getAbsolutePath());
 	}
 	
-	public void transferTo(File dest) throws IOException {
+	public void transferTo(File dest) throws IOException{
 		this.uniqueSaveName = dest.getName();
 		adaptee.write(dest.getAbsolutePath());
 	}
@@ -77,16 +66,24 @@ public class MultipartFile {
 	public boolean isEmpty() {
 		return empty;
 	}
-
+	
 	public byte[] getBytes() throws IOException {
 		try(
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			InputStream is = getInputStream();
-		){//commons io라이브러리
+		){
 			IOUtils.copy(is, os);
 			return os.toByteArray();
-	
 		}
-
 	}
 }
+
+
+
+
+
+
+
+
+
+

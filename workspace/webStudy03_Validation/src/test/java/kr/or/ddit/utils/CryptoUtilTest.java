@@ -9,13 +9,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CryptoUtilTest {
-	private static final Logger logger = LoggerFactory.getLogger(CryptoUtilTest.class);
-	
+	private static final Logger logger =
+			LoggerFactory.getLogger(CryptoUtilTest.class);
+
 	@Test
 	public void testSha512() throws NoSuchAlgorithmException {
 		String str = "java";
 		String encoded = CryptoUtil.sha512(str);
-		logger.debug("인코딩된 값 : {}",encoded);
+		logger.debug("인코딩된 값 : {}", encoded);
 	}
 
 }
+
+
+
+
+
+

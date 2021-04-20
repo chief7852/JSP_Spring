@@ -6,16 +6,17 @@ import java.io.Reader;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.w3c.dom.ranges.RangeException;
 
 public class CustomSqlSessionFactoryBuilder {
 	private static SqlSessionFactory sessionFactory;
+	
 	static {
 		String xmlRes = "kr/or/ddit/db/mybatis/Config.xml";
 		try(
-				Reader reader = Resources.getResourceAsReader(xmlRes);
-			) {
-			 sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+			Reader reader = Resources.getResourceAsReader(xmlRes);
+		){
+			sessionFactory = 
+					new SqlSessionFactoryBuilder().build(reader);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

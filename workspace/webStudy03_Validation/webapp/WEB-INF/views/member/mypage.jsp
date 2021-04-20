@@ -1,7 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +9,6 @@
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-	
 	<h4>${member.mem_name }님의 마이페이지
 	</h4>
 	<table>
@@ -21,12 +19,8 @@
 		<tr>
 			<th>프로필</th>
 			<td>
-				<img src="data:image/*;base64,${member.base64Image}" />
+				<img src="data:image/*;base64,${member.base64Image }">
 			</td>
-		</tr>
-		<tr>
-			<th>비밀번호</th>
-			<td>${member.mem_pass }</td>
 		</tr>
 		<tr>
 			<th>이름</th>
@@ -116,39 +110,37 @@
 							<th>판매가</th>
 							<th>마일리지</th>
 						</tr>
-						
 					</thead>
 					<tbody>
-					<c:forEach items="${member.prodList }" var="prod">
+						<c:set var="prodList" value="${member.prodList }" />
 						<c:choose>
-							<c:when test="${not empty prod}">
-						
-							<tr>
-										<td>${prod["prod_id"]}</td>
-										<td><a href="<%=request.getContextPath() %>/prod/prodView.do?what=${prod['prod_id']}">${prod["prod_name"]}</a></td>
-										<td>${prod["prod_lgu"]}</td>
-										<td>${prod["prod_buyer"]}</td>
-										<td>${prod["prod_cost"]}</td>
-										<td>${prod["prod_price"]}</td>
-										<td>${prod["prod_mileage"]}</td>
+							<c:when test="${not empty prodList }">
+								<c:forEach items="${prodList }" var="prod">
+									<tr>
+										<td>${prod.prod_id }</td>
+										<td><a href="${cPath }/prod/prodView.do?what=${prod.prod_id }">${prod.prod_name }</a></td>
+										<td>${prod.lprod_nm }</td>
+										<td>${prod.buyer.buyer_name }</td>
+										<td>${prod.prod_cost }</td>
+										<td>${prod.prod_price }</td>
+										<td>${prod.prod_mileage }</td>
 									</tr>
-						</c:when>
-						<c:otherwise>
-						<tr>
-										<td colspan="7">
-										구매기록없음
-										</td>
-									</tr>
-						</c:otherwise>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="7">
+										구매기록이 없음.
+									</td>
+								</tr>
+							</c:otherwise>
 						</c:choose>
-					</c:forEach>
-						
 					</tbody>
 				</table>
 			</td>
 		</tr>
 	</table>
-	<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
+	<form id="deleteForm" action="${cPath }/member/memberDelete.do" method="post">
 		<input type="hidden" name="password" />
 	</form>
 	<script type="text/javascript">
@@ -156,7 +148,7 @@
 		$(".controlBtn").on("click", function(){
 			let btnId = $(this).prop("id");
 			if(btnId == "updateBtn"){
-				location.href="<%=request.getContextPath() %>/member/memberUpdate.do";
+				location.href="${cPath }/member/memberUpdate.do";
 			}else if(btnId == "deleteBtn"){
 				let password = prompt("비번 입력");
 				if(!password){

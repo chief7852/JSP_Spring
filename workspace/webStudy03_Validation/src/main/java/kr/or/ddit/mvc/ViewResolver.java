@@ -7,10 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ViewResolver implements IViewResolver{
-	
+public class ViewResolver implements IViewResolver {
 	private String prefix;
 	private String suffix;
+	
 	@Override
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
@@ -29,8 +29,18 @@ public class ViewResolver implements IViewResolver{
 			viewName = viewName.substring("redirect:".length());
 			resp.sendRedirect(req.getContextPath() + viewName);
 		}else {
-			req.getRequestDispatcher(Objects.toString(prefix,"")+viewName+Objects.toString(suffix,"")).forward(req, resp);
+			req.getRequestDispatcher(
+					Objects.toString(prefix, "")
+					+viewName
+					+Objects.toString(suffix, "")).forward(req, resp);
 		}
 	}
 
 }
+
+
+
+
+
+
+

@@ -4,40 +4,46 @@
   <short-name>my</short-name>
   <uri>http://www.ddit.or.kr</uri>
   
-  <!-- 함수만들기  -->
- <function>
- <!-- 함수이름 -->
- 	<name>getAvailableIDs</name>
- 	<!-- 클래스 끌고오고 -->
- 	<function-class>java.util.TimeZone</function-class>
- 	<function-signature>java.lang.String[] getAvailableIDs()</function-signature>
- 	<!-- 샘플 -->
- 	<example>
- 		${my:getAvailableIDs()}
- 	</example>
- </function>
- <function>
- 	<name>getTimeZone</name>
- 	<function-class>java.util.TimeZone</function-class>
- 	<function-signature>java.util.TimeZone getTimeZone(java.lang.String)</function-signature>
- 	<example>
- 		${my:getTimeZone()}
- 	</example>
- </function>
- <function>
- 	<name>getDefaultTimeZone</name>
- 	<function-class>java.util.TimeZone</function-class>
- 	<function-signature>java.util.TimeZone getDefault()</function-signature>
- 	<example>
- 		${my:getDefaultTimeZone()}
- 	</example>
- </function>
- <function>
- 	<name>getNow</name>
- 	<function-class>kr.or.ddit.calendar.DateTime</function-class>
- 	<function-signature>java.util.Date DateCall()</function-signature>
- 	<example>
- 	${my:getNow()}
- 	</example>
- </function>
+  <function>
+  	<name>getAvailableIDs</name>
+  	<function-class>java.util.TimeZone</function-class>
+  	<function-signature>java.lang.String[] getAvailableIDs()</function-signature>
+  	<example>
+  		${my:getAvailableIDs() }
+  	</example>
+  </function>
+  <function>
+  	<name>getTimeZone</name>
+  	<function-class>java.util.TimeZone</function-class>
+  	<function-signature>java.util.TimeZone getTimeZone(java.lang.String)</function-signature>
+  	<example>
+  		${my:getTimeZone("id") }
+  	</example>
+  </function>
+  <function>
+  	<name>getDefaultTimeZone</name>
+  	<function-class>java.util.TimeZone</function-class>
+  	<function-signature>java.util.TimeZone getDefault()</function-signature>
+  	<example>
+  		${my:getDefaultTimeZone() }
+  	</example>
+  </function>
+  <function>
+  	<name>getNow</name>
+  	<function-class>kr.or.ddit.utils.FunctionDate</function-class>
+  	<function-signature>java.util.Date getNow()</function-signature>
+  </function>
 </taglib>
+
+
+
+
+
+
+
+
+
+
+
+
+

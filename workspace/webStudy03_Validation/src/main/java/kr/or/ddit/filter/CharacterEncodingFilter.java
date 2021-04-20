@@ -10,13 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 public class CharacterEncodingFilter implements Filter{
-	private String encoding = "UTF-8";
+	private String encoding="UTF-8";
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
-		String param = filterConfig.getInitParameter("encoding");
-		if(param!=null)
-			encoding = param;
+ 		String param = filterConfig.getInitParameter("encoding");
+ 		if(param!=null)
+ 			encoding = param;
 	}
 
 	@Override
@@ -24,7 +24,6 @@ public class CharacterEncodingFilter implements Filter{
 			throws IOException, ServletException {
 		request.setCharacterEncoding(encoding);
 		chain.doFilter(request, response);
-		
 	}
 
 	@Override
@@ -32,5 +31,5 @@ public class CharacterEncodingFilter implements Filter{
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

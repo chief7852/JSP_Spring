@@ -3,16 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>kr.or.ddit</groupId>
-	<artifactId>albamon</artifactId>
+	<artifactId>webStudy03_Validation</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	<!-- properties(변수?) -->
 	<properties>
-	<java-version>1.8</java-version>
+		<java-version>1.8</java-version>
 		<log4j-version>2.14.1</log4j-version>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
 	</properties>
-	<!-- 메이븐 설정 -->
 	<build>
 		<plugins>
 			<plugin>
@@ -35,49 +33,38 @@
 		</plugins>
 	</build>
 	<repositories>
-	<!-- ojdbc사용하려면 유료라서 jahia 사이트에서 가져오기위해 하는 설정 -->
 		<repository>
 			<id>jahia</id>
-			<url>http://maven.jahia.org/maven2</url>
+			<url>http://maven.jahia.org/maven2/</url>
 		</repository>
 	</repositories>
 	<dependencies>
-	<!-- 서블릿 api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- jsp api -->
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>javax.servlet.jsp-api</artifactId>
 			<version>2.2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- JSTL -->
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
-		<!-- ojdbc -->
+
+		<!-- DB Connection -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>12.1.0.2</version>
 		</dependency>
-		<!-- mysql connect -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.39</version>
-		</dependency>
-		<!-- DB Connection -->
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2/2.8.0 -->
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
@@ -89,15 +76,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!-- lang3 문자열을 조금더 자유자재로 사용하기위해 -->
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.6</version>
 		</dependency>
-		<!-- Marshalling from jackson -->
+		<!-- Marshalling -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -106,8 +91,6 @@
 		</dependency>
 		<!-- commons 계열 -->
 		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-		
-		<!-- jsp에서 넘어온 데이터를 javabean객체에 맞춰 정리하기위함 -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -119,22 +102,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- 파일 업로드  -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.8.0</version>
 		</dependency>
-		<!-- mybatis -->
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.5.6</version>
-		</dependency>
-		<!-- log4j 로그용-->
-		<!-- http://logging.apache.org/log4j/2.x/maven-artifacts.html -->
+
+		<!-- logging framework -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
@@ -142,10 +123,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${log4j-version}</version>
 		</dependency>
-		<!-- slf4j logger객체 이용하기위해  -->
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -157,14 +142,13 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${org.slf4j-version}</version>
 		</dependency>
-		<!-- log4jdbc -->
 		<!-- https://mvnrepository.com/artifact/org.lazyluke/log4jdbc-remix -->
 		<dependency>
 			<groupId>org.lazyluke</groupId>
 			<artifactId>log4jdbc-remix</artifactId>
 			<version>0.2.7</version>
 		</dependency>
-		<!-- lombok domain layer용 -->
+		<!-- Domain Layer 용 -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -172,7 +156,6 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 검증처리 도메인레이어에서 어노테이션으로 먹이는거  -->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -183,7 +166,12 @@
 			<artifactId>jakarta.el</artifactId>
 			<version>3.0.3</version>
 		</dependency>
-		<!-- junit 테스트용 라이브러리 -->
+		<!-- XSS 공격 방어용 필터 -->
+		<dependency>
+			<groupId>com.navercorp.lucy</groupId>
+			<artifactId>lucy-xss-servlet</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -193,3 +181,8 @@
 		</dependency>
 	</dependencies>
 </project>
+
+
+
+
+

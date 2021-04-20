@@ -8,14 +8,20 @@ import kr.or.ddit.vo.ProdVO;
 
 public class ProdDAOImplTest {
 	private IProdDAO dao = ProdDAOImpl.getInstance();
-	
+
 	@Test
 	public void testSelectProd() {
-		//TDD
-		ProdVO prod =dao.selectProd("P101000001");
-		
+		ProdVO prod = dao.selectProd("P101000001");
 		assertNotNull(prod);
 		assertEquals(2, prod.getUserList().size());
 	}
 
 }
+
+
+
+
+
+
+
+

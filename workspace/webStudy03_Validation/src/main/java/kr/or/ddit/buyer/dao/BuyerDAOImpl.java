@@ -1,75 +1,55 @@
 package kr.or.ddit.buyer.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.board.dao.IBoardDAO;
-import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
-import kr.or.ddit.prod.dao.ProdDAOImpl;
-import kr.or.ddit.vo.BoardVO;
+import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.PagingVO;
 
 public class BuyerDAOImpl implements IBuyerDAO {
-
 	private static BuyerDAOImpl self;
-	BuyerDAOImpl(){}
-	
+	private BuyerDAOImpl() {}
 	public static BuyerDAOImpl getInstance() {
-		if(self == null) self = new BuyerDAOImpl();
+		if(self==null) self = new BuyerDAOImpl();
 		return self;
 	}
-	private SqlSessionFactory sessionFactory = 
-			CustomSqlSessionFactoryBuilder.getSessionFactory();
-	@Override
-	public List<BuyerVO> selectBuyerList(PagingVO<BuyerVO> pagingVO) {
-		
-		try(
-		SqlSession session = sessionFactory.openSession(false);
-		){
-			IBuyerDAO mapper = session.getMapper(IBuyerDAO.class);
-			return mapper.selectBuyerList(pagingVO);
-		}
-		
-	}
 	
 	@Override
-	public int selectBuyerCount(PagingVO<BuyerVO> pagingVO) {
-		try (
-				SqlSession session = sessionFactory.openSession(false);
-				){
-			IBuyerDAO mapper = session.getMapper(IBuyerDAO.class);
-			return mapper.selectBuyerCount(pagingVO);
-		}
-	}
-	
-	@Override
-	public BuyerVO selectBuyer() {
+	public List<BuyerVO> selectListBuyer(PagingVO<BuyerVO> paging) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int insertBuyer() {
+	public int selectBuyerCount(PagingVO<BuyerVO> pagingVO) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int deleteBuyer() {
+	public BuyerVO selectBuyer(BuyerVO search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertBuyer(BuyerVO buyer, SqlSession session) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateBuyer() {
+	public int updateBuyer(BuyerVO buyer, SqlSession session) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	
-	
+	@Override
+	public int deleteBuyer(BuyerVO search) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

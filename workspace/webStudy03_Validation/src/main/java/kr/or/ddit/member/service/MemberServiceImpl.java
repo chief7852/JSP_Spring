@@ -6,7 +6,7 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
-
+import kr.or.ddit.utils.CryptoUtil;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 
@@ -29,10 +29,17 @@ public class MemberServiceImpl implements IMemberService {
 	public ServiceResult createMember(MemberVO member) {
 		ServiceResult result = null;
 		if(dao.selectMemberDetail(member.getMem_id())==null) {
-			int rowcnt = dao.insertMember(member);
-			if(rowcnt>0) {
-				result = ServiceResult.OK;
-			}else {
+			String inputPass = member.getMem_pass();
+			try {
+				String encodedPass = CryptoUtil.sha512(inputPass);
+				member.setMem_pass(encodedPass);
+				int rowcnt = dao.insertMember(member);
+				if(rowcnt>0) {
+					result = ServiceResult.OK;
+				}else {
+					result = ServiceResult.FAIL;
+				}// if~else~end
+			}catch (Exception e) {
 				result = ServiceResult.FAIL;
 			}
 		}else {
@@ -77,7 +84,7 @@ public class MemberServiceImpl implements IMemberService {
 	public List<MemberVO> retrieveMemberList(PagingVO pagingVO) {
 		return dao.selectMemberList(pagingVO);
 	}
-
+	
 	@Override
 	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO) {
 		return dao.selectTotalRecord(pagingVO);

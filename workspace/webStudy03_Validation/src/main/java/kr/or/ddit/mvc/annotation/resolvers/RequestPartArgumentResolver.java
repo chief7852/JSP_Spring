@@ -13,50 +13,61 @@ import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
 
 public class RequestPartArgumentResolver implements IHandlerMethodArgumentResolver {
 
-	// 어노테이션 가지고있는지, requestPart인지
 	@Override
 	public boolean isSupported(Parameter parameter) {
-		Class<?> parameterType = parameter.getType();
 		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
-		boolean supported = annotation!=null
-				&&(
-						//배열이면서 multipart타입인지
+		Class<?> parameterType = parameter.getType();
+		return annotation!=null && 
 					(MultipartFile.class.equals(parameterType)
-					|| (parameterType.isArray() && MultipartFile.class.equals(parameterType.getComponentType())))
-				);
-		return supported;
+					|| (parameterType.isArray() 
+							&& MultipartFile.class.equals(parameterType.getComponentType())));
 	}
 
-	// requestPart의 파일데이터를 꺼낸다
 	@Override
-	public Object argumentResolve(Parameter parameter, HttpServletRequest req, HttpServletResponse resp)
+	public Object argumentResolve(Parameter parameter, 
+			HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		if(!(req instanceof MultipartHttpServletRequest)) {
-			throw new ServletException("현재 요청은 multipart 요청이 아님");
+			throw new ServletException("현재 요청은 multipart 요청이 아님.");
 		}
-		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
-		String reqPartName = annotation.value();
+		
+		RequestPart annotation = 
+				parameter.getAnnotation(RequestPart.class);
+		
+		String partName = annotation.value();
 		boolean required = annotation.required();
-		MultipartHttpServletRequest wrapper = (MultipartHttpServletRequest)req;
-		List<MultipartFile> files = wrapper.getFiles(reqPartName);
-		if(required && files == null) {
-			throw new BadRequestException(reqPartName+"에 해당하는 파일이 업로드 되지 않았음");
+		
+		MultipartHttpServletRequest wrapper = 
+				(MultipartHttpServletRequest) req;
+		List<MultipartFile> files 
+			= wrapper.getFiles(partName);
+		if(required && files==null) {
+			throw new BadRequestException(partName
+							+"에 해당하는 파일이 업로드되지 않았음.");
 		}
-		 
-		Class<?> parameterType =parameter.getType();
+		
+		Class<?> parameterType = parameter.getType();
 		
 		Object retValue = null;
 		if(files!=null && files.size()>0) {
 			if(parameterType.isArray()) {
 				MultipartFile[] array = new MultipartFile[files.size()];
-				
-				retValue =files.toArray(array); 
-			}else {				
+				retValue = files.toArray(array);
+			}else {
 				retValue = files.get(0);
 			}
 		}
-		
 		return retValue;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
