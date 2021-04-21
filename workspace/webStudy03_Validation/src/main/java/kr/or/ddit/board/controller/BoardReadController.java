@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.mvc.annotation.Controller;
@@ -132,6 +137,23 @@ public class BoardReadController {
 		
 		List<BoardVO> boardList = 
 				service.retrieveBoardList(pagingVO);
+		
+		for(BoardVO tmp : boardList) {
+			String source = tmp.getBo_content();
+			if(source == null) {
+				continue;
+			}
+			Document dom = Jsoup.parse(source);
+			Elements imgs = dom.getElementsByTag("img");
+			String thumbnail =
+			req.getContextPath()+"/images/cat1.jpg";
+			if(!imgs.isEmpty()) {			
+				Element img = imgs.get(0);
+				thumbnail = img.attr("src");
+			}
+			tmp.setThumbnail(thumbnail);
+		}
+		
 		pagingVO.setDataList(boardList);
 		
 		req.setAttribute("pagingVO", pagingVO);

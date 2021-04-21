@@ -58,9 +58,13 @@ public class BoardDAOImpl implements IBoardDAO {
 	}
 
 	@Override
-	public int deleteBoard(BoardVO search) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteBoard(BoardVO board, SqlSession session) {
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.deleteBoard",board);
+	}
+	
+	public int[] selectRel(int bo_no, SqlSession session) {
+		IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+		return mapper.selectRel(bo_no, session);
 	}
 
 }

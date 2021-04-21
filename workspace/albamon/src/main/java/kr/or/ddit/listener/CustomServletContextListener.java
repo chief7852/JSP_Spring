@@ -9,7 +9,7 @@ import javax.servlet.ServletContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.or.ddit.alba.service.AlbaServiceImpl;
+
 
 public class CustomServletContextListener implements ServletContextListener{
 	
@@ -26,8 +26,7 @@ public class CustomServletContextListener implements ServletContextListener{
 			profileFolder.mkdirs();
 		}
 		
-		AlbaServiceImpl service = AlbaServiceImpl.getInstance();
-		service.setProfileFolder(profileFolder);
+	
 		
 		
 		logger.info("{} 가 초기화", getClass().getSimpleName());

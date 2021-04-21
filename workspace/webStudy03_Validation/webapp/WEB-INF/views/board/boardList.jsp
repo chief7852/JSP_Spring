@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<style type="text/css">
+	.thumbnail{
+		width: 50px;
+		height: 50px;
+		
+	}
+</style>
 <c:if test="${not empty message }">
 	<script type="text/javascript">
 		alert("${message}");
@@ -21,6 +28,7 @@
 		<tr>
 			<th>게시글종류</th>
 			<th>글번호</th>
+			<th>썸네일</th>
 			<th>제목</th>
 			<th>작성자</th>
 			<th>작성일</th>
@@ -35,6 +43,9 @@
 				<tr>
 					<td>${board.bo_type eq 'NOTICE'?'공지':'일반' }</td>
 					<td>${board.bo_no }</td>
+					<td>
+						<img class="thumbnail" src="${board.thumbnail }" />
+					</td>
 					<td>
 						<c:url value="/board/boardView.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }" />

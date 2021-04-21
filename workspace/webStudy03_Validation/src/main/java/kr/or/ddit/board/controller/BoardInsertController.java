@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.enumpkg.ServiceResult;
@@ -30,7 +33,7 @@ import kr.or.ddit.vo.BoardVO;
 @Controller
 public class BoardInsertController {
 	private String[] filteringTokens = new String[] {"말미잘", "해삼"};
-	
+	private static Logger logger = LoggerFactory.getLogger(BoardInsertController.class);
 	private IBoardService service = new BoardServiceImpl();
 		
 	@RequestMapping("/board/noticeInsert.do")

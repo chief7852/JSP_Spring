@@ -5,7 +5,7 @@
 <html lang="en">
 <jsp:include page="/includee/preScript.jsp" />
   <head>
-  
+   
     <title>Cover Template · Bootstrap v4.6</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/cover/">
@@ -34,13 +34,13 @@
     <link href="cover.css" rel="stylesheet">
   </head>
   <body class="text-center">
-
+    
 
   <header class="masthead mb-auto">
     <div class="inner">
       <h3 class="masthead-brand">Albamon</h3>
       <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link active" href="${cPath }/alba/albaInsert.do">알바생 추가</a>
+        <a class="nav-link active" href="#">알바생 추가</a>
         <a class="nav-link" href="#">월급관리</a>
         
       </nav>
@@ -56,11 +56,7 @@
 
 
 <!-- Modal -->
-<script type="text/javascript">
-	$(".btn-secondary").on('click',function(){
-		location.href="${cPath}/alba/albaList.do"
-	})
-</script>
+
 <jsp:include page="/includee/postScript.jsp" />
   </body>
 </html>
