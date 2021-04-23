@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.alba.dao.AlbaDAOImpl;
 import kr.or.ddit.alba.dao.IAlbaDAO;
@@ -15,7 +16,6 @@ import kr.or.ddit.alba.dao.LicenseDAOImpl;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.DataNotFoundException;
-import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.vo.AlbaVO;
 import kr.or.ddit.vo.LicenseVO;
 import kr.or.ddit.vo.PagingVO;

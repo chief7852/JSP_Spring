@@ -25,4 +25,5 @@ public class VariousDIVO {
 	private Resource cpr;
 	private Resource fsr;
 	private Resource urlr;
+
 }

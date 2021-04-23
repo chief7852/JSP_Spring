@@ -1,5 +1,8 @@
 package kr.or.ddit.example.dao;
 
+import org.springframework.stereotype.Repository;
+
+@Repository("mysql")
 public class ExampleDAO_MySql implements IExampleDAO {
 	
 

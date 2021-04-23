@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	<!-- 스키마 종류 : beans, c, p, util, context -->
+
+	
+	<util:list id="list" list-class="java.util.LinkedList">
+		<value>value1</value>
+		<value>value2</value>
+	</util:list>
+	<util:set id="set">
+		<value>value1</value>
+		<bean class="kr.or.ddit.container.various.VariousDIVO"></bean>
+	</util:set>
+	<util:map id="map">
+		
+			<entry key="key1" value="123" value-type="java.lang.Integer"></entry>
+			<entry key="today" value-ref="today" />
+		
+	</util:map>
+	<!-- 비휘발성 데이터를 관리하기위해 -->
+	<util:properties id="prop">
+		<prop key="propName">
+			propValue
+		</prop>
+	</util:properties>
+	<bean id="array" class="kr.or.ddit.container.collection.StringArrayFactoryBean">
+	
+	</bean>
+	<bean id="today" class="java.util.Date"></bean>
+
+
+<!-- 생성자가 없는 객체를 bean으로 등록할 때, FactoryBean을 이용함 
+	FactoryBean을 bean으로 등록하고
+	factory가 등록되지않고
+	
+-->
+	<bean id="cvo1"	class="kr.or.ddit.container.collection.CollectionDIVO"
+		c:list-ref="list"
+		c:set-ref="set"
+		c:map-ref="map"
+		c:props-ref="prop"
+		c:array-ref="array"
+	/>
+	<bean id="cvo2"	class="kr.or.ddit.container.collection.CollectionDIVO"
+		p:list-ref="list"
+		p:set-ref="set"
+		p:map-ref="map"
+		p:props-ref="prop"
+		p:array-ref="array"
+	/>
+	
+	
+</beans>

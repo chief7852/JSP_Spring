@@ -6,9 +6,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validate.groups.UpdateGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

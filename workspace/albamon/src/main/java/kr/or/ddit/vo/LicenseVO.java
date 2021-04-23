@@ -3,8 +3,8 @@ package kr.or.ddit.vo;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
