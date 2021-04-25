@@ -22,7 +22,7 @@ import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validate.CommonValidator;
 import kr.or.ddit.validate.groups.UpdateGroup;
-import kr.or.ddit.vo.AlbaVO;
+import kr.or.ddit.vo.AlbaVO3;
 
 @Controller
 public class AlbaUpdateController{
@@ -37,7 +37,7 @@ public class AlbaUpdateController{
 	@RequestMapping("/alba/albaUpdate.do")
 	public String doGet(@RequestParam("who") String who, HttpServletRequest req){
 		setCodeInScope(req);
-		AlbaVO alba = service.retrieveAlba(who);
+		AlbaVO3 alba = service.retrieveAlba(who);
 		req.setAttribute("alba", alba);
 		req.setAttribute("viewName", "alba/albaForm");
 		return "template";
@@ -45,7 +45,7 @@ public class AlbaUpdateController{
 
 	@RequestMapping(value="/alba/albaUpdate.do", method=RequestMethod.POST)
 	public String update( 
-			@ModelAttribute("alba")AlbaVO alba
+			@ModelAttribute("alba")AlbaVO3 alba
 			, @RequestPart(value="alImage", required=false) MultipartFile alImage
 			, @RequestPart(value="licImages", required=false) MultipartFile[] licImages
 			, HttpServletRequest req ) throws IOException {
@@ -54,7 +54,7 @@ public class AlbaUpdateController{
 		if(licImages!=null)
 			alba.setLicImages(Arrays.asList(licImages));
 		Map<String, List<String>> errors = new LinkedHashMap<>();
-		CommonValidator<AlbaVO> validator = new CommonValidator<>();
+		CommonValidator<AlbaVO3> validator = new CommonValidator<>();
 		boolean valid = validator.validate(alba, errors, UpdateGroup.class);
 		
 		String viewName = null;

@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
@@ -66,5 +65,7 @@ public class BoardDAOImpl implements IBoardDAO {
 		IBoardDAO mapper = session.getMapper(IBoardDAO.class);
 		return mapper.selectRel(bo_no, session);
 	}
+
+	
 
 }

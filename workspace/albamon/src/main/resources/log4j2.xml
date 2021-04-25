@@ -20,7 +20,7 @@
 		<Logger name="jdbc.sqltiming" level="debug" additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
-		<Logger name="jdbc.resultsettable" level="debug" additivity="false">
+		<Logger name="jdbc.resultsettable" level="info" additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
 		<Root level="error">

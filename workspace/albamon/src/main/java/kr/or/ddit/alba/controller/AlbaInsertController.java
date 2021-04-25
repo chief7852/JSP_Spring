@@ -21,7 +21,7 @@ import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validate.CommonValidator;
 import kr.or.ddit.validate.groups.InsertGroup;
-import kr.or.ddit.vo.AlbaVO;
+import kr.or.ddit.vo.AlbaVO3;
 
 @Controller
 public class AlbaInsertController {

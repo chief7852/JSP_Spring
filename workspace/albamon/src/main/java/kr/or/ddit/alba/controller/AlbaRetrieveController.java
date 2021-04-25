@@ -18,7 +18,7 @@ import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
-import kr.or.ddit.vo.AlbaVO;
+import kr.or.ddit.vo.AlbaVO3;
 import kr.or.ddit.vo.PagingVO;
 
 @Controller
@@ -28,7 +28,7 @@ public class AlbaRetrieveController {
 
 	@RequestMapping("/")
 	public String index(
-			@ModelAttribute("searchDetail") AlbaVO searchDetail, 
+			@ModelAttribute("searchDetail") AlbaVO3 searchDetail, 
 			@RequestParam(value="page", required=false, defaultValue="1") int currentPage,
 			@RequestParam(value="searchType", required=false) String searchType,
 			@RequestParam(value="searchWord", required=false) String searchWord,
@@ -38,20 +38,20 @@ public class AlbaRetrieveController {
 	
 	@RequestMapping("/alba/albaView.do")
 	public String view(@RequestParam("who") String alId, HttpServletRequest req) {
-		AlbaVO alba = service.retrieveAlba(alId);
+		AlbaVO3 alba = service.retrieveAlba(alId);
 		req.setAttribute("alba", alba);
 		req.setAttribute("viewName", "alba/albaView");
 		return "template";
 	}
 	
 	@RequestMapping("/alba/albaList.do")
-	public String list( @ModelAttribute("searchDetail") AlbaVO searchDetail, 
+	public String list( @ModelAttribute("searchDetail") AlbaVO3 searchDetail, 
 			@RequestParam(value="page", required=false, defaultValue="1") int currentPage,
 			@RequestParam(value="searchType", required=false) String searchType,
 			@RequestParam(value="searchWord", required=false) String searchWord,
 			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		PagingVO<AlbaVO> pagingVO = new PagingVO<>();
+		PagingVO<AlbaVO3> pagingVO = new PagingVO<>();
 		// 검색 조건
 		if(StringUtils.isNotBlank(searchWord) && StringUtils.isNotBlank(searchType)) {
 			switch (searchType) {
@@ -72,7 +72,7 @@ public class AlbaRetrieveController {
 		pagingVO.setTotalRecord(totalRecord); // totalPage
 		pagingVO.setCurrentPage(currentPage); // startRow, endRow, startPage, endPage
 		
-		List<AlbaVO> AlbaList = service.retrieveAlbaList(pagingVO);
+		List<AlbaVO3> AlbaList = service.retrieveAlbaList(pagingVO);
 		pagingVO.setDataList(AlbaList);
 		
 		String accept = req.getHeader("Accept");

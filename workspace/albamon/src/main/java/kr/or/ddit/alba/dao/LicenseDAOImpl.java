@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
-import kr.or.ddit.vo.AlbaVO;
+import kr.or.ddit.vo.AlbaVO3;
 import kr.or.ddit.vo.LicenseVO;
 
 public class LicenseDAOImpl implements ILicenseDAO {
@@ -20,12 +20,12 @@ public class LicenseDAOImpl implements ILicenseDAO {
 	private SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
 
 	@Override
-	public int insertLicenses(AlbaVO alba, SqlSession session) {
+	public int insertLicenses(AlbaVO3 alba, SqlSession session) {
 		return session.insert("kr.or.ddit.alba.dao.ILicenseDAO.insertLicenses", alba);
 	}
 
 	@Override
-	public int deleteLicenses(AlbaVO alba, SqlSession session) {
+	public int deleteLicenses(AlbaVO3 alba, SqlSession session) {
 		return session.insert("kr.or.ddit.alba.dao.ILicenseDAO.deleteLicenses", alba);
 	}
 
