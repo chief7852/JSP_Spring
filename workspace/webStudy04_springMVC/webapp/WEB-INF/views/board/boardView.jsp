@@ -11,7 +11,7 @@
 	<script type="text/javascript">
 		alert("${message}");
 	</script>
-	<c:remove var="message" scope="session"/>
+	
 </c:if>
 </head>
 <body>
@@ -60,6 +60,17 @@
 					</c:forEach>
 				</c:if>
 			</td>
+		</tr>
+		<tr>
+			<th>
+			
+				<input id="recBtn" type="button" value="추천하기">
+			</th>
+		</tr>	
+		<tr>	
+			<th>
+				<input id="rptBtn" type="button" value="신고하기">
+			</th>
 		</tr>
 		<tr>
 			<th>내용</th>
@@ -125,6 +136,50 @@
 			if(url)
 				location.href = url;
 		});
+		
+		
+// 		/board/recommend.do 비동기 요청발생
+// 		what 이름의 필수 파라미터 전달
+// 		Json 응답(success, 갱신된 추천수(recommend), 실패시(message))3가지데이터 
+		$("#recBtn").on('click',function(){
+			let recNum = ${board.bo_rec}
+			let bo_no = ${board.bo_no }
+			alert(recNum)
+			$.ajax({
+				url : "${cPath}/board/recommend.do",
+				data : {"bo_no":bo_no},
+				dataType : "text",
+				success : function(resp) {
+					alert(resp.message)
+				},
+				error : function(xhr, error, msg) {
+					console.log(xhr);
+					console.log(error);
+					console.log(msg);
+				}
+			});
+		})
+		$("#rptBtn").on('click', function(){
+			$.ajax({
+				url : "${cPath}/board/report.do",
+				data : {
+					what:${board.bo_no}
+				},
+				dataType : "json",
+				success : function(resp) {
+					if(resp.success){
+						$('#rptArea').html(resp.report);
+					}else{
+						alert(resp.message);
+					}
+				},
+				error : function(xhr, error, msg) {
+					console.log(xhr);
+					console.log(error);
+					console.log(msg);
+				}
+			});
+		})
 	</script>
 	<jsp:include page="/includee/postScript.jsp" />
 </body>

@@ -130,8 +130,33 @@
 			let name = $(this).attr("name");
 			let sameInput = searchForm.find("[name='"+name+"']");
 			$(sameInput).val($(this).val());
+			
 		});
-		searchForm.submit();
+	let json = {
+			page : $('[name="searchType"]').val(),
+			searchType : $('[name="searchWord"]').val(),
+			searchWord : $('[name="minDate"]').val(),
+			minDate : $('[name="maxDate"]').val(),
+			maxDate : $('[name="page"]').val()
+	}
+	
+		   $.ajax({
+			url : "${cPath}/board/boardList.do",
+			data : json,
+			contentType:"application/json; charset=UTF-8",
+			dataType : "JSON",
+			success : function(resp) {
+				console.log(resp.dataList)
+				
+			},
+			error : function(xhr, error, msg) {
+				alert("실패")
+				console.log(xhr);
+				console.log(error);
+				console.log(msg);
+			}
+		});  
+		searchForm.submit();  
 	});
 	
 	$("#pagingArea").on("click", "a", function(event){
@@ -173,6 +198,8 @@
 		});
 // 	  $('[data-toggle="popover"]').popover()
 	});
+	
+	
 </script>
 
 <jsp:include page="/includee/postScript.jsp" />

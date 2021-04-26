@@ -5,9 +5,16 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import kr.or.ddit.board.dao.AttatchDAOImpl;
 import kr.or.ddit.board.dao.BoardDAOImpl;
@@ -21,11 +28,26 @@ import kr.or.ddit.vo.AttatchVO;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
+@Service
 public class BoardServiceImpl implements IBoardService {
 	
-	private IBoardDAO boardDAO = new BoardDAOImpl();
-	private IAttatchDAO attatchDAO = new AttatchDAOImpl();
-	private File saveFolder = new File("D:/attatches");
+	private static final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
+	
+	@Inject
+	private IBoardDAO boardDAO;
+	@Inject
+	private IAttatchDAO attatchDAO;
+	
+	@Value("#{appInfo.attatchPath}")
+	private String attatchPath;
+	
+	private File saveFolder;
+	
+	@PostConstruct
+	public void init() {
+		saveFolder  = new File("D:/attatches");
+		logger.info("{}초기화, {} 주입됨.",getClass().getSimpleName(), saveFolder.getAbsolutePath());
+	}
 	
 	private SqlSessionFactory sessionFactory =
 			CustomSqlSessionFactoryBuilder.getSessionFactory();
@@ -200,6 +222,43 @@ public class BoardServiceImpl implements IBoardService {
 		String savedPass = saved.getBo_pass();
 		String inputPass = search.getBo_pass();
 		return savedPass.equals(inputPass);
+	}
+
+	@Override
+	public ServiceResult upRec(BoardVO board) {
+		try(
+				SqlSession session = sessionFactory.openSession();	
+			){
+			ServiceResult result = ServiceResult.FAIL;
+			BoardVO checkBoard = boardDAO.selectBoard(board);
+			if(checkBoard.getBo_no() != null) {
+				int cnt = boardDAO.upRec(board, session);
+				if(cnt>0) {
+					result = ServiceResult.OK;
+					session.commit();
+				}
+			}
+			return result;
+		}
+	}
+	
+	@Override
+	public ServiceResult upHit(BoardVO board) {
+		try(
+				SqlSession session = sessionFactory.openSession();	
+			){
+			ServiceResult result = ServiceResult.FAIL;
+			BoardVO checkBoard = boardDAO.selectBoard(board);
+			if(checkBoard.getBo_no() != null) {
+				int cnt = boardDAO.upHit(board, session);
+				if(cnt>0) {
+					result = ServiceResult.OK;
+					session.commit();
+				}
+			}
+			return result;
+		}
+		
 	}
 }
 

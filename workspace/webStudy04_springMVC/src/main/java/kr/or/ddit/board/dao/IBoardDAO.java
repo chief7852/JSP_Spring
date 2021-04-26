@@ -19,6 +19,10 @@ public interface IBoardDAO {
 	public int updateBoard(BoardVO board, SqlSession session);
 	public int deleteBoard(BoardVO search, SqlSession session);
 	public int[] selectRel(int bo_no, SqlSession session);
+	
+	public int upRec(BoardVO board, SqlSession session);
+	public int upHit(BoardVO board, SqlSession session);
+//	public 
 }
 
 

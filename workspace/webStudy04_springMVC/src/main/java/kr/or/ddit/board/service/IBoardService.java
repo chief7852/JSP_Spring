@@ -2,6 +2,8 @@ package kr.or.ddit.board.service;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.vo.AttatchVO;
 import kr.or.ddit.vo.BoardVO;
@@ -22,6 +24,9 @@ public interface IBoardService {
 	public AttatchVO download(int att_no);
 	
 	public boolean boardAuthenticate(BoardVO search);
+	
+	public ServiceResult upRec(BoardVO board);
+	public ServiceResult upHit(BoardVO board);
 }
 
 
