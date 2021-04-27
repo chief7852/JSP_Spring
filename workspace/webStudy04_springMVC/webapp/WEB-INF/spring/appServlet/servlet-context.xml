@@ -10,8 +10,22 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 	
 	<!--25가지이상 전략이 등록되게 만들어줌  --><!-- multipart resolver -->
-	<annotation-driven/>
+	<annotation-driven validator="validator"/>
 	<!-- 자원을 분리하는것(얘는 정적) -->
+	
+	
+	
+	<beans:bean id="resourceBundleLocator" class="org.hibernate.validator.resourceloading.PlatformResourceBundleLocator" 
+	c:bundleName="kr.or.ddit.messages.errorMessages"
+	/>
+	<beans:bean id="messageInterpolator" class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator"
+		c:userResourceBundleLocator-ref="resourceBundleLocator"
+	/>
+	<!-- commons validata 역할함 -->
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" 
+		p:messageInterpolator-ref="messageInterpolator"
+	/>
+	
 	
 	<!-- spring버전이 낮으면 이런 코드로  등록해줘야한다-->
 	<!-- 핸들러 어뎁터가 주입받을때 사용하는 id 를 받아줘야 '원본요청을 필터링할수있다' -->

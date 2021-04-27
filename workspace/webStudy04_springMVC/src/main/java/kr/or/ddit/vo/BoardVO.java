@@ -59,21 +59,21 @@ public class BoardVO implements Serializable{
 	
 	private int startAttNo;
 	private List<AttatchVO> attatchList;
-	private List<Reply2VO> replyList;
-	
 	private MultipartFile[] bo_files;
 	public void setBo_files(MultipartFile[] bo_files) {
 		this.bo_files = bo_files;
 		if(bo_files!=null) {
 			List<AttatchVO> attatchList = new ArrayList<>();
-	         for(MultipartFile file : bo_files) {
-	            if(file.isEmpty()) continue;
-	            attatchList.add(new AttatchVO(file));
-	         }
-	         if(attatchList.size()>0)
-	            this.attatchList = attatchList;
-	      }
+			for(MultipartFile file : bo_files) {
+				if(file.isEmpty()) continue;
+				attatchList.add(new AttatchVO(file));
+			}
+			if(attatchList.size()>0)
+				this.attatchList = attatchList;
+		}
 	}
+	
+	private List<ReplyVO> replyList;
 	
 	private int[] delAttNos;
 	

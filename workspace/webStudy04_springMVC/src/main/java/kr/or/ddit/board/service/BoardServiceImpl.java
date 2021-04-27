@@ -15,12 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.ddit.board.dao.AttatchDAOImpl;
-import kr.or.ddit.board.dao.BoardDAOImpl;
 import kr.or.ddit.board.dao.IAttatchDAO;
 import kr.or.ddit.board.dao.IBoardDAO;
-import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.utils.CryptoUtil;
@@ -30,13 +28,23 @@ import kr.or.ddit.vo.PagingVO;
 
 @Service
 public class BoardServiceImpl implements IBoardService {
+	private static final Logger logger =
+			LoggerFactory.getLogger(BoardServiceImpl.class);
 	
-	private static final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
+	private IBoardDAO boardDAO;
 	
 	@Inject
-	private IBoardDAO boardDAO;
+	public void setBoardDAO(IBoardDAO boardDAO) {
+		this.boardDAO = boardDAO;
+		logger.info("주입된 boardDAO: {}", boardDAO.getClass().getName());
+	}
 	@Inject
 	private IAttatchDAO attatchDAO;
+	
+	public void setAttatchDAO(IAttatchDAO attatchDAO) {
+		this.attatchDAO = attatchDAO;
+		logger.info("주입된 IAttatchDAO: {}", attatchDAO.getClass().getName());
+	}
 	
 	@Value("#{appInfo.attatchPath}")
 	private String attatchPath;
@@ -45,12 +53,11 @@ public class BoardServiceImpl implements IBoardService {
 	
 	@PostConstruct
 	public void init() {
-		saveFolder  = new File("D:/attatches");
-		logger.info("{}초기화, {} 주입됨.",getClass().getSimpleName(), saveFolder.getAbsolutePath());
+		saveFolder = new File(attatchPath);
+		logger.info("{} 초기화, {} 주입됨."
+					, getClass().getSimpleName()
+					, saveFolder.getAbsolutePath());
 	}
-	
-	private SqlSessionFactory sessionFactory =
-			CustomSqlSessionFactoryBuilder.getSessionFactory();
 
 
 	private void encodePassword(BoardVO board) {
@@ -64,16 +71,16 @@ public class BoardServiceImpl implements IBoardService {
 		}
 	}
 	
-	private int processes(BoardVO board, SqlSession session) {
+	private int processes(BoardVO board) {
 		int cnt = 0;
 		List<AttatchVO> attatchList = board.getAttatchList();
 		if(attatchList!=null && attatchList.size()>0) {
-			cnt += attatchDAO.insertAttatches(board, session);
+			cnt += attatchDAO.insertAttatches(board);
 			
 			try {
 				for(AttatchVO attatch : attatchList) {
-//					if(1==1)
-//						throw new RuntimeException("강제 발생 예외"); 
+					if(1==1)
+						throw new RuntimeException("강제 발생 예외"); 
 					attatch.saveTo(saveFolder);
 				}
 			} catch (IOException e) {
@@ -83,14 +90,14 @@ public class BoardServiceImpl implements IBoardService {
 		return cnt;
 	}
 	
-	private int deleteFileProcesses(BoardVO board, SqlSession session) {
+	private int deleteFileProcesses(BoardVO board) {
 		int[] delAttNos = board.getDelAttNos();
 		int cnt = 0;
 		if(delAttNos!=null && delAttNos.length > 0) {
 			List<String> saveNames = 
 					attatchDAO.selectSaveNamesForDelete(board);
 			// 첨부파일의 메타 데이터 삭제
-			attatchDAO.deleteAttathes(board, session);
+			attatchDAO.deleteAttathes(board);
 			// 이진 데이터 삭제
 			for(String saveName : saveNames) {
 				File saveFile = new File(saveFolder, saveName);
@@ -100,6 +107,7 @@ public class BoardServiceImpl implements IBoardService {
 		return cnt;
 	}
 	
+	@Transactional
 	@Override
 	public ServiceResult createBoard(BoardVO board) {
 		ServiceResult result = ServiceResult.FAIL;
@@ -107,18 +115,16 @@ public class BoardServiceImpl implements IBoardService {
 		encodePassword(board);
 		//===============================
 		
-		try(
-			SqlSession session = sessionFactory.openSession(false);	
-		){
-			int cnt = boardDAO.insertBoard(board, session);
+		
+			int cnt = boardDAO.insertBoard(board);
 			if(cnt > 0) {
 				//==========첨부파일 처리==========
-				cnt += processes(board, session);
+				cnt += processes(board);
 				//==============================
 				if(cnt > 0) {
 					result = ServiceResult.OK;
-					session.commit();
-				}	
+				
+				
 			}
 		} // try end
 		return result;
@@ -139,40 +145,38 @@ public class BoardServiceImpl implements IBoardService {
 		BoardVO board = boardDAO.selectBoard(search);
 		if(board==null)
 			throw new CustomException(search.getBo_no()+"에 해당하는 게시글이 없음");
+		
+		boardDAO.incrementHit(board.getBo_no());
 		return board;
 	}
-
+	@Transactional
 	@Override
 	public ServiceResult modifyBoard(BoardVO board) {
-		try(
-			SqlSession session = sessionFactory.openSession(false);
-		){
+		
 			// 게시글 존재 여부 확인
 			// 비번 인증
 			// 인증 성공시
 			// 게시글의 일반 데이터 수정
 			ServiceResult result = ServiceResult.INVALIDPASSWORD;
 			encodePassword(board);
-			int cnt = boardDAO.updateBoard(board, session);
+			int cnt = boardDAO.updateBoard(board);
 			if(cnt>0) {
 				// 신규 파일에 대한 등록
-			cnt += processes(board, session);
+			cnt += processes(board);
 				// 삭제할 파일에 대한 처리
-				cnt += deleteFileProcesses(board, session);
+				cnt += deleteFileProcesses(board);
 				if(cnt > 0) {
 					result = ServiceResult.OK;
-					session.commit();
+					
 				}
 			}
 			return result;
-		}// try end
+		
 	}
-
+	@Transactional
 	@Override
 	public ServiceResult removeBoard(BoardVO search) {
-		try(
-			SqlSession session = sessionFactory.openSession();	
-		){
+		
 			ServiceResult result = ServiceResult.FAIL;
 			BoardVO savedBoard = boardDAO.selectBoard(search);
 			encodePassword(search);
@@ -190,20 +194,20 @@ public class BoardServiceImpl implements IBoardService {
 						delAttNos[i] = 
 								attatchList.get(i).getAtt_no();
 					}	
-					deleteFileProcesses(search, session);
+					deleteFileProcesses(search);
 				}// if(attatchList.size) end
 				
 				// 게시글 삭제
-				int cnt = boardDAO.deleteBoard(search, session);
+				int cnt = boardDAO.deleteBoard(search);
 				if(cnt>0) {
 					result = ServiceResult.OK;
-					session.commit();
+					
 				}
 			}else {
 				result = ServiceResult.INVALIDPASSWORD;
 			}
 			return result;
-		}
+		
 	}
 
 	@Override
@@ -225,40 +229,21 @@ public class BoardServiceImpl implements IBoardService {
 	}
 
 	@Override
-	public ServiceResult upRec(BoardVO board) {
-		try(
-				SqlSession session = sessionFactory.openSession();	
-			){
-			ServiceResult result = ServiceResult.FAIL;
-			BoardVO checkBoard = boardDAO.selectBoard(board);
-			if(checkBoard.getBo_no() != null) {
-				int cnt = boardDAO.upRec(board, session);
-				if(cnt>0) {
-					result = ServiceResult.OK;
-					session.commit();
-				}
-			}
-			return result;
-		}
+	public ServiceResult recommend(int bo_no) {
+		ServiceResult result = ServiceResult.FAIL;
+		int cnt = boardDAO.incrementRcmd(bo_no);
+		if(cnt > 0)
+			result = ServiceResult.OK;
+		return result;
 	}
-	
+
 	@Override
-	public ServiceResult upHit(BoardVO board) {
-		try(
-				SqlSession session = sessionFactory.openSession();	
-			){
-			ServiceResult result = ServiceResult.FAIL;
-			BoardVO checkBoard = boardDAO.selectBoard(board);
-			if(checkBoard.getBo_no() != null) {
-				int cnt = boardDAO.upHit(board, session);
-				if(cnt>0) {
-					result = ServiceResult.OK;
-					session.commit();
-				}
-			}
-			return result;
-		}
-		
+	public ServiceResult report(int bo_no) {
+		ServiceResult result = ServiceResult.FAIL;
+		int cnt = boardDAO.incrementRpt(bo_no);
+		if(cnt > 0)
+			result = ServiceResult.OK;
+		return result;
 	}
 }
 

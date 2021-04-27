@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,16 +18,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.member.service.IMemberService;
-import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberUpdateController{
-	private IMemberService service = new MemberServiceImpl();
+	private IMemberService service;
 	
 	private void addCommandAttribute(HttpServletRequest req) {
 		req.setAttribute("command", "update");
@@ -43,10 +43,12 @@ public class MemberUpdateController{
 	
 	@RequestMapping(value="/member/memberUpdate.do", method=RequestMethod.POST)
 	public String doPost(
-			@ModelAttribute("member") MemberVO member
+			@Validated(UpdateGroup.class)@ModelAttribute("member") MemberVO member
 			, @RequestPart(value="mem_image", required=false) MultipartFile mem_image
 			, HttpSession session
-			, HttpServletRequest req) throws IOException {
+			, HttpServletRequest req
+			, Errors error
+			) throws IOException {
 		
 		addCommandAttribute(req);
 		
@@ -67,8 +69,7 @@ public class MemberUpdateController{
 //		2. 검증
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
-		boolean valid = new CommonValidator<MemberVO>()
-						.validate(member, errors, UpdateGroup.class);
+		boolean valid = error.hasErrors();
 		String view = null;
 		String message = null;
 		if (valid) {

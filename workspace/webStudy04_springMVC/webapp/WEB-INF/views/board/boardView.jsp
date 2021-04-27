@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,6 @@
 	<script type="text/javascript">
 		alert("${message}");
 	</script>
-	
 </c:if>
 </head>
 <body>
@@ -42,91 +41,124 @@
 		</tr>
 		<tr>
 			<th>추천수</th>
-			<td>${board.bo_rec}</td>
+			<td id="rcmdArea">${board.bo_rec}</td>
 		</tr>
 		<tr>
 			<th>신고수</th>
-			<td>${board.bo_rep}</td>
+			<td id="rptArea">${board.bo_rep}</td>
 		</tr>
 		<tr>
 			<th>첨부파일</th>
-			<td>
-				<c:if test="${not empty board.attatchList }">
+			<td><c:if test="${not empty board.attatchList }">
 					<c:forEach items="${board.attatchList }" var="attatch">
 						<c:url value="/board/download.do" var="downloadURL">
 							<c:param name="what" value="${attatch.att_no }" />
 						</c:url>
 						<a href="${downloadURL }"><span>${attatch.att_filename }</span></a>
 					</c:forEach>
-				</c:if>
-			</td>
+				</c:if></td>
 		</tr>
 		<tr>
-			<th>
-			
-				<input id="recBtn" type="button" value="추천하기">
-			</th>
-		</tr>	
-		<tr>	
-			<th>
-				<input id="rptBtn" type="button" value="신고하기">
-			</th>
+			<td colspan="2">
+				<!-- 			/board/recommend.do 비동기 요청 발생 --> <!-- 			what 이름의 필수 파리미터 전달 -->
+				<!-- 			Json 응답(success, recommend, message) --> <input id="rcmdBtn"
+				type="button" value="추천하기" class="btn btn-primary" /> <input
+				id="rptBtn" type="button" value="신고하기" class="btn btn-danger" />
+			</td>
 		</tr>
 		<tr>
 			<th>내용</th>
 			<td>${board.bo_content}</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<c:url value="/board/boardList.do" var="listURL" />
-				<button class="goBtn btn btn-primary" type="button" 
-					data-gopage="${listURL }">목록으로</button>
-				<a class="btn btn-info mr-2" href="${cPath }/board/noticeList.do">공지글목록</a>
+			<td colspan="2"><c:url value="/board/boardList.do" var="listURL" />
+				<button class="goBtn btn btn-primary" type="button"
+					data-gopage="${listURL }">목록으로</button> <a
+				class="btn btn-info mr-2" href="${cPath }/board/noticeList.do">공지글목록</a>
 				<c:url value="/board/boardInsert.do" var="insertURL">
 					<c:param name="parent" value="${board.bo_no }" />
-				</c:url>	
-				<a class="btn btn-secondary mr-2" href="${insertURL }">답글쓰기</a>
-				<c:url value="/board/boardUpdate.do" var="updateURL">
+				</c:url> <a class="btn btn-secondary mr-2" href="${insertURL }">답글쓰기</a> <c:url
+					value="/board/boardUpdate.do" var="updateURL">
 					<c:param name="what" value="${board.bo_no }" />
-				</c:url>
-				<a class="btn btn-success mr-2" href="${updateURL }">수정하기</a>
-				<a class="btn btn-warning" href="#"
-					data-toggle="modal" data-target="#deleteFormModal"
-				>삭제하기</a>
-			</td>
+				</c:url> <a class="btn btn-success mr-2" href="${updateURL }">수정하기</a> <a
+				class="btn btn-warning" href="#" data-toggle="modal"
+				data-target="#deleteFormModal">삭제하기</a></td>
+		</tr>
+		<tr>
+			<td><button id="reList" class="btn btn-dark" type="button">댓글보기</button></td>
+			<td><button id="reForm" class="btn btn-info" type="button">댓글쓰기</button></td>
 		</tr>
 	</table>
-<!-- Modal -->
-<div class="modal fade" id="deleteFormModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="deleteFormModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteFormModalLabel">게시글 삭제</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-   	  <form action="${cPath }/board/boardDelete.do" method="post">
-		  <input type="hidden" name="bo_no" value="${board.bo_no }"/>
-	      <div class="modal-body">
-	      	<div class="input-group mb-3">
-			  <div class="input-group-prepend">
-			    <span class="input-group-text" id="basic-addon1">비밀번호 : </span>
-			  </div>
-			  <input type="text" class="form-control" placeholder="Password"
-			  	aria-label="Password" aria-describedby="basic-addon1"
-			  	name="bo_pass"
-			  >
-			</div>	
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-danger">삭제</button>
-	      </div>
-	</form>
-    </div>
-  </div>
-</div>	
+	<!-- Modal -->
+	<div class="modal fade" id="deleteFormModal" data-backdrop="static"
+		data-keyboard="false" tabindex="-1"
+		aria-labelledby="deleteFormModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteFormModalLabel">게시글 삭제</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="${cPath }/board/boardDelete.do" method="post">
+					<input type="hidden" name="bo_no" value="${board.bo_no }" />
+					<div class="modal-body">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon1">비밀번호 : </span>
+							</div>
+							<input type="text" class="form-control" placeholder="Password"
+								aria-label="Password" aria-describedby="basic-addon1"
+								name="bo_pass">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-danger">삭제</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+<!-- 댓글 -->
+<form id="replyin">
+	<div id="repl" class="card mb-2" style="display: none;">
+		<div class="card-header bg-light">
+			<i class="fa fa-comment fa"></i> REPLY
+		</div>
+		<div class="card-body">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<div class="form-inline mb-2">
+						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+						<input type="text" class="form-control ml-2" placeholder="Enter yourId" id="replyId"> 
+						<label for="replyPassword" class="ml-4">
+						<i class="fa fa-unlock-alt fa-2x"></i></label> 
+						<input type="password"	class="form-control ml-2" placeholder="Enter password"
+							id="replyPassword">
+					</div> 
+					<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+					<button id="resub" type="button" class="btn btn-dark mt-3">post reply</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+</form>
+
+<table id="replyta" class="table table-sm table-dark" style="display: none;">
+  <thead>
+    <tr>
+      <th scope="col">작성자</th>
+      <th scope="col" colspan="2">내용</th>
+      <th scope="col">날짜</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
 	<script type="text/javascript">
 		$("#deleteFormModal").on("hidden.bs.modal", function(){
 			$(this).find("[name='bo_pass']").val("");
@@ -136,39 +168,16 @@
 			if(url)
 				location.href = url;
 		});
-		
-		
-// 		/board/recommend.do 비동기 요청발생
-// 		what 이름의 필수 파라미터 전달
-// 		Json 응답(success, 갱신된 추천수(recommend), 실패시(message))3가지데이터 
-		$("#recBtn").on('click',function(){
-			let recNum = ${board.bo_rec}
-			let bo_no = ${board.bo_no }
-			alert(recNum)
+		$("#rcmdBtn").on("click", function(){
 			$.ajax({
 				url : "${cPath}/board/recommend.do",
-				data : {"bo_no":bo_no},
-				dataType : "text",
-				success : function(resp) {
-					alert(resp.message)
-				},
-				error : function(xhr, error, msg) {
-					console.log(xhr);
-					console.log(error);
-					console.log(msg);
-				}
-			});
-		})
-		$("#rptBtn").on('click', function(){
-			$.ajax({
-				url : "${cPath}/board/report.do",
 				data : {
-					what:${board.bo_no}
+					what : ${board.bo_no}
 				},
-				dataType : "json",
+				dataType : "json", // Accept/Content-Type
 				success : function(resp) {
 					if(resp.success){
-						$('#rptArea').html(resp.report);
+						$("#rcmdArea").html(resp.recommend);
 					}else{
 						alert(resp.message);
 					}
@@ -179,8 +188,81 @@
 					console.log(msg);
 				}
 			});
-		})
+		});
+		$("#rptBtn").on("click", function(){
+			$.ajax({
+				url : "${cPath}/board/report.do",
+				data : {
+					what:${board.bo_no}
+				},
+				dataType : "json",
+				success : function(resp) {
+					if(resp.success){
+						$("#rptArea").html(resp.report);
+					}else{
+						alert(resp.message);
+					}
+				},
+				error : function(xhr, error, msg) {
+					console.log(xhr);
+					console.log(error);
+					console.log(msg);
+				}
+			});
+		});
+		$("#reForm").on("click",function(){
+			$('#repl').toggle()
+		});
+		$("#reList").on("click",function(){
+			$('#replyta').toggle()
+		});
+		
+		//댓글 저장
+		$("#resub").on("click",function(){
+			let rep_writer = $("#replyId").val();
+			let rep_pass = $("#replyPassword").val();
+			let rep_content = $("#exampleFormControlTextarea1").val();
+			let bo_no = "${board.bo_no }";
+			var reJson = {
+				"rep_writer" : rep_writer,
+				"rep_pass" : rep_pass,
+				"rep_content" : rep_content,
+				"bo_no" : bo_no
+			}
+			console.log(reJson);
+			$.ajax({
+				url : "${cPath}/reply",
+				method : "post",
+				data : reJson,
+				dataType : "json",
+				success : function(resp) {
+					alert("등록되었습니다");
+				},
+				error:function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+
+			        		request.responseText+"\n"+"error:"+error);
+			       }
+			});
+		});
 	</script>
+
+
 	<jsp:include page="/includee/postScript.jsp" />
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,11 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.ddit.enumpkg.MimeType;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
-import kr.or.ddit.member.service.MemberServiceImpl;
 
 @Controller
 public class IdCheckController{
-	private IMemberService service = new MemberServiceImpl();
+	@Inject
+	private IMemberService service;
 	
 	@RequestMapping(value="/member/idCheck.do", method=RequestMethod.POST)
 	public String doPost(

@@ -9,10 +9,9 @@
 <jsp:include page="/includee/preScript.jsp" />
 <style type="text/css">
 	.thumbnail{
-		width: 50px;
+		width : 50px;
 		height: 50px;
-		
-	}
+	} 
 </style>
 <c:if test="${not empty message }">
 	<script type="text/javascript">
@@ -44,7 +43,7 @@
 					<td>${board.bo_type eq 'NOTICE'?'공지':'일반' }</td>
 					<td>${board.bo_no }</td>
 					<td>
-						<img class="thumbnail" src="${board.thumbnail }" />
+						<img class="thumbnail" src="${board.thumbnail }"/>
 					</td>
 					<td>
 						<c:url value="/board/boardView.do" var="viewURL">
@@ -81,8 +80,9 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="7">
-				<form id="searchForm">
+			<td colspan="8">
+				<form id="searchForm" action="${cPath }/board/boardList.do" method="post">
+					<input type="hidden" name="_method" value="delete" />
 					<input type="hidden" name="searchType" value="${pagingVO.searchMap.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
 					<input type="hidden" name="minDate" value="${pagingVO.searchMap.minDate }"/>
@@ -101,11 +101,11 @@
 					<input class="form-control mr-2" type="date" name="minDate" value="${pagingVO.searchMap.minDate }" />
 					<input class="form-control mr-2" type="date" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
 					<input class="btn btn-primary mr-2" id="searchBtn" type="button" value="검색" />
-					<input class="goBtn btn btn-success" type="button" value="새글쓰기" 
+					<input class="goBtn btn btn-success mr-2" type="button" value="새글쓰기" 
 						data-gopage="<c:url value='/board/boardInsert.do'/>"
 					/>
-					<input type="button" value="공지글쓰기"
-						onclick="location.href='${cPath}/board/noticeInsert.do';"
+					<input class="goBtn btn btn-info" type="button" value="공지글쓰기"
+						data-gopage="${cPath}/board/noticeInsert.do"
 					/>
 				</div>
 				<div id="pagingArea" class="d-flex justify-content-center">
@@ -121,7 +121,7 @@
 		if(url)
 			location.href = url;
 	});
-	let searchForm = $("#searchForm");
+	
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.searchMap.searchType }");
 	$("#searchBtn").on("click", function(){
@@ -130,34 +130,72 @@
 			let name = $(this).attr("name");
 			let sameInput = searchForm.find("[name='"+name+"']");
 			$(sameInput).val($(this).val());
-			
 		});
-	let json = {
-			page : $('[name="searchType"]').val(),
-			searchType : $('[name="searchWord"]').val(),
-			searchWord : $('[name="minDate"]').val(),
-			minDate : $('[name="maxDate"]').val(),
-			maxDate : $('[name="page"]').val()
-	}
-	
-		   $.ajax({
-			url : "${cPath}/board/boardList.do",
-			data : json,
-			contentType:"application/json; charset=UTF-8",
-			dataType : "JSON",
-			success : function(resp) {
-				console.log(resp.dataList)
-				
-			},
-			error : function(xhr, error, msg) {
-				alert("실패")
-				console.log(xhr);
-				console.log(error);
-				console.log(msg);
-			}
-		});  
-		searchForm.submit();  
+		searchForm.submit();
 	});
+	
+	let pagingArea = $("#pagingArea").on("click", "a", function(event){
+		event.preventDefault();
+		let page = $(this).data("page");
+		if(page){
+			searchForm.find("[name='page']").val(page);
+			searchForm.submit();
+		}
+		return false;
+	});
+	
+	let listBody = $("#listBody");
+	
+	let searchForm = $("#searchForm").ajaxForm({
+		dataType:"json"
+		, beforeSubmit:function(){
+			searchForm.find("[name='page']").val("");	
+		}, success:function(resp){
+			listBody.empty();
+			pagingArea.empty();
+			let trTags = [];
+			if(resp.dataList){
+				let viewURLPtrn = "${cPath}/board/boardView.do?what=%d";
+				$(resp.dataList).each(function(idx, board){
+					let viewURL = viewURLPtrn.replace("%d", board.bo_no);
+					let aTag = $("<a>").html(board.bo_title)
+									   .attr("href", viewURL);
+					if(board.bo_seq == 'Y'){
+						aTag.addClass('secret');
+					}else{
+						aTag.addClass('nonsecret');
+						aTag.data("toggle", 'popover');
+						aTag.attr("title", board.bo_title);
+					}
+					let tr = $("<tr>").append(
+								  $("<td>").html(board.bo_type == 'NOTICE'?'공지':'일반')
+								, $("<td>").html(board.bo_no)
+								, $("<td>").html(
+									$("<img>").addClass("thumbnail")
+											  .attr("src", board.thumbnail)
+								)
+								, $("<td>").html(aTag)
+								, $("<td>").html(board.bo_writer)
+								, $("<td>").html(board.bo_date)
+								, $("<td>").html(board.bo_hit)
+								, $("<td>").html(board.bo_rec)
+							).data("board", board).css("cursor", "pointer");
+					trTags.push(tr);
+				});
+			}else{
+				trTags.push( 
+					$("<tr>").html(
+						$("<td>").attr("colspan", "8")		
+					)
+				);
+			}
+			listBody.html(trTags);
+			pagingArea.html(resp.pagingHTMLBS);
+		}, error:function(xhr, resp, error){
+			console.log(xhr);
+		}
+	});
+	searchForm.submit();
 	
 	$("#pagingArea").on("click", "a", function(event){
 		event.preventDefault();
@@ -170,7 +208,7 @@
 	});
 	
 	$(function () {
-		$("#listBody a.nonsecret").hover(function(){
+		$("#listBody").on("mouseenter", "a.nonsecret", function(){
 			$(this).popover({
 				html:true
 				, content:function(){
@@ -194,12 +232,11 @@
 					console.log(2);
 					return retValue;
 				}
-			}).popover("toggle")
+			}).popover("show")
+		}).on("mouseout", "a.nonsecret", function(){
+			$(this).popover("hide");
 		});
-// 	  $('[data-toggle="popover"]').popover()
 	});
-	
-	
 </script>
 
 <jsp:include page="/includee/postScript.jsp" />
