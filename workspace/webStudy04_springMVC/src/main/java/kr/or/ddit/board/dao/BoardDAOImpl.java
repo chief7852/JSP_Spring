@@ -6,12 +6,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
+@Repository
 public class BoardDAOImpl implements IBoardDAO {
 	private SqlSessionFactory sessionFactory =
 			CustomSqlSessionFactoryBuilder.getSessionFactory();
@@ -65,6 +67,18 @@ public class BoardDAOImpl implements IBoardDAO {
 	public int[] selectRel(int bo_no, SqlSession session) {
 		IBoardDAO mapper = session.getMapper(IBoardDAO.class);
 		return mapper.selectRel(bo_no, session);
+	}
+
+	@Override
+	public int upRec(BoardVO board, SqlSession session) {
+		// TODO Auto-generated method stub
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.upRec",board);
+	}
+	
+	@Override
+	public int upHit(BoardVO board, SqlSession session) {
+		// TODO Auto-generated method stub
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.upHit",board);
 	}
 
 }

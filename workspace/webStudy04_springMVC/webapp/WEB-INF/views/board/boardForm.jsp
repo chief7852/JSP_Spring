@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 <script type="text/javascript" src="${cPath }/js/ckeditor/ckeditor.js"></script>
 </head>
 <body>
-<form id="sub" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="board" id="sub" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="bo_no" value="${board.bo_no }" />
 	<input type="hidden" name="bo_type" value="${board.bo_type }">
 	<input type="hidden" name="bo_parent" value="${board.bo_parent }" />
@@ -19,7 +20,7 @@
 		<th>제목</th>
 		<td>
 			<div class="input-group">
-				<input class="form-control col-9 mr-3" type="text" name="bo_title" required
+				<input class="form-control col-9 mr-3" type="text" name="bo_title"  
 				value="${board.bo_title }" />
 				<div class="form-check col-2">
 					<input class="form-check-input" type="checkbox" 
@@ -30,22 +31,24 @@
 						비밀글
 					</label>
 				</div>
-				<span class="error">${errors.bo_title }</span>
+				<form:errors path="bo_title" element="span" cssClass="error"/>
+				<form:errors path="bo_title" element="span" cssClass="error"/>
 			</div>
 		</td>
 	</tr>
 	<c:if test="${board.bo_type eq 'BOARD' }">
 		<tr>
 			<th>작성자</th>
-			<td><input class="form-control" type="text" name="bo_writer" required
+			<td><input class="form-control" type="text" name="bo_writer"  
 				value="${board.bo_writer }" />
-				<span class="error">${errors.bo_writer }</span>
+				<form:errors path="bo_writer" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
 			<th>비밀번호</th>
-			<td><input class="form-control" type="text" name="bo_pass" required />
-				<span class="error">${errors.bo_pass }</span>
+			<td><input class="form-control" type="text" name="bo_pass"   />
+				<form:errors path="bo_pass" element="span" cssClass="error"/>
+				
 			</td>
 		</tr>
 		<tr>
@@ -79,7 +82,7 @@
 		<th>내용</th>
 		<td>
 			<textarea class="form-control" rows="5" cols="100" name="bo_content" id="bo_content">${board.bo_content }</textarea>
-			<span class="error">${errors.bo_content }</span>
+			<form:errors path="bo_content" element="span" cssClass="error"/>
 		</td>
 	</tr>
 	<tr>
@@ -94,7 +97,7 @@
 		</td>
 	</tr>
 </table>
-</form>
+</form:form>
 
 <script type="text/javascript">
 	CKEDITOR.replace("bo_content", {

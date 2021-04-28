@@ -1,3 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.db.mybatis.mappers.Reply"></mapper>
+<mapper namespace="kr.or.ddit.Reply.dao.IReplyDAO">
+	<insert id="insertReply" parameterType="ReplyVO">
+		<selectKey resultType="int" keyProperty="rep_no" order="BEFORE">
+			SELECT REPLY_RENUM_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		
+		INSERT INTO REPLY2 (
+		BO_NO,
+		REP_NO,
+		REP_WRITER,
+		REP_PASS,
+		REP_CONTENT,
+		REP_DATE
+		) VALUES (
+			#{bo_no,jdbcType=NUMERIC},
+			#{rep_no,jdbcType=NUMERIC},
+			#{rep_writer,jdbcType=VARCHAR},
+			#{rep_pass,jdbcType=VARCHAR},
+			#{rep_content,jdbcType=VARCHAR},
+			SYSDATE
+		)
+	</insert>
+	<select id="selectReplyCount" >
+		select count(*)
+		from reply
+		<![CDATA[
+			WHERE BO_NO = #{int}
+		]]>
+		where
+	</select>
+	
+	<select id="selectReplyList" parameterType="PagingVO">
+		SELECT B.*
+		FROM(
+		SELECT ROWNUM RNUM , A.*
+		FROM
+		(SELECT
+		    BO_NO,
+		    REP_NO,
+		    REP_WRITER,
+		    REP_PASS,
+		    REP_CONTENT,
+		    REP_DATE
+		FROM
+		    REPLY2
+		    )A
+		)B
+		<![CDATA[
+			WHERE BO_NO = #{bo_no} AND RNUM >= #{startRow} AND RNUM <= #{endRow}
+		]]>
+	</select>
+</mapper>

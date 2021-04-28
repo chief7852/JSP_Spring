@@ -22,6 +22,9 @@ public interface IBoardService {
 	public AttatchVO download(int att_no);
 	
 	public boolean boardAuthenticate(BoardVO search);
+	
+	public ServiceResult recommend(int bo_no);
+	public ServiceResult report(int bo_no);
 }
 
 

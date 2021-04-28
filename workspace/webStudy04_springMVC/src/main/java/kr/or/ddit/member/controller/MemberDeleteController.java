@@ -1,5 +1,6 @@
 package kr.or.ddit.member.controller;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,8 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberDeleteController{
-	private IMemberService service =
-					new MemberServiceImpl();
+	@Inject
+	private IMemberService service ;
 	@RequestMapping(value="/member/memberDelete.do", method=RequestMethod.POST)
 	public String memberDelete(
 			@RequestParam("password") String password

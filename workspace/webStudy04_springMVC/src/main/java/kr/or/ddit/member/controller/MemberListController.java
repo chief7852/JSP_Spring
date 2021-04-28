@@ -17,8 +17,7 @@ import kr.or.ddit.vo.SearchVO;
 
 @Controller
 public class MemberListController{
-	private IMemberService service =
-			new MemberServiceImpl();
+	private IMemberService service ;
 	
 	@RequestMapping("/member/memberView.do")
 	public String view(

@@ -2,18 +2,32 @@ package kr.or.ddit.member.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.dao.IMemberDAO;
-import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.utils.CryptoUtil;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 
+@Service
 public class MemberServiceImpl implements IMemberService {
-	private IMemberDAO dao = MemberDAOImpl.getInstance();
-	private IAuthenticateService authService =
-					new AuthenticateServiceImpl();
+	private static final Logger logger =
+			LoggerFactory.getLogger(MemberServiceImpl.class);
+	private IMemberDAO dao ;
+	@Inject
+	public void setDao(IMemberDAO dao) {
+		this.dao = dao;
+		logger.info("주입된 boardDAO: {}", dao.getClass().getName());
+	}
+	@Inject
+	private IAuthenticateService authService ;
 	
 	@Override
 	public MemberVO retrieveMember(String mem_id){

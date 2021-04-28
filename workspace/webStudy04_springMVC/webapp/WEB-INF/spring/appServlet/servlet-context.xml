@@ -9,17 +9,47 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 	
-	<!--25가지이상 전략이 등록되게 만들어줌  -->
-	<annotation-driven/>
+	<!--25가지이상 전략이 등록되게 만들어줌  --><!-- multipart resolver -->
+	<annotation-driven validator="validator"/>
 	<!-- 자원을 분리하는것(얘는 정적) -->
+	
+	
+	
+	<beans:bean id="resourceBundleLocator" class="org.hibernate.validator.resourceloading.PlatformResourceBundleLocator" 
+	c:bundleName="kr.or.ddit.messages.errorMessages"
+	/>
+	<beans:bean id="messageInterpolator" class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator"
+		c:userResourceBundleLocator-ref="resourceBundleLocator"
+	/>
+	<!-- commons validata 역할함 -->
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" 
+		p:messageInterpolator-ref="messageInterpolator"
+	/>
+	
+	
+	<!-- spring버전이 낮으면 이런 코드로  등록해줘야한다-->
+	<!-- 핸들러 어뎁터가 주입받을때 사용하는 id 를 받아줘야 '원본요청을 필터링할수있다' -->
+	
 	<resources location="/resources/" mapping="/resources/**" cache-period="0" ></resources>
 	<default-servlet-handler/><!-- 서버가 가지고있는 default servlet한테 다시 돌려주는것 -->
 	
+	
+	<!-- order생략할경우 integer에서 가장 큰수로 바꿔서 기본값으로 줌 -->
+		<!-- p:order="2" -->
 	<beans:bean id="IRVR" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:prefix="/WEB-INF/views/"
 		p:suffix=".jsp"
 	/>
+	<!-- order란 핸들러 어뎁터 맵핑이 여러개이면 돌아가는 구조파악을위해 order라는 프로퍼티를사용  -->
+	<beans:bean id="BNVR" class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="1"
+	/>
 	
+	<beans:bean id="downloadView" class="kr.or.ddit.board.view.DownloadView"></beans:bean>
+	
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
+	<!-- 상위에서 제외된 친구들 사용 -->
 	<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>

@@ -25,7 +25,7 @@ import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
-@Controller
+//@Controller
 public class ProdInsertController{
 	private IProdService service = ProdServiceImpl.getInstance();
 	private IOthersDAO othersDAO = OthersDAOImpl.getInstance();

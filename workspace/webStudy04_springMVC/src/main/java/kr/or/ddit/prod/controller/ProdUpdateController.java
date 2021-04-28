@@ -27,7 +27,7 @@ import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
-@Controller
+//@Controller
 public class ProdUpdateController {
 	private IProdService service = 
 					ProdServiceImpl.getInstance();

@@ -1,5 +1,6 @@
 package kr.or.ddit.member.controller;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,9 +18,10 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MypageController{
-	IMemberService service = new MemberServiceImpl();
-	IAuthenticateService authService =
-					new AuthenticateServiceImpl();
+	@Inject
+	IMemberService service;
+	@Inject
+	IAuthenticateService authService;
 	
 	@RequestMapping("/mypage.do")
 	public String mypageGet(){
