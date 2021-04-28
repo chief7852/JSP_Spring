@@ -13,8 +13,14 @@
 		GR_CODE,
 		AL_GEN,
 		AL_MAIL
-		) VALUES (
-		
+		)
+		VALUES (
+		#{alId,jdbcType=VARCHAR}, #{alName,jdbcType=VARCHAR},
+		#{alAge,jdbcType=NUMERIC},
+		#{alZip,jdbcType=VARCHAR}, #{alAdd1,jdbcType=VARCHAR}, #{alAdd2,jdbcType=VARCHAR},
+		#{alHp,jdbcType=VARCHAR}, #{grCode,jdbcType=VARCHAR},
+		#{alGen,jdbcType=VARCHAR},
+		#{alMail,jdbcType=VARCHAR}
 		)
 	</insert>
 </mapper>

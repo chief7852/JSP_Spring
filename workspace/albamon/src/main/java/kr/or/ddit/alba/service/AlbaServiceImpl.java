@@ -23,6 +23,13 @@ import kr.or.ddit.vo.PagingVO;
 
 public class AlbaServiceImpl implements IAlbaService {
 	
+	private static AlbaServiceImpl self;
+	private AlbaServiceImpl() {}
+	public static AlbaServiceImpl getInstance() {
+		if(self==null) self = new AlbaServiceImpl();
+		return self;
+	}
+	
 	private SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
 	private IAlbaDAO albaDAO = AlbaDAOImpl.getInstance();
 	

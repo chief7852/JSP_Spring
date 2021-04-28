@@ -21,6 +21,7 @@ import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validate.CommonValidator;
 import kr.or.ddit.validate.groups.InsertGroup;
+import kr.or.ddit.vo.AlbaVO;
 import kr.or.ddit.vo.AlbaVO3;
 
 @Controller
@@ -36,7 +37,27 @@ public class AlbaInsertController {
 	}
 	
 	@RequestMapping(value = "/alba/albaInsert.do",method =RequestMethod.POST)
-	public String createForm() {
+	public String createForm(
+			@ModelAttribute("alba") AlbaVO alba,
+			HttpServletRequest req
+			) {
+		String view = null;
+		String message = null;
 		
+		ServiceResult result = ServiceResult.FAILED;
+		if(alba.getAlName() != null) {
+			result = service.createAlba(alba);
+			if(result == ServiceResult.OK) {
+				message = "성공";
+				view = "index"; 
+			}else {
+				message = "실패";
+				view = "index";
+			}	
+		}else {
+			
+		}
+		req.setAttribute("message", message);
+		return view;
 	}
 }
