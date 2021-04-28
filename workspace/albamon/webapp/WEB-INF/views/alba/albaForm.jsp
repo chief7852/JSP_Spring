@@ -24,7 +24,7 @@
 </style>
 <body>
 <h4>등록 및 수정 양식</h4>
-<form>
+<form method="post" name="alba">
 	<table class="table table-bordered table-dark">
 
 		<tr class="form-group col-md-6">
@@ -90,8 +90,8 @@
 		</tr>
 
 
-
 	</table>
+	<input type="submit" value="저장">
 
 	<div id="layer"
 		style="display: none; position: fixed; overflow: hidden; z-index: 1; -webkit-overflow-scrolling: touch;">

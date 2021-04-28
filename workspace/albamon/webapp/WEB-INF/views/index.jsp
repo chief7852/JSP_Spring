@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
-<html lang="en">
+<html lang="kr">
 <jsp:include page="/includee/preScript.jsp" />
   <head>
   
@@ -34,7 +34,13 @@
     <link href="cover.css" rel="stylesheet">
   </head>
   <body class="text-center">
-
+<c:choose>
+	<c:when test="${not empty message }">
+		<script type="text/javascript">
+			alert("${message}")
+		</script>
+	</c:when>
+</c:choose>
 
   <header class="masthead mb-auto">
     <div class="inner">
@@ -55,11 +61,13 @@
     </p>
 
 
+
 <!-- Modal -->
 <script type="text/javascript">
 	$(".btn-secondary").on('click',function(){
 		location.href="${cPath}/alba/albaList.do"
 	})
+	
 </script>
 <jsp:include page="/includee/postScript.jsp" />
   </body>
