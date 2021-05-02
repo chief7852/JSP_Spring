@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:beans ="http://www.springframework.org/schema/beans"
+<beans:beans 
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -8,50 +9,87 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<annotation-driven validator="validator" />
 	
-	<!--25가지이상 전략이 등록되게 만들어줌  --><!-- multipart resolver -->
-	<annotation-driven validator="validator"/>
-	<!-- 자원을 분리하는것(얘는 정적) -->
-	
-	
-	
-	<beans:bean id="resourceBundleLocator" class="org.hibernate.validator.resourceloading.PlatformResourceBundleLocator" 
-	c:bundleName="kr.or.ddit.messages.errorMessages"
+	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" 
+		p:basenames="kr.or.ddit.messages.message,kr.or.ddit.messages.errorMessages"
 	/>
-	<beans:bean id="messageInterpolator" class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator"
-		c:userResourceBundleLocator-ref="resourceBundleLocator"
-	/>
-	<!-- commons validata 역할함 -->
+	
 	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" 
-		p:messageInterpolator-ref="messageInterpolator"
+		p:validationMessageSource-ref="messageSource"
 	/>
 	
+	<resources location="/resources/" 
+		mapping="/resources/**" cache-period="0" />
+	<default-servlet-handler/>
 	
-	<!-- spring버전이 낮으면 이런 코드로  등록해줘야한다-->
-	<!-- 핸들러 어뎁터가 주입받을때 사용하는 id 를 받아줘야 '원본요청을 필터링할수있다' -->
-	
-	<resources location="/resources/" mapping="/resources/**" cache-period="0" ></resources>
-	<default-servlet-handler/><!-- 서버가 가지고있는 default servlet한테 다시 돌려주는것 -->
-	
-	
-	<!-- order생략할경우 integer에서 가장 큰수로 바꿔서 기본값으로 줌 -->
-		<!-- p:order="2" -->
-	<beans:bean id="IRVR" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+	<beans:bean id="IRVR" class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
 		p:prefix="/WEB-INF/views/"
 		p:suffix=".jsp"
 	/>
-	<!-- order란 핸들러 어뎁터 맵핑이 여러개이면 돌아가는 구조파악을위해 order라는 프로퍼티를사용  -->
-	<beans:bean id="BNVR" class="org.springframework.web.servlet.view.BeanNameViewResolver"
+	
+	<beans:bean id="BNVR" class="org.springframework.web.servlet.view.BeanNameViewResolver" 
 		p:order="1"
 	/>
 	
-	<beans:bean id="downloadView" class="kr.or.ddit.board.view.DownloadView"></beans:bean>
+	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" 
+		p:definitions="/WEB-INF/tiles/*-definitions.xml"
+		p:preparerFactoryClass="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory"
+	/>
 	
+	<beans:bean id="TVR" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" 
+		p:order="2"
+	/>
 	
+	<beans:bean id="downloadView" class="kr.or.ddit.board.view.DownloadView" />
+		
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
-	<!-- 상위에서 제외된 친구들 사용 -->
+
 	<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<context:include-filter type="annotation" 
+			expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" 
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<context:include-filter type="annotation" 
+			expression="kr.or.ddit.annotation.ViewPreparer"/>	
 	</context:component-scan>
+	
+<!-- 	핸들러 인터셉터 설정 -->
+	<beans:bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor" 
+		p:cacheSeconds="0"
+		p:useCacheControlHeader="true"
+		p:useCacheControlNoStore="true"
+		p:useExpiresHeader="true"
+	/>	
+	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" 
+		p:cookieName="langCookie"
+		p:cookiePath="/"
+		p:cookieMaxAge="#{60*60*24*3}"
+	/>
+	<interceptors>
+		<beans:ref bean="webContentInterceptor"/>
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" 
+			p:paramName="lang"
+		/>
+	</interceptors>
 </beans:beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

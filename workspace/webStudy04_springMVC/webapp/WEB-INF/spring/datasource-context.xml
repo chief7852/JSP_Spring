@@ -9,9 +9,9 @@
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-	<util:properties id="dbInfo" location="classpath:kr/or/ddit/db/dbInfo.properties"/>
+	<util:properties id="dbInfo" location="classpath:kr/or/ddit/db/dbinfo.properties" />
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" 
 		p:driverClassName="#{dbInfo.driverClassName}"
 		p:url="#{dbInfo.url}"
 		p:username="#{dbInfo.user}"
@@ -19,18 +19,16 @@
 		p:initialSize="#{dbInfo.initialSize}"
 		p:maxTotal="#{dbInfo.maxTotal}"
 		p:maxWaitMillis="#{dbInfo.maxWait}"
-	/>	
+	/> 
 	
-	<!-- 트렌젝션 관리 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
 		p:dataSource-ref="dataSource"
 	/>
 	
-	<!-- 세션 Factory -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
 		p:dataSource-ref="dataSource"
 		p:mapperLocations="classpath:kr/or/ddit/db/mybatis/mappers/*.xml"
-		p:typeAliasesPackage="kr.or.ddit.**.vo"
+		p:typeAliasesPackage="kr.or.ddit.**.vo"				
 	/>
 	
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" 
@@ -38,6 +36,16 @@
 	/>
 	
 	<mybatis-spring:scan base-package="kr.or.ddit.**.dao"
-	annotation= "org.springframework.stereotype.Repository"
+		annotation="org.springframework.stereotype.Repository"
 	/>
 </beans>
+
+
+
+
+
+
+
+
+
+

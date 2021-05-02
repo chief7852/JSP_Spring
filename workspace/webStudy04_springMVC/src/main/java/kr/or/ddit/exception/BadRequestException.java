@@ -1,4 +1,4 @@
- package kr.or.ddit.exception;
+package kr.or.ddit.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,5 +30,5 @@ public class BadRequestException extends RuntimeException{
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

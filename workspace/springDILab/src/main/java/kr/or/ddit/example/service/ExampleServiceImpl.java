@@ -57,6 +57,8 @@ public class ExampleServiceImpl implements IExampleService{
 	public String readData(String pk) {
 		String rawData = dao.selectData(pk);
 		String info = rawData+"를 가공한 information";
+//		if(1==1)
+//			throw new RuntimeException("강제 발생 예외");
 		return info;
 	}
 

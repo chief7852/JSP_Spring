@@ -1,14 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<table>
+	<table class="table table-bordered table-striped">
 		<tr>
 			<th>상품코드</th>
 			<td>${prod.prod_id }</td>
@@ -111,16 +104,23 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<button type="button" 
-				onclick="location.href='prodUpdate.do?what=${prod.prod_id }';">수정</button>
-				<button type="button" 
-				onclick="location.href='prodList.do';">상품목록으로</button>
+				<c:url value="/prod/prodUpdate.do" var="updateURL">
+					<c:param name="what" value="${prod.prod_id }" />
+				</c:url>
+				<button type="button" class="goBtn btn btn-primary mr-3"
+					data-gopage="${updateURL }">수정</button>
+				<button type="button" class="goBtn btn btn-secondary"
+					data-gopage="${cPath }/prod/prodList.do">상품목록으로</button>
 			</td>
 		</tr>
 	</table>
-	
-</body>
-</html>
+	<script type="text/javascript">
+	$(".goBtn").on("click", function(){
+		let url = $(this).data("gopage");
+		if(url)
+			location.href = url;
+	});
+	</script>
 
 
 

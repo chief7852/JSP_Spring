@@ -1,4 +1,4 @@
-<%@page import="kr.or.ddit.Constants"%>
+<%@page import="kr.or.ddit.employee.Constants"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -31,10 +31,10 @@
 				event.preventDefault();
 				document.logoutForm.submit();
 				return false;
-			} 
+			}
 		</script>
 		<%
-	}else{ 
+	}else{
 		%>
 		<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인</a>
 		<a href="<%=request.getContextPath() %>/member/memberInsert.do">회원 가입</a>

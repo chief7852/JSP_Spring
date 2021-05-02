@@ -1,8 +1,11 @@
 package kr.or.ddit.board.controller;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,25 +25,31 @@ import kr.or.ddit.vo.BoardVO;
 
 @Controller
 public class BoardInsertController {
+	private static final Logger logger = 
+			LoggerFactory.getLogger(BoardInsertController.class);
 	private String[] filteringTokens = new String[] {"말미잘", "해삼"};
 	
 	@Inject
 	private IBoardService service;
+	
+	@PostConstruct
+	public void init() {
+		logger.info("주입된 service : {}", service.getClass().getName());
+		logger.info("프록시 여부 : {}", AopUtils.isAopProxy(service));
+	}
 		
 	@RequestMapping("/board/noticeInsert.do")
 	public String noticeForm(@ModelAttribute("board") BoardVO board) {
 		board.setBo_type("NOTICE");
 		return "board/boardForm";
 	}
-	//공지글
+	
 	@RequestMapping(value="/board/noticeInsert.do", method=RequestMethod.POST)
 	public String noticeInsert(
 			@Validated(NoticeInsertGroup.class) @ModelAttribute("board") BoardVO board
 			, BindingResult errors
-		//순서바뀌지않게 주의할것 
 			, Model model
 			) {
-//		req.setAttribute("groupHint", NoticeInsertGroup.class);
 		return insert(board, errors, model);
 	}
 	
@@ -56,23 +65,11 @@ public class BoardInsertController {
 	
 	@RequestMapping(value="/board/boardInsert.do", method=RequestMethod.POST)
 	public String insert(
-//			@RequestParam(required = true) int bo_no,
-			//객체검증을 하되 그룹힌트?
 			@Validated(BoardInsertGroup.class) @ModelAttribute("board") BoardVO board
 			, Errors errors
-//			, HttpServletRequest req
 			, Model model
 			) {
-				//errors를 대신해서 3. 어떻게 핸들러어뎁터가 검증했을때 내가 그결과를 받아써먹느냐
-//		Map<String, List<String>> errors = new LinkedHashMap<>();
-//		req.setAttribute("errors", errors);
 		
-//		쓸일없어짐
-//		Class<?> groupHint = (Class<?>) req.getAttribute("groupHint");
-//		if(groupHint==null)
-//			groupHint = BoardInsertGroup.class;
-		
-		//에러가있으면 true가뜬다 - ! 로 반대개념 에러가없으면 
 		boolean valid = !errors.hasErrors();
 		
 		String view = null;

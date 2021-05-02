@@ -17,14 +17,13 @@ import kr.or.ddit.utils.RegexUtils;
 import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.vo.BoardVO;
 
-@RequestMapping("/board")
 @Controller
 public class BoardUpdateController {
 	private String[] filteringTokens = new String[] {"말미잘", "해삼"};
 	@Inject
 	private IBoardService service;
 	
-	@RequestMapping("/boardUpdate.do")
+	@RequestMapping("/board/boardUpdate.do")
 	public String form(
 		@RequestParam("what") int bo_no
 		, Model model
@@ -39,13 +38,12 @@ public class BoardUpdateController {
 		return "board/boardForm";
 	}
 	
-	@RequestMapping(value="/boardUpdate.do", method=RequestMethod.POST)
+	@RequestMapping(value="/board/boardUpdate.do", method=RequestMethod.POST)
 	public String update(
-			@Validated(UpdateGroup.class)@ModelAttribute("board") BoardVO board
-			,Errors errors
+			@Validated(UpdateGroup.class) @ModelAttribute("board") BoardVO board
+			, Errors errors 
 			, Model model
 		) {
-		
 		
 		
 		String view = null;

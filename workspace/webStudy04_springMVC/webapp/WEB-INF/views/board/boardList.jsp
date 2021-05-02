@@ -1,26 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp" />
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <style type="text/css">
 	.thumbnail{
 		width : 50px;
 		height: 50px;
 	} 
 </style>
-<c:if test="${not empty message }">
-	<script type="text/javascript">
-		alert("${message}");
-	</script>
-	<c:remove var="message" scope="session"/>
-</c:if>
-</head>
-<body>
+<spring:message code="bow" /> 
 <h4>게시글 목록 조회</h4>
 <table class="table table-bordered">
 	<thead>
@@ -81,8 +69,7 @@
 	<tfoot>
 		<tr>
 			<td colspan="8">
-				<form id="searchForm" action="${cPath }/board/boardList.do" method="post">
-					<input type="hidden" name="_method" value="delete" />
+				<form id="searchForm" action="${cPath }/board/boardList.do">
 					<input type="hidden" name="searchType" value="${pagingVO.searchMap.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
 					<input type="hidden" name="minDate" value="${pagingVO.searchMap.minDate }"/>
@@ -238,10 +225,6 @@
 		});
 	});
 </script>
-
-<jsp:include page="/includee/postScript.jsp" />
-</body>
-</html>
 
 
 

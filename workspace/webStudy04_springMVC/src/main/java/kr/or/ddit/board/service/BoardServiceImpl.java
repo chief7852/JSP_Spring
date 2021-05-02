@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,18 +31,16 @@ public class BoardServiceImpl implements IBoardService {
 			LoggerFactory.getLogger(BoardServiceImpl.class);
 	
 	private IBoardDAO boardDAO;
-	
 	@Inject
 	public void setBoardDAO(IBoardDAO boardDAO) {
 		this.boardDAO = boardDAO;
-		logger.info("주입된 boardDAO: {}", boardDAO.getClass().getName());
+		logger.info("주입된 boardDAO : {}", boardDAO.getClass().getName());
 	}
-	@Inject
 	private IAttatchDAO attatchDAO;
-	
+	@Inject
 	public void setAttatchDAO(IAttatchDAO attatchDAO) {
 		this.attatchDAO = attatchDAO;
-		logger.info("주입된 IAttatchDAO: {}", attatchDAO.getClass().getName());
+		logger.info("주입된 attatchDAO : {}", attatchDAO.getClass().getName());
 	}
 	
 	@Value("#{appInfo.attatchPath}")
@@ -58,7 +55,7 @@ public class BoardServiceImpl implements IBoardService {
 					, getClass().getSimpleName()
 					, saveFolder.getAbsolutePath());
 	}
-
+	
 
 	private void encodePassword(BoardVO board) {
 		String bo_pass = board.getBo_pass();
@@ -114,19 +111,15 @@ public class BoardServiceImpl implements IBoardService {
 		//==========비밀번호 암호화==========
 		encodePassword(board);
 		//===============================
-		
-		
-			int cnt = boardDAO.insertBoard(board);
+		int cnt = boardDAO.insertBoard(board);
+		if(cnt > 0) {
+			//==========첨부파일 처리==========
+			cnt += processes(board);
+			//==============================
 			if(cnt > 0) {
-				//==========첨부파일 처리==========
-				cnt += processes(board);
-				//==============================
-				if(cnt > 0) {
-					result = ServiceResult.OK;
-				
-				
-			}
-		} // try end
+				result = ServiceResult.OK;
+			}	
+		}
 		return result;
 	}
 
@@ -149,65 +142,61 @@ public class BoardServiceImpl implements IBoardService {
 		boardDAO.incrementHit(board.getBo_no());
 		return board;
 	}
+
 	@Transactional
 	@Override
 	public ServiceResult modifyBoard(BoardVO board) {
-		
-			// 게시글 존재 여부 확인
-			// 비번 인증
-			// 인증 성공시
-			// 게시글의 일반 데이터 수정
-			ServiceResult result = ServiceResult.INVALIDPASSWORD;
-			encodePassword(board);
-			int cnt = boardDAO.updateBoard(board);
-			if(cnt>0) {
-				// 신규 파일에 대한 등록
-			cnt += processes(board);
-				// 삭제할 파일에 대한 처리
-				cnt += deleteFileProcesses(board);
-				if(cnt > 0) {
-					result = ServiceResult.OK;
-					
-				}
+		// 게시글 존재 여부 확인
+		// 비번 인증
+		// 인증 성공시
+		// 게시글의 일반 데이터 수정
+		ServiceResult result = ServiceResult.INVALIDPASSWORD;
+		encodePassword(board);
+		int cnt = boardDAO.updateBoard(board);
+		if(cnt>0) {
+			// 신규 파일에 대한 등록
+		cnt += processes(board);
+			// 삭제할 파일에 대한 처리
+			cnt += deleteFileProcesses(board);
+			if(cnt > 0) {
+				result = ServiceResult.OK;
 			}
-			return result;
-		
+		}
+		return result;
 	}
+
 	@Transactional
 	@Override
 	public ServiceResult removeBoard(BoardVO search) {
-		
-			ServiceResult result = ServiceResult.FAIL;
-			BoardVO savedBoard = boardDAO.selectBoard(search);
-			encodePassword(search);
-			String savedPass = savedBoard.getBo_pass();
-			String inputPass = search.getBo_pass();
-			// 인증
-			if(savedPass.equals(inputPass)) {
-				// 첨부파일 삭제
-				List<AttatchVO> attatchList 
-					= savedBoard.getAttatchList();
-				if(attatchList.size()>0) {
-					int[] delAttNos = new int[attatchList.size()];
-					search.setDelAttNos(delAttNos);
-					for(int i = 0; i < delAttNos.length; i++) {
-						delAttNos[i] = 
-								attatchList.get(i).getAtt_no();
-					}	
-					deleteFileProcesses(search);
-				}// if(attatchList.size) end
-				
-				// 게시글 삭제
-				int cnt = boardDAO.deleteBoard(search);
-				if(cnt>0) {
-					result = ServiceResult.OK;
-					
-				}
-			}else {
-				result = ServiceResult.INVALIDPASSWORD;
+		ServiceResult result = ServiceResult.FAIL;
+		BoardVO savedBoard = boardDAO.selectBoard(search);
+		encodePassword(search);
+		String savedPass = savedBoard.getBo_pass();
+		String inputPass = search.getBo_pass();
+		// 인증
+		if(savedPass.equals(inputPass)) {
+			// 첨부파일 삭제
+			List<AttatchVO> attatchList 
+				= savedBoard.getAttatchList();
+			if(attatchList.size()>0) {
+				int[] delAttNos = new int[attatchList.size()];
+				search.setDelAttNos(delAttNos);
+				for(int i = 0; i < delAttNos.length; i++) {
+					delAttNos[i] = 
+							attatchList.get(i).getAtt_no();
+				}	
+				deleteFileProcesses(search);
+			}// if(attatchList.size) end
+			
+			// 게시글 삭제
+			int cnt = boardDAO.deleteBoard(search);
+			if(cnt>0) {
+				result = ServiceResult.OK;
 			}
-			return result;
-		
+		}else {
+			result = ServiceResult.INVALIDPASSWORD;
+		}
+		return result;
 	}
 
 	@Override

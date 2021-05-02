@@ -1,0 +1,33 @@
+package kr.or.ddit.thread;
+
+import java.util.concurrent.ThreadPoolExecutor;
+
+public class PrintNumberJobGenerator implements Runnable {
+	private ThreadPoolExecutor executor;
+
+
+	public PrintNumberJobGenerator(ThreadPoolExecutor executor) {
+		super();
+		this.executor = executor;
+	}
+
+
+	@Override
+	public void run() {
+		while (true) {
+
+			PrintNumberJob job = new PrintNumberJob();
+//			Thread thread = new Thread(job);
+//			thread.start();
+			executor.execute(job);
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+}

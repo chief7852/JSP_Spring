@@ -26,36 +26,58 @@
 	SELECT * FROM DUAL
 	</insert>
 	
-	<delete id="deleteAttathes" parameterType="BoardVO">
-		DELETE FROM ATTATCH
-		<where>
-			<foreach collection="delAttNos" item="att_no" separator="OR">
-				att_no = #{att_no}
-			</foreach>
-		</where>
-	</delete>
-	
-	<select id="selectAttatch" resultType="AttatchVO" parameterType="int">
+	<select id="selectAttatch" parameterType="int" resultType="AttatchVO">
 		SELECT
-			    BO_NO,
-			    ATT_NO,
-			    ATT_FILENAME,
-			    ATT_SAVENAME,
-			    ATT_SIZE,
-			    ATT_CONTENTTYPE,
-			    ATT_DOWNCOUNT
-			FROM
-  				 ATTATCH
-  			WHERE ATT_NO = #{data}
+				 BO_NO
+			,    ATT_NO
+			, ATT_FILENAME
+		    , ATT_SAVENAME
+		    , ATT_SIZE
+		    , ATT_CONTENTTYPE
+		    , ATT_DOWNCOUNT
+		FROM ATTATCH
+		WHERE ATT_NO = #{att_no}
 	</select>
 	
-	<select id="selectSaveNamesForDelete" parameterType="BoardVO" resultType="String">
+<!-- 	DELETE FROM ATTATCH -->
+<!-- 	WHERE ATT_NO IN (1,2,3) -->
+	
+	<delete id="deleteAttathes" parameterType="BoardVO">
+		DELETE FROM ATTATCH
+		WHERE ATT_NO IN 
+		<foreach collection="delAttNos" item="delNo" open="(" close=")" separator=",">
+			#{delNo}
+		</foreach>
+	</delete>
+	
+	<select id="selectSaveNamesForDelete" parameterType="BoardVO" resultType="string">
 		SELECT ATT_SAVENAME
 		FROM ATTATCH
 		WHERE ATT_NO IN 
-		<foreach collection="delAttNos" item="attNo" open="(" close=")" separator=",">		
+		<foreach collection="delAttNos" item="attNo" open="(" close=")" separator=",">
 			#{attNo}
 		</foreach>
-	
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>
+
+
+
+
+

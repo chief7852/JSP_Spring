@@ -22,12 +22,11 @@ public class BoardDeleteController {
 	private IBoardService service;
 	@RequestMapping(value="/board/boardDelete.do", method=RequestMethod.POST)
 	public String delete(
-		@Validated(DeleteGroup.class)@ModelAttribute("board")BoardVO board
-		,BindingResult errors
+		@Validated(DeleteGroup.class) @ModelAttribute("board")BoardVO board
+		, BindingResult errors
 		, Model model
 		, RedirectAttributes redirectAttributes
 	) {
-		
 		String view = null;
 		if(!errors.hasErrors()) {
 			ServiceResult result = service.removeBoard(board);

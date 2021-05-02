@@ -2,7 +2,10 @@ package kr.or.ddit.fileupload.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class FileUploadController {
 	private static final Logger logger =
 			LoggerFactory.getLogger(FileUploadController.class);
+	
+	@Inject
+	private WebApplicationContext container;
+	private ServletContext application;
+	
+	@PostConstruct
+	public void init() {
+		application = container.getServletContext();
+	}
+	
 	@RequestMapping("/fileUpload.do")
 	public String form() {
 		return "fileupload/uploadForm";
@@ -31,9 +45,7 @@ public class FileUploadController {
 			@RequestParam("uploader") String uploader,
 			@RequestPart(value="uploadFile1") MultipartFile[] file1,  
 			@RequestPart(value="uploadFile2", required=false) MultipartFile[] file2,
-			HttpServletRequest req,
 			HttpSession session) throws IOException, ServletException {
-		ServletContext application = req.getServletContext();
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(application.getRealPath(saveFolderUrl));
 		if(!saveFolder.exists()) {
@@ -41,14 +53,16 @@ public class FileUploadController {
 		}
 		
 		if(file1.length>0) {
-			file1[0].saveTo(saveFolder);
-			String saveFileUrl = saveFolderUrl +"/"+file1[0].getUniqueSaveName();
+			String savename = UUID.randomUUID().toString();
+			file1[0].transferTo(new File(saveFolder, savename));
+			String saveFileUrl = saveFolderUrl +"/"+savename;
 			session.setAttribute("uploadFile1", saveFileUrl);
 			logger.info("saveFile : {}", saveFileUrl);
 		}
 		if(file2!=null && file2.length>0) {
-			file2[0].saveTo(saveFolder);
-			String saveFileUrl = saveFolderUrl +"/"+file2[0].getUniqueSaveName();
+			String savename = UUID.randomUUID().toString();
+			file2[0].transferTo(new File(saveFolder, savename));
+			String saveFileUrl = saveFolderUrl +"/"+savename;
 			session.setAttribute("uploadFile2", saveFileUrl);
 			logger.info("saveFile : {}", saveFileUrl);
 		}

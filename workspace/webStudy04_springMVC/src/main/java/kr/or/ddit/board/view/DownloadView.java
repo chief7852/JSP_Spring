@@ -19,40 +19,45 @@ import org.springframework.web.servlet.view.AbstractView;
 import kr.or.ddit.vo.AttatchVO;
 
 public class DownloadView extends AbstractView {
+	private static final Logger logger =
+			LoggerFactory.getLogger(DownloadView.class);
 
-	private static final Logger logger = LoggerFactory.getLogger(DownloadView.class);
-	
 	@Value("#{appInfo.attatchPath}")
 	private File saveFolder;
 	
 	@PostConstruct
 	public void init() {
-		logger.info("{}초기화,{}주입됨.",getClass().getSimpleName(),saveFolder.getAbsolutePath());
+		logger.info("{} 초기화, {} 주입됨."
+				, getClass().getSimpleName()
+				, saveFolder.getAbsolutePath());
 	}
 	
 	@Override
-	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest req,
+	protected void renderMergedOutputModel(Map<String, Object> model
+			, HttpServletRequest req,
 			HttpServletResponse resp) throws Exception {
-		AttatchVO attatch = (AttatchVO)model.get("attatch");
+		
+		AttatchVO attatch = (AttatchVO) model.get("attatch");
 		String agent = req.getHeader("User-Agent");
-		String findName = attatch.getAtt_savename();
-		File saveFile = new File(saveFolder, findName);
-
+		
+		File saveFile = new File(saveFolder, attatch.getAtt_savename());
+		
 		String filename = attatch.getAtt_filename();
-		if (StringUtils.containsIgnoreCase(agent, "trident")) {
+		if(StringUtils.containsIgnoreCase(agent, "trident")) {
 			filename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", " ");
-		} else {
+		}else {
 			byte[] bytes = filename.getBytes();
 			filename = new String(bytes, "ISO-8859-1");
 		}
-
-		// 브라우저마다 처리방식이다르다
-		resp.setHeader("Content-Disposition", "attatchment;filename=\"" + filename + "\"");
-		resp.setHeader("Content-Length", attatch.getAtt_size() + "");
+		resp.setHeader("Content-Disposition", "attatchment;filename=\""+filename+"\"");
+		resp.setHeader("Content-Length", attatch.getAtt_size()+"");
 		resp.setContentType("application/octet-stream");
-		try (OutputStream os = resp.getOutputStream();) {
+		try(
+			OutputStream os = resp.getOutputStream();	
+		){
 			FileUtils.copyFile(saveFile, os);
 		}
+
 	}
 
 }

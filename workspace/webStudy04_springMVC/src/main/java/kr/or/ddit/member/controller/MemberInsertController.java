@@ -3,19 +3,16 @@ package kr.or.ddit.member.controller;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.enumpkg.ServiceResult;
-import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.MemberVO;
@@ -23,7 +20,7 @@ import kr.or.ddit.vo.MemberVO;
 @Controller
 public class MemberInsertController{
 	@Inject
-	private IMemberService service ;
+	private IMemberService service;
 
 	@RequestMapping("/member/memberInsert.do")
 	public String form(){
@@ -32,32 +29,12 @@ public class MemberInsertController{
 
 	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
 	public String process(
-			@Validated(InsertGroup.class)@ModelAttribute("member") MemberVO member
-			, @RequestPart(value="mem_image", required=false) MultipartFile mem_image
-			, HttpServletRequest req
-			,BindingResult error
-			) throws IOException {
-//		Locale.setDefault(Locale.ENGLISH);
-//		1. 요청 접수
-
-		if(mem_image!=null && !mem_image.isEmpty()) {
-			String mime = mem_image.getContentType();
-			if(!mime.startsWith("image/")) {
-				throw new BadRequestException("이미지 이외의 프로필은 처리 불가.");
-			}
-			byte[] mem_img = mem_image.getBytes();
-			member.setMem_img(mem_img);
-		}	
-//		2. 검증
-		
-		
-		boolean valid = error.hasErrors();
-		
-//		boolean valid = validate(member, errors);
-		
+			@Validated(InsertGroup.class) @ModelAttribute("member") MemberVO member
+			, BindingResult errors
+			, Model model) throws IOException {
 		String view = null;
 		String message = null;
-		if (valid) {
+		if (!errors.hasErrors()) {
 			ServiceResult result = service.createMember(member);
 			switch (result) {
 			case PKDUPLICATED:
@@ -77,7 +54,7 @@ public class MemberInsertController{
 			view = "member/memberForm";
 		}
 
-		req.setAttribute("message", message);
+		model.addAttribute("message", message);
 
 		return view;
 	}

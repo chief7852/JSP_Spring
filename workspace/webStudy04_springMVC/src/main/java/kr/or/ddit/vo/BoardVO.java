@@ -73,7 +73,7 @@ public class BoardVO implements Serializable{
 		}
 	}
 	
-	private List<ReplyVO> replyList;
+	private List<Reply2VO> replyList;
 	
 	private int[] delAttNos;
 	

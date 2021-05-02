@@ -18,12 +18,9 @@ import kr.or.ddit.vo.MemberVO;
 public class AuthenticateServiceImpl implements IAuthenticateService {
 	private static final Logger logger =
 			LoggerFactory.getLogger(AuthenticateServiceImpl.class);
+	@Inject
 	private IMemberDAO dao;
 	
-	@Inject
-	public void setDao(IMemberDAO dao) {
-		this.dao = dao;
-	}
 	@Override
 	public ServiceResult authenticate(MemberVO member) {
 		MemberVO savedMember = dao.selectMemberForAuth(member.getMem_id());

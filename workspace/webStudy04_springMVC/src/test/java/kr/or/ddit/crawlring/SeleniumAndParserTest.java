@@ -14,29 +14,27 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class SeleniumAndParserTest {
-
+	
 	@Test
 	public void testcase() {
 		Properties props = System.getProperties();
 		for(Entry<Object, Object> prop : props.entrySet()) {
 			Object key = prop.getKey();
 			Object value = prop.getValue();
-			System.out.printf("%s : %s\n",key,value);
+			System.out.printf("%s : %s\n", key, value);
 		}
-		//환경변수 가져오는놈
 		System.getenv();
 	}
-	
-	@Test
+
+//	@Test
 	public void test() {
-		System.setProperty("webdriver", "d:\\chrme");
-		WebDriver driver = new ChromeDriver();
 		
-		//url입력
-		driver.get("https://www.naver.com/");
+		System.setProperty("webdriver.chrome.driver", "d:\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://www.naver.com");
 		try {
 			Thread.sleep(2000);
-			//페이지 소스 들고오기
+			
 			String source = driver.getPageSource();
 //			System.out.println(source);
 			
@@ -51,6 +49,7 @@ public class SeleniumAndParserTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 }
