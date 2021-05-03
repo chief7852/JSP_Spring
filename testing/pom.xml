@@ -6,7 +6,7 @@
 	<artifactId>testing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	
+
 
 	<properties>
 		<java-version>1.8</java-version>
@@ -59,7 +59,11 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 		<!-- DB Connection -->
 		<dependency>
 			<groupId>org.springframework</groupId>
