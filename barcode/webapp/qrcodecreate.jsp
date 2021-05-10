@@ -38,7 +38,7 @@
       회원이름: <input type="text" id="memId" value="" class="input-xxlarge"><br>
     구매 날짜: <input type="date" id="date" class="input-xxlarge"><br>
     이용권명: <input type="text" id="name" value="성공함" class="input-xxlarge"><br>
-    포켓코인: <input type="text" id="money" value="성공함" class="input-xxlarge"><br>
+    포켓코인: <input type="text" id="money" value="성공함" class="input-xxlarge"><br>ree
     Size: <input type="text" id="size" value="200"><br>
     <button type="button" onclick="generateQRCode();">Generate QR Code!</button>
     <img id="qrcode_img" style="display:none" onload="this.style.display='block'">

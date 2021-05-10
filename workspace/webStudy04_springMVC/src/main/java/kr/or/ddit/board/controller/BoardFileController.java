@@ -26,6 +26,10 @@ import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.vo.AttatchVO;
 
+/**
+ * @author wnahd
+ *
+ */
 @Controller
 public class BoardFileController {
 	@Inject
