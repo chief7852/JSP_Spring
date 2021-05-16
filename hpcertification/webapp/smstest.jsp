@@ -55,8 +55,8 @@
           if(con_test == true){
                
              if(count < 3){      /* 추후 데이터베이스에 컬럼 값을 확인하여 count 값을 비교 할 예정 */
-                 alert($("#to").val());
              var to = $("#to").val();
+             
                $.ajax({
                    url:"sendSms.do",
                    type:"post",
@@ -64,15 +64,17 @@
                 	   "to" : to,
                         "text" : $("#text").val()
                         },
-                 success:function(suc){
+                 success:function(data){
+                	alert(data);
                    alert("해당 휴대폰으로 인증번호를 발송했습니다");
                    count++;
                    
                    alert(count);
                    },
-                   error(){
-                      alert("인증번호 발송 실패")
-                   }
+                   error : function(xhr,status){
+   					console.log(xhr)
+   					console.log(status)
+   				}
                    
                 });
              } else {
