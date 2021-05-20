@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+
+	<beans:bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" 
+		c:strength="512" 
+		p:encodeHashAsBase64="true"
+	/>
+
+	<!-- 인증확인 -->
+	<authentication-manager>
+		<!-- authentication정보제공   user-service-ref=""DAO가필요함(UserDetailsService) ,
+		AuthenticateServiceImpl에서 어뎁터를 만든후받아와서 user service ref를 작성한다 (ref== service어노테이션 value)-->
+		<authentication-provider user-service-ref="authService">
+			<!-- 저장되어있는 값들고오기위해 -->
+			<!-- <user-service>
+				아이디 비밀번호 설정
+				<user name="c001" authorities="ROLE_ADMIN" password="SknbGf+Gu+UwwxddYCnEA/VQEEQFwQfzyqJon3AzmlXS6txg7Wd6I5SkAsZqtIsRNAQ81NH2+l9XITTvSi3k/A=="/>
+				<user name="b001" authorities="ROLE_USER" password="SknbGf+Gu+UwwxddYCnEA/VQEEQFwQfzyqJon3AzmlXS6txg7Wd6I5SkAsZqtIsRNAQ81NH2+l9XITTvSi3k/A=="/>
+			</user-service> -->
+			
+			<password-encoder ref="shaPasswordEncoder"></password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+	
+<!-- 	시큐리티에서 js와 css를 받지 않겠다고 선언한다
+		최종프로젝트에서는 /resources/**로 하면됨
+ -->
+	<http pattern="/**/*.js" security="none" />
+	<http pattern="/**/*.css" security="none" />
+	
+	<http auto-config="true" use-expressions="true">
+	<!-- 로그인 폼 login-page제공하고  login-processing-url규칙적용위치 그다음은 시큐리티가 인식못하는 파라미터를 지정해준다-->
+		<form-login login-page="/login/loginForm.jsp" 
+			login-processing-url="/login/loginCheck.do"
+			username-parameter="mem_id"
+			password-parameter="mem_pass"
+		/>
+		<!-- 로그아웃 로직과 보호자원 로직들 -->
+		<logout logout-url="/login/logout.do" logout-success-url="/" invalidate-session="true"/>
+		<intercept-url pattern="/mypage.do" access="isAuthenticated()"/>
+		<!-- 관리자만 -->
+		<intercept-url pattern="/member/memberList.do" access="hasRole('ROLE_ADMIN')"/>
+		<!-- 적어도 회원,관리자 -->
+		<intercept-url pattern="/member/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+		<!-- 무조건 쳐낸다 -->
+<!-- 		<intercept-url pattern="/**" access="denyAll"/> -->
+		<intercept-url pattern="/login/**" access="permitAll"/>
+		<!-- 모든곳이 로그인된사람만 가능하다 -->
+		<intercept-url pattern="/**" access="isAuthenticated()"/>
+		<!--  CSRF Token 무력화 (request??해킹기법을 방지하는것을 끔)   -->
+		<csrf disabled="true"/>
+	</http>
+
+</beans:beans>
