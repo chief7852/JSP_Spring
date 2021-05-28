@@ -1,11 +1,14 @@
 package kr.or.ddit.member.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.UserNotFoundException;
@@ -34,6 +37,9 @@ public class MemberServiceImpl implements IMemberService {
 		return savedMember;
 	}
 
+	@Resource(name="userList")
+	private List<WebSocketSession> userList = new ArrayList<>();
+	
 	@Override
 	public ServiceResult createMember(MemberVO member) {
 		ServiceResult result = null;
