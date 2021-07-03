@@ -1,9 +1,7 @@
 package kr.or.ddit.websocket;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.springframework.web.socket.CloseStatus;
@@ -26,6 +24,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 //	연결종료
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		
 		userList.remove(session);
 	}
 
@@ -33,7 +32,9 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String data = message.getPayload();
+		
 		for(WebSocketSession user : userList) {			
+			
 			user.sendMessage(new TextMessage(data));
 		}
 	}
