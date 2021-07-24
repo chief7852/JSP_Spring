@@ -1,9 +1,0 @@
-package kr.or.ddit.calendar;
-
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-
-@WebServlet()
-public class CalenderForm extends HttpServlet{
-
-}
